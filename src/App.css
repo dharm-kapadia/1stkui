@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh; /* or the minimum height of your content */
+}
+
+.main {
+  flex-grow: 1;
+}
+
+footer {
+  background-color: #758283;
+  color: white;
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+
+  bottom: 0;
+}
