@@ -4,7 +4,7 @@ const config = {
   defaultPath: '/dashboard',
   fontFamily: `'Public Sans', sans-serif`,
   i18n: 'en',
-  miniDrawer: false,
+  miniDrawer: true,
   container: true,
   mode: 'light',
   presetColor: 'default',

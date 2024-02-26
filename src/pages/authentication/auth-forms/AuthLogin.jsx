@@ -1,5 +1,5 @@
+import querystring from 'querystring';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { Button, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack } from '@mui/material';
@@ -17,7 +17,7 @@ import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -28,14 +28,39 @@ const AuthLogin = () => {
     event.preventDefault();
   };
 
+  const handleLogin = async (event, username, password) => {
+    // Do Login here to get auth token
+    event.preventDefault();
+
+    const payload = querystring.stringify({
+      client_id: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
+      client_secret: process.env.REACT_APP_KEYCLOAK_CLIENT_SECRET,
+      grant_type: process.env.REACT_APP_KEYCLOAK_GRANT_TYPE,
+      username: username,
+      password: password
+    });
+
+    const tokenUrl = process.env.REACT_APP_KEYCLOAK_URL;
+
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      body: new URLSearchParams(payload),
+      headers: {
+        'Content-Length': payload.byteLength,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+
+    console.log(response);
+
+    setStatus({ success: true });
+    setSubmitting(false);
+    navigate('/dashboard');
+  };
+
   return (
     <>
       <Formik
-        initialValues={{
-          username: 'TestLender1User',
-          password: '1234561234561234',
-          submit: null
-        }}
         validationSchema={Yup.object().shape({
           username: Yup.string().max(64).required('Username is required'),
           password: Yup.string().max(255).required('Password is required')
@@ -51,7 +76,7 @@ const AuthLogin = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setStatus, setSubmitting }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -125,12 +150,7 @@ const AuthLogin = () => {
                     type="submit"
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                      // Dharm - do Login Here
-                      setStatus({ success: true });
-                      setSubmitting(false);
-                      navigate('/dashboard');
-                    }}
+                    onClick={(event) => handleLogin(event, values.username, values.password)}
                   >
                     Login
                   </Button>

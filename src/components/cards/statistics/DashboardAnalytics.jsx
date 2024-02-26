@@ -13,8 +13,8 @@ import MainCard from 'components/MainCard';
 
 const DashboardAnalytics = ({ title, count, color, cardIcon }) => (
   <MainCard contentSX={{ p: 2.25 }}>
-    <Stack spacing={0.75}>
-      <Stack spacing={2} direction="row" alignItems="center" justifyContent="center">
+    <Stack spacing={0.75} direction="column">
+      <Stack spacing={2} direction="row" alignItems="top" justifyContent="center">
         <Icon>{cardIcon}</Icon>
         <Typography variant="h2" color={color}>
           {title}
