@@ -22,14 +22,30 @@ import App from './App';
 
 const queryClient = new QueryClient();
 
+/**
+ * Call back function to log KeyCloak events
+ *
+ * @param {string} event    Event name
+ * @param {error} error     Error description (if any)
+ */
 const eventLogger = (event, error) => {
   console.log('onKeycloakEvent', event, error);
 };
 
+/**
+ * Callback to save login username to localStorage
+ *
+ * @param {JSON} result    JSON result string with userInfo
+ */
 const handleUserInfo = (result) => {
   localStorage.setItem('username', result.preferred_username);
 };
 
+/**
+ * Callback to log KeyCloak tokens and request userInfo
+ *
+ * @param {JSON} tokens    Tokens returned from KeyCloak
+ */
 const tokenLogger = (tokens) => {
   console.log(tokens);
 
@@ -41,6 +57,10 @@ const tokenLogger = (tokens) => {
   keycloak.loadUserInfo().then(handleUserInfo);
 };
 
+/**
+ * ReactKeyCloakProvider init specifications
+ *
+ */
 const initOpts = {
   checkLoginIframe: false,
   onLoad: 'login-required'

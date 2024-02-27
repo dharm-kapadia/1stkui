@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
+import keycloak from '../../../../../Keycloak';
+
 // material-ui
 import {
   Box,
@@ -54,10 +56,6 @@ function a11yProps(index) {
 const Profile = () => {
   const theme = useTheme();
 
-  const handleLogout = async () => {
-    // logout
-  };
-
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
@@ -79,7 +77,19 @@ const Profile = () => {
 
   const iconBackColorOpen = 'grey.300';
 
+  /**
+   * Get login username from localStorage
+   *
+   */
   const username = localStorage.getItem('username');
+
+  /**
+   * Perform logout from KeyCloak
+   *
+   */
+  const handleLogout = async () => {
+    keycloak.logout();
+  };
 
   return (
     <>
