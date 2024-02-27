@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import Loader from './components/Loader';
 import keycloak from './Keycloak';
-import { setToken } from './utils/apiHelper';
 
 // scroll bar
 import 'simplebar/src/simplebar.css';
@@ -27,9 +26,19 @@ const eventLogger = (event, error) => {
   console.log('onKeycloakEvent', event, error);
 };
 
+const handleUserInfo = (result) => {
+  localStorage.setItem('username', result.preferred_username);
+};
+
 const tokenLogger = (tokens) => {
-  const tData = tokens;
-  setToken(tData.token);
+  console.log(tokens);
+
+  localStorage.setItem('idToken', tokens.idToken);
+  localStorage.setItem('refreshToken', tokens.refreshToken);
+  localStorage.setItem('token', tokens.token);
+  localStorage.setItem('tokenTimeStamp', new Date().toISOString());
+
+  keycloak.loadUserInfo().then(handleUserInfo);
 };
 
 const initOpts = {

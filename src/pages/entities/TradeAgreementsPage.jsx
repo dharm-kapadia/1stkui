@@ -169,10 +169,6 @@ const TradeAgreementsPage = () => {
         accessorKey: 'settlementDate'
       },
       {
-        header: 'CUSIP',
-        accessorKey: 'cusip'
-      },
-      {
         header: 'Collateral Type',
         accessorKey: 'collateralType'
       },

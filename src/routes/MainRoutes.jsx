@@ -5,7 +5,7 @@ import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 
 // render - dashboard
-const Dashboard = Loadable(lazy(() => import('pages/dashboard')));
+const Dashboard = Loadable(lazy(() => import('pages/dashboard/DashboardPage')));
 
 // render - exceptions
 const ErrorsPage = Loadable(lazy(() => import('pages/exceptions/ErrorsPage')));

@@ -79,6 +79,8 @@ const Profile = () => {
 
   const iconBackColorOpen = 'grey.300';
 
+  const username = localStorage.getItem('username');
+
   return (
     <>
       <Box sx={{ flexShrink: 0, ml: 0.75 }}>
@@ -96,7 +98,7 @@ const Profile = () => {
           onClick={handleToggle}
         >
           <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-            <Typography variant="subtitle1">TestLender1User</Typography>
+            <Typography variant="subtitle1">{username}</Typography>
           </Stack>
         </ButtonBase>
         <Popper
@@ -138,7 +140,7 @@ const Profile = () => {
                           <Grid item>
                             <Stack direction="row" spacing={1.25} alignItems="center">
                               <Stack>
-                                <Typography variant="h6">TestLender1User</Typography>
+                                <Typography variant="h6">{username}</Typography>
                               </Stack>
                             </Stack>
                           </Grid>

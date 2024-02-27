@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { useEffect } from 'react';
+
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -18,6 +21,23 @@ import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
+  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+  let token = localStorage.getItem('token');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+        setApiData(response.data);
+        console.log(JSON.stringify(response.data));
+      } catch (error) {
+        console.error('Error fetching datga:', error);
+      }
+    };
+
+    fetchData();
+  }, [token, url]);
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* Exceptions */}

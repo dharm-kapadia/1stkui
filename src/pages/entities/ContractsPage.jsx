@@ -113,38 +113,82 @@ const ContractsPage = () => {
   const columns = useMemo(
     () => [
       {
-        header: 'Name',
-        accessorKey: 'fullName'
+        header: 'Contract ID',
+        accessorKey: 'contractId'
       },
       {
-        header: 'Email',
-        accessorKey: 'email'
+        header: 'Processing Status',
+        accessorKey: 'processingStatus'
       },
       {
-        header: 'Role',
-        accessorKey: 'role'
-      },
-      {
-        header: 'Age',
-        accessorKey: 'age',
+        header: 'Matching Spire Position Id',
+        accessorKey: 'matchingSpirePositionId',
         meta: {
           className: 'cell-right'
         }
       },
       {
-        header: 'Visits',
-        accessorKey: 'visits',
+        header: 'Contract Status',
+        accessorKey: 'contractStatus'
+      },
+      {
+        header: 'Last Update Party',
+        accessorKey: 'lastUpdateParty'
+      },
+      {
+        header: 'Last Update Date/Time',
+        accessorKey: 'lastUpdateDateTime'
+      },
+      {
+        header: 'Venue Ref Key',
+        accessorKey: 'venueRefKey',
         meta: {
           className: 'cell-right'
         }
       },
       {
-        header: 'Status',
-        accessorKey: 'status'
+        header: 'CUSIP',
+        accessorKey: 'cusip'
       },
       {
-        header: 'Profile Progress',
-        accessorKey: 'progress'
+        header: 'ISIN',
+        accessorKey: 'isin'
+      },
+      {
+        header: 'SEDOL',
+        accessorKey: 'sedol'
+      },
+      {
+        header: 'Ticker',
+        accessorKey: 'ticker'
+      },
+      {
+        header: 'Trade Date',
+        accessorKey: 'tradeDate'
+      },
+      {
+        header: 'Settlement Date',
+        accessorKey: 'settlementDate'
+      },
+      {
+        header: 'Collateral Type',
+        accessorKey: 'collateralType'
+      },
+      {
+        header: 'Collateral Currency',
+        accessorKey: 'ccurrency'
+      },
+      {
+        header: 'Internal Party Id',
+        accessorKey: 'internalPartyId'
+      },
+      {
+        header: 'Account Id',
+        accessorKey: 'accountId'
+      },
+      {
+        header: 'Interal Ref Id',
+        accessorKey: 'internalRefId'
       }
     ],
     []

@@ -19,7 +19,7 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
-import makeData from 'data/react-table';
+import makeReratesData from 'data/rerates-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -108,43 +108,47 @@ ReactTable.propTypes = {
 // ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const ReratesPage = () => {
-  const data = useMemo(() => makeData(0), []);
+  const data = useMemo(() => makeReratesData(0), []);
 
   const columns = useMemo(
     () => [
       {
-        header: 'Name',
-        accessorKey: 'fullName'
+        header: 'Source',
+        accessorKey: 'source'
       },
       {
-        header: 'Email',
-        accessorKey: 'email'
+        header: 'Subject',
+        accessorKey: 'subject'
       },
       {
-        header: 'Role',
-        accessorKey: 'role'
-      },
-      {
-        header: 'Age',
-        accessorKey: 'age',
+        header: 'Id',
+        accessorKey: 'id',
         meta: {
           className: 'cell-right'
         }
       },
       {
-        header: 'Visits',
-        accessorKey: 'visits',
-        meta: {
-          className: 'cell-right'
-        }
+        header: 'Related Process',
+        accessorKey: 'relatedProcess'
       },
       {
-        header: 'Status',
-        accessorKey: 'status'
+        header: 'Related SubProcess',
+        accessorKey: 'relatedSubProcess'
       },
       {
         header: 'Profile Progress',
         accessorKey: 'progress'
+      },
+      {
+        header: 'Related Object Id',
+        accessorKey: 'relatedObjectId',
+        meta: {
+          className: 'cell-right'
+        }
+      },
+      {
+        header: 'Related Object Type',
+        accessorKey: 'relatedObjectType'
       }
     ],
     []

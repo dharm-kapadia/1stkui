@@ -19,7 +19,7 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
-import makeData from 'data/react-table';
+import makeReturnsData from 'data/returns-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -108,7 +108,7 @@ ReactTable.propTypes = {
 // ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const ReturnsPage = () => {
-  const data = useMemo(() => makeData(0), []);
+  const data = useMemo(() => makeReturnsData(0), []);
 
   const columns = useMemo(
     () => [
