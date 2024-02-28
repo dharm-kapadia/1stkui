@@ -1,20 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import keycloak from '../../../../../Keycloak';
 
 // material-ui
 import {
   Box,
-  Button,
   ButtonBase,
   CardContent,
   ClickAwayListener,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Grid,
   IconButton,
   Paper,
@@ -25,6 +19,8 @@ import {
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
+import { Modal } from 'antd';
 
 // project import
 import Transitions from 'components/@extended/Transitions';
@@ -89,43 +85,30 @@ const Profile = () => {
    */
   const username = localStorage.getItem('username');
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
   /**
    * Perform logout from KeyCloak
    *
    */
-  const handleLogout = async () => {
+  const handleOk = () => {
     keycloak.logout();
+    setIsModalOpen(false);
   };
 
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-
-  const handleDialogLogout = () => {
-    handleLogout();
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <>
-      <Dialog open={dialogOpen} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">1Source Toolkit UI</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">Logout of the 1Source ToolKit UI?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>No</Button>
-          <Button onClick={handleDialogLogout} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+      <Modal title="1Source Toolkit UI" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        Logout from 1Source Toolkit UI?
+      </Modal>
       <Box sx={{ flexShrink: 0, ml: 0.75 }}>
         <ButtonBase
           sx={{
@@ -188,7 +171,7 @@ const Profile = () => {
                             </Stack>
                           </Grid>
                           <Grid item>
-                            <IconButton size="large" color="secondary" onClick={handleDialogOpen}>
+                            <IconButton size="large" color="secondary" onClick={showModal}>
                               <LogoutOutlined />
                             </IconButton>
                           </Grid>
@@ -225,7 +208,7 @@ const Profile = () => {
                             </Tabs>
                           </Box>
                           <TabPanel value={value} index={0} dir={theme.direction}>
-                            <ProfileTab handleLogout={handleDialogOpen} />
+                            <ProfileTab handleLogout={showModal} />
                           </TabPanel>
                           <TabPanel value={value} index={1} dir={theme.direction}>
                             <SettingTab />
