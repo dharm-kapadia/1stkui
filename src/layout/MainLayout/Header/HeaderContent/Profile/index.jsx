@@ -1,14 +1,20 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import keycloak from '../../../../../Keycloak';
 
 // material-ui
 import {
   Box,
+  Button,
   ButtonBase,
   CardContent,
   ClickAwayListener,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   IconButton,
   Paper,
@@ -91,8 +97,35 @@ const Profile = () => {
     keycloak.logout();
   };
 
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleDialogLogout = () => {
+    handleLogout();
+  };
+
   return (
     <>
+      <Dialog open={dialogOpen} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">1Source Toolkit UI</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">Logout of the 1Source ToolKit UI?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>No</Button>
+          <Button onClick={handleDialogLogout} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box sx={{ flexShrink: 0, ml: 0.75 }}>
         <ButtonBase
           sx={{
@@ -155,7 +188,7 @@ const Profile = () => {
                             </Stack>
                           </Grid>
                           <Grid item>
-                            <IconButton size="large" color="secondary" onClick={handleLogout}>
+                            <IconButton size="large" color="secondary" onClick={handleDialogOpen}>
                               <LogoutOutlined />
                             </IconButton>
                           </Grid>
@@ -192,7 +225,7 @@ const Profile = () => {
                             </Tabs>
                           </Box>
                           <TabPanel value={value} index={0} dir={theme.direction}>
-                            <ProfileTab handleLogout={handleLogout} />
+                            <ProfileTab handleLogout={handleDialogOpen} />
                           </TabPanel>
                           <TabPanel value={value} index={1} dir={theme.direction}>
                             <SettingTab />
