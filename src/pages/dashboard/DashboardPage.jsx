@@ -16,10 +16,15 @@ import Divider from '@mui/material/Divider';
 
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
+import { getCloudEvents } from '../../services/cloudevents';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
+  /**
+   * Variable to hold counts from the server
+   *
+   */
   let errorCount = 0;
   let pendingCount = 0;
   let declinedCount = 0;
@@ -31,20 +36,12 @@ const Dashboard = () => {
   let recallsCount = 0;
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
     const token = localStorage.getItem('token');
 
-    fetch(url, { method: 'GET', headers: { Authorization: 'Bearer ' + token } })
-      .then((response) => {
-        console.log(response.text());
-      })
-      .then((data) => {
-        console.log(data ? JSON.parse(data) : []);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    // Get cloudevents using Bearer token
+    const resp = getCloudEvents(token);
+    console.log(resp);
+  });
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -55,13 +52,18 @@ const Dashboard = () => {
         </Divider>{' '}
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Errors/Mismatches" count={errorCount} color="red" cardIcon={<ErrorOutline />} />
+        <DashboardAnalytics title="Errors/Mismatches" count={errorCount.toString()} color="red" cardIcon={<ErrorOutline />} />
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Pending" count={pendingCount} color="maroon" cardIcon={<PendingActionsIcon />} />
+        <DashboardAnalytics title="Pending" count={pendingCount.toString()} color="maroon" cardIcon={<PendingActionsIcon />} />
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Declined/Rejected" count={declinedCount} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
+        <DashboardAnalytics
+          title="Declined/Rejected"
+          count={declinedCount.toString()}
+          color="darkorange"
+          cardIcon={<ThumbDownOutlinedIcon />}
+        />
       </Grid>
 
       {/* Entities - Row 1 */}
@@ -73,13 +75,13 @@ const Dashboard = () => {
             </Divider>{' '}
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Events" count={eventCount} cardIcon={<EventAvailableOutlinedIcon />} />
+            <DashboardAnalytics title="Events" count={eventCount.toString()} cardIcon={<EventAvailableOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Trade Agreements" count={tradeAgreementCount} cardIcon={<HandshakeOutlinedIcon />} />
+            <DashboardAnalytics title="Trade Agreements" count={tradeAgreementCount.toString()} cardIcon={<HandshakeOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Contracts" count={contractsCount} cardIcon={<DescriptionOutlinedIcon />} />
+            <DashboardAnalytics title="Contracts" count={contractsCount.toString()} cardIcon={<DescriptionOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
@@ -88,13 +90,13 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Rerates" count={reratesCount} cardIcon={<CurrencyExchangeOutlinedIcon />} />
+            <DashboardAnalytics title="Rerates" count={reratesCount.toString()} cardIcon={<CurrencyExchangeOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Returns" count={returnsCount} cardIcon={<KeyboardReturnOutlinedIcon />} />
+            <DashboardAnalytics title="Returns" count={returnsCount.toString()} cardIcon={<KeyboardReturnOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Recalls" count={recallsCount} cardIcon={<CampaignOutlinedIcon />} />
+            <DashboardAnalytics title="Recalls" count={recallsCount.toString()} cardIcon={<CampaignOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
