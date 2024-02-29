@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
@@ -21,22 +20,31 @@ import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
-  let token = localStorage.getItem('token');
+  let errorCount = 0;
+  let pendingCount = 0;
+  let declinedCount = 0;
+  let eventCount = 0;
+  let tradeAgreementCount = 0;
+  let contractsCount = 0;
+  let reratesCount = 0;
+  let returnsCount = 0;
+  let recallsCount = 0;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
-        setApiData(response.data);
-        console.log(JSON.stringify(response.data));
-      } catch (error) {
-        console.error('Error fetching datga:', error);
-      }
-    };
+    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const token = localStorage.getItem('token');
 
-    fetchData();
-  }, [token, url]);
+    fetch(url, { method: 'GET', headers: { Authorization: 'Bearer ' + token } })
+      .then((response) => {
+        console.log(response.text());
+      })
+      .then((data) => {
+        console.log(data ? JSON.parse(data) : []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -47,13 +55,13 @@ const Dashboard = () => {
         </Divider>{' '}
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Errors/Mismatches" count="12" color="red" cardIcon={<ErrorOutline />} />
+        <DashboardAnalytics title="Errors/Mismatches" count={errorCount} color="red" cardIcon={<ErrorOutline />} />
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Pending" count="8" color="maroon" cardIcon={<PendingActionsIcon />} />
+        <DashboardAnalytics title="Pending" count={pendingCount} color="maroon" cardIcon={<PendingActionsIcon />} />
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Declined/Rejected" count="18" color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
+        <DashboardAnalytics title="Declined/Rejected" count={declinedCount} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
       </Grid>
 
       {/* Entities - Row 1 */}
@@ -65,13 +73,13 @@ const Dashboard = () => {
             </Divider>{' '}
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Events" count="376" cardIcon={<EventAvailableOutlinedIcon />} />
+            <DashboardAnalytics title="Events" count={eventCount} cardIcon={<EventAvailableOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Trade Agreements" count="825" cardIcon={<HandshakeOutlinedIcon />} />
+            <DashboardAnalytics title="Trade Agreements" count={tradeAgreementCount} cardIcon={<HandshakeOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Contracts" count="1,289" cardIcon={<DescriptionOutlinedIcon />} />
+            <DashboardAnalytics title="Contracts" count={contractsCount} cardIcon={<DescriptionOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
@@ -80,13 +88,13 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Rerates" count="422" cardIcon={<CurrencyExchangeOutlinedIcon />} />
+            <DashboardAnalytics title="Rerates" count={reratesCount} cardIcon={<CurrencyExchangeOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Returns" count="590" cardIcon={<KeyboardReturnOutlinedIcon />} />
+            <DashboardAnalytics title="Returns" count={returnsCount} cardIcon={<KeyboardReturnOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Recalls" count="2,377" cardIcon={<CampaignOutlinedIcon />} />
+            <DashboardAnalytics title="Recalls" count={recallsCount} cardIcon={<CampaignOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
