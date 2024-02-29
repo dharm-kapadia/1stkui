@@ -96,7 +96,7 @@ const Breadcrumbs = ({
       breadcrumbContent = (
         <MainCard
           border={card}
-          sx={card === false ? { mb: 3, bgcolor: 'transparent', ...sx } : { mb: 3, ...sx }}
+          sx={card === false ? { mb: 1, bgcolor: 'transparent', ...sx } : { mb: 1, ...sx }}
           {...others}
           content={card}
           shadow="none"
@@ -119,7 +119,7 @@ const Breadcrumbs = ({
               </Grid>
             )}
           </Grid>
-          {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
+          {card === false && divider !== false && <Divider sx={{ mt: 1 }} />}
         </MainCard>
       );
     }
