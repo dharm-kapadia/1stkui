@@ -61,6 +61,8 @@ const tokenLogger = (tokens) => {
  *
  */
 const initOpts = {
+  grant_type: process.env.REACT_APP_KEYCLOAK_GRANT_TYPE,
+  client_id: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
   checkLoginIframe: false,
   onLoad: 'login-required'
 };
