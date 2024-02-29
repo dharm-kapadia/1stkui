@@ -49,7 +49,6 @@ const handleUserInfo = (result) => {
 const tokenLogger = (tokens) => {
   console.log(tokens);
 
-  localStorage.setItem('idToken', tokens.idToken);
   localStorage.setItem('refreshToken', tokens.refreshToken);
   localStorage.setItem('token', tokens.token);
   localStorage.setItem('tokenTimeStamp', new Date().toISOString());
