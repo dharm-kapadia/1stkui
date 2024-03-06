@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { getCloudEvents } from '../../services/cloudevents';
 
 // material-ui
 import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -26,6 +28,14 @@ import makeExceptionsData from 'data/exceptions-table';
 function ReactTable({ columns, data }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // Get cloudevents using Bearer token
+    const resp = getCloudEvents(token);
+    console.log(resp);
+  });
 
   const table = useReactTable({
     data,

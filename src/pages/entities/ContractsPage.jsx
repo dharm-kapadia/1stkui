@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -21,11 +21,21 @@ import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
 import makeContractData from 'data/contracts-table';
 
+import { getContracts } from '../../services/contracts';
+
 // ==============================|| REACT TABLE ||============================== //
 
 function ReactTable({ columns, data }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // Get cloudevents using Bearer token
+    const resp = getContracts(token);
+    console.log(resp);
+  });
 
   const table = useReactTable({
     data,

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
@@ -8,6 +8,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import KeyboardReturnOutlinedIcon from '@mui/icons-material/KeyboardReturnOutlined';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 
 import { Grid } from '@mui/material';
@@ -17,31 +18,54 @@ import Divider from '@mui/material/Divider';
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
 import { getCloudEvents } from '../../services/cloudevents';
+import { getContracts } from '../../services/contracts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-  /**
-   * Variable to hold counts from the server
-   *
-   */
-  let errorCount = 0;
-  let pendingCount = 0;
-  let declinedCount = 0;
-  let eventCount = 0;
-  let tradeAgreementCount = 0;
-  let contractsCount = 0;
-  let reratesCount = 0;
-  let returnsCount = 0;
-  let recallsCount = 0;
+  const [errorCount, setErrorCount] = useState('react');
+  const [pendingCount, setPendingCount] = useState('react');
+  const [declinedCount, setDeclinedCount] = useState('react');
+  const [eventCount, setEventCount] = useState('react');
+
+  const [tradeAgreementCount, setTradeAgreementCount] = useState('react');
+  const [contractsCount, setContractsCount] = useState('react');
+  const [reratesCount, setReratesCount] = useState('react');
+  const [returnsCount, setReturnsCount] = useState('react');
+  const [recallsCount, setRecallsCount] = useState('react');
+  const [buyinsCount, setBuyinsCount] = useState('react');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    // Get cloudevents using Bearer token
-    const resp = getCloudEvents(token);
-    console.log(resp);
-  });
+    async function fetchCloudEvents() {
+      // Get cloudevents using Bearer token
+      const resp = await getCloudEvents(token);
+
+      // Parse the response and update the eventCount on the UI
+      setEventCount(resp.data.totalItems);
+    }
+
+    async function fetchContracts() {
+      // Get the contracts using Bearer token
+      const resp = await getContracts(token);
+
+      setContractsCount(resp.data.totalItems);
+    }
+
+    fetchCloudEvents();
+    fetchContracts();
+
+    setErrorCount(0);
+    setPendingCount(0);
+    setDeclinedCount(0);
+
+    setTradeAgreementCount(0);
+    setReratesCount(0);
+    setReturnsCount(0);
+    setRecallsCount(0);
+    setBuyinsCount(0);
+  }, []);
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -89,6 +113,11 @@ const Dashboard = () => {
       {/* Entities - Row 2 */}
       <Grid item xs={12}>
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+          <Grid item xs={12} sx={{ mb: -2.25 }}>
+            <Divider>
+              <Chip label="LifeCycle Events" color="primary" size="small" />
+            </Divider>{' '}
+          </Grid>
           <Grid item xs={4}>
             <DashboardAnalytics title="Rerates" count={reratesCount.toString()} cardIcon={<CurrencyExchangeOutlinedIcon />} />
           </Grid>
@@ -97,6 +126,15 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={4}>
             <DashboardAnalytics title="Recalls" count={recallsCount.toString()} cardIcon={<CampaignOutlinedIcon />} />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      {/* Entities - Row 3 */}
+      <Grid item xs={12}>
+        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+          <Grid item xs={4}>
+            <DashboardAnalytics title="Buyins" count={buyinsCount.toString()} cardIcon={<ShoppingCartOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
