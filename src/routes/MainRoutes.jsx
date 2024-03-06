@@ -19,6 +19,7 @@ const ContractsPage = Loadable(lazy(() => import('pages/entities/ContractsPage')
 const ReratesPage = Loadable(lazy(() => import('pages/entities/ReratesPage')));
 const ReturnsPage = Loadable(lazy(() => import('pages/entities/ReturnsPage')));
 const RecallsPage = Loadable(lazy(() => import('pages/entities/RecallsPage')));
+const BuyinsPage = Loadable(lazy(() => import('pages/entities/BuyinsPage')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -69,6 +70,10 @@ const MainRoutes = {
     {
       path: 'recalls',
       element: <RecallsPage />
+    },
+    {
+      path: 'buyins',
+      element: <BuyinsPage />
     }
   ]
 };

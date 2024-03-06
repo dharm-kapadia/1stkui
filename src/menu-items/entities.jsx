@@ -4,6 +4,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import KeyboardReturnOutlinedIcon from '@mui/icons-material/KeyboardReturnOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const icons = {
   CampaignOutlinedIcon,
@@ -11,7 +12,8 @@ const icons = {
   DescriptionOutlinedIcon,
   EventAvailableOutlinedIcon,
   HandshakeOutlinedIcon,
-  KeyboardReturnOutlinedIcon
+  KeyboardReturnOutlinedIcon,
+  ShoppingCartOutlinedIcon
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
@@ -67,6 +69,14 @@ const exceptions = {
       type: 'item',
       url: '/recalls',
       icon: icons.CampaignOutlinedIcon,
+      breadcrumbs: true
+    },
+    {
+      id: 'buyins',
+      title: 'Buyins',
+      type: 'item',
+      url: '/buyins',
+      icon: icons.ShoppingCartOutlinedIcon,
       breadcrumbs: true
     }
   ]
