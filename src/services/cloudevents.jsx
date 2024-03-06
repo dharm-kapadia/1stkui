@@ -19,22 +19,23 @@ import axios from 'axios';
  *
  * @return {Array} The array of cloud events
  */
-const getCloudEvents = (token) => {
+const getCloudEvents = async (token) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
 
-  axios
-    .get(url, {
+  try {
+    let resp = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
 };
 
 /**
@@ -44,22 +45,23 @@ const getCloudEvents = (token) => {
  *
  * @return {} The cloud event report
  */
-const getCloudEventById = (token, id) => {
+const getCloudEventById = async (token, id) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevent' + '/' + id.toString();
 
-  axios
-    .get(url, {
+  try {
+    let resp = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
 };
 
 /**
@@ -72,22 +74,23 @@ const getCloudEventById = (token, id) => {
  *
  * @return {Array} The cloud event report
  */
-const getCloudEventsReport = (token) => {
+const getCloudEventsReport = async (token) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents/report';
 
-  axios
-    .get(url, {
+  try {
+    let resp = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
 };
 
 export { getCloudEvents, getCloudEventById, getCloudEventsReport };

@@ -33,22 +33,23 @@ import axios from 'axios';
  *
  * @return {Array} The array of contracts
  */
-const getContracts = (token) => {
+const getContracts = async (token) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
 
-  axios
-    .get(url, {
+  try {
+    let resp = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
 };
 
 /**
@@ -60,22 +61,23 @@ const getContracts = (token) => {
  * @return {Array}  Loan contract
  */
 
-const getContractById = (token, id) => {
+const getContractById = async (token, id) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts/' + id.toString();
 
-  axios
-    .get(url, {
+  try {
+    let resp = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
     });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
 };
 
 export { getContracts, getContractById };
