@@ -16,12 +16,12 @@ const DashboardAnalytics = ({ title, count, color, cardIcon }) => (
     <Stack spacing={0.75} direction="column">
       <Stack spacing={2} direction="row" alignItems="top" justifyContent="center">
         <Icon>{cardIcon}</Icon>
-        <Typography variant="h2" color={color}>
+        <Typography variant="h3" color={color}>
           {title}
         </Typography>
       </Stack>
       <Divider />
-      <Typography variant="h1" color="inherit" align="center">
+      <Typography variant="h2" color="inherit" align="center">
         {count}
       </Typography>
     </Stack>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import CallSplitOutlinedIcon from '@mui/icons-material/CallSplitOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -34,6 +35,7 @@ const Dashboard = () => {
   const [returnsCount, setReturnsCount] = useState('react');
   const [recallsCount, setRecallsCount] = useState('react');
   const [buyinsCount, setBuyinsCount] = useState('react');
+  const [splitsCount, setSplitsCount] = useState('react');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -65,6 +67,7 @@ const Dashboard = () => {
     setReturnsCount(0);
     setRecallsCount(0);
     setBuyinsCount(0);
+    setSplitsCount(0);
   }, []);
 
   return (
@@ -135,6 +138,9 @@ const Dashboard = () => {
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
           <Grid item xs={4}>
             <DashboardAnalytics title="Buyins" count={buyinsCount.toString()} cardIcon={<ShoppingCartOutlinedIcon />} />
+          </Grid>
+          <Grid item xs={4}>
+            <DashboardAnalytics title="Contract Splits" count={splitsCount.toString()} cardIcon={<CallSplitOutlinedIcon />} />
           </Grid>
         </Grid>
       </Grid>
