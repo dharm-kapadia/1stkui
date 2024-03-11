@@ -1,21 +1,40 @@
-import { range } from 'utils/returns-mock-data';
+/* eslint-disable react/jsx-key */
+import PropTypes from 'prop-types';
+import { useTable } from 'react-table';
 
-const newBuyin = (index) => {
-  const tempData = mockBuyinsData(index);
+export default function BuyinsTable({ columns, data }) {
+  // Use the useTable Hook to send the columns and data to build the table
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
-  return {
-    ...tempData
-  };
-};
-
-export default function makeBuyinsData(...lens) {
-  const makeDataLevel = (depth = 0) => {
-    const len = lens[depth];
-    return range(len).map((d, index) => ({
-      ...newBuyin(index + 1),
-      subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
-    }));
-  };
-
-  return makeDataLevel();
+  return (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
+          prepareRow(row);
+          console.log(i);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 }
+
+BuyinsTable.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array
+};
