@@ -1,174 +1,48 @@
-import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-import { getCloudEvents } from '../../services/cloudevents';
+import DataGrid from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
 
-// material-ui
-import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+const columns = [
+  { key: 'id', name: 'Id', resizable: true },
+  { key: 'time', name: 'Time', resizable: true },
+  { key: 'type', name: 'Type', resizable: true },
+  { key: 'source', name: 'Source', resizable: true },
+  { key: 'subject', name: 'Subject', resizable: true },
+  { key: 'relatedprocess', name: 'Related Process', resizable: true },
+  { key: 'relatedsubprocess', name: 'Related SubProcess', resizable: true },
+  { key: 'data', name: 'Data', resizable: true }
+];
 
-// third-party
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  useReactTable
-} from '@tanstack/react-table';
-
-// project import
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
-import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
-import makeExceptionsData from 'data/exceptions-table';
-
-// ==============================|| REACT TABLE ||============================== //
-
-function ReactTable({ columns, data }) {
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState('');
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    // Get cloudevents using Bearer token
-    const resp = getCloudEvents(token);
-    console.log(resp);
-  });
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      columnFilters,
-      globalFilter
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter
-  });
-
-  return (
-    <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'events-exceptions.csv'} />
-      </Stack>
-
-      <ScrollX>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} {...header.column.columnDef.meta}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} {...header.column.columnDef.meta}>
-                      {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody>
-              {table.getRowModel().rows.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} {...cell.column.columnDef.meta}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={table.getAllColumns().length}>
-                    <EmptyTable msg="No Data" />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </ScrollX>
-    </MainCard>
-  );
-}
-
-ReactTable.propTypes = {
-  columns: PropTypes.array,
-  data: PropTypes.array
-};
-
-// ==============================|| REACT TABLE - EMPTY ||============================== //
+const tableStyle = { width: '100%', height: '100%', borderRadius: '5px' };
 
 const EventsPage = () => {
-  const data = useMemo(() => makeExceptionsData(0), []);
+  const [data, setData] = useState([]);
+  const [cols, setCols] = useState([]);
 
-  const columns = useMemo(
-    () => [
-      {
-        header: 'Type',
-        accessorKey: 'Type'
-      },
-      {
-        header: 'Source',
-        accessorKey: 'source'
-      },
-      {
-        header: 'Subject',
-        accessorKey: 'subject'
-      },
-      {
-        header: 'Id',
-        accessorKey: 'id',
-        meta: {
-          className: 'cell-right'
+  useEffect(() => {
+    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const token = localStorage.getItem('token');
+    setCols(columns);
+
+    // Get cloudevents using Bearer token
+    (async () => {
+      const result = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      },
-      {
-        header: 'Related Process',
-        accessorKey: 'relatedProcess'
-      },
-      {
-        header: 'Related SubProcess',
-        accessorKey: 'relatedSubProcess'
-      },
-      {
-        header: 'Profile Progress',
-        accessorKey: 'progress'
-      },
-      {
-        header: 'Related Object Id',
-        accessorKey: 'relatedObjectId',
-        meta: {
-          className: 'cell-right'
-        }
-      },
-      {
-        header: 'Related Object Type',
-        accessorKey: 'relatedObjectType'
-      }
-    ],
-    []
+      });
+
+      setData(result.data.items);
+    })();
+  }, []);
+
+  return (
+    <>
+      <DataGrid columns={cols} rows={data} style={tableStyle} />
+    </>
   );
-
-  return <ReactTable columns={columns} data={data} />;
 };
 
 export default EventsPage;
