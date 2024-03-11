@@ -1,3 +1,4 @@
+import CallSplitOutlinedIcon from '@mui/icons-material/CallSplitOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -7,6 +8,7 @@ import KeyboardReturnOutlinedIcon from '@mui/icons-material/KeyboardReturnOutlin
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const icons = {
+  CallSplitOutlinedIcon,
   CampaignOutlinedIcon,
   CurrencyExchangeOutlinedIcon,
   DescriptionOutlinedIcon,
@@ -77,6 +79,14 @@ const exceptions = {
       type: 'item',
       url: '/buyins',
       icon: icons.ShoppingCartOutlinedIcon,
+      breadcrumbs: true
+    },
+    {
+      id: 'splits',
+      title: 'Contract Splits',
+      type: 'item',
+      url: '/splits',
+      icon: icons.CallSplitOutlinedIcon,
       breadcrumbs: true
     }
   ]
