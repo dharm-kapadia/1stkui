@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import { Paper, Stack, TableContainer } from '@mui/material';
+
 import DataGrid from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
+
+import MainCard from 'components/MainCard';
+import { CSVExport } from 'components/third-party/react-table';
 
 const columns = [
   { key: 'contractId', name: 'Contract ID', resizable: true },
@@ -51,9 +56,14 @@ const ContractsPage = () => {
   }, []);
 
   return (
-    <>
-      <DataGrid columns={cols} rows={data} style={tableStyle} />
-    </>
+    <MainCard content={false}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
+        <CSVExport data={data} filename={'empty-table.csv'} />
+      </Stack>
+      <TableContainer component={Paper}>
+        <DataGrid columns={cols} rows={data} style={tableStyle} />
+      </TableContainer>
+    </MainCard>
   );
 };
 
