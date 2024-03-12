@@ -52,7 +52,7 @@ const BuyinsPage = () => {
   return (
     <MainCard content={false}>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'empty-table.csv'} />
+        <CSVExport data={data} filename={'buyins.csv'} />
       </Stack>
       <TableContainer component={Paper}>
         <DataGrid columns={cols} rows={data} style={tableStyle} />

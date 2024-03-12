@@ -46,7 +46,7 @@ function ReactTable({ columns, data }) {
   return (
     <MainCard content={false}>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'empty-table.csv'} />
+        <CSVExport data={data} filename={'rerates.csv'} />
       </Stack>
 
       <ScrollX>

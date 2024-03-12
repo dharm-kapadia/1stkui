@@ -10,7 +10,7 @@ export const range = (len) => {
   return arr;
 };
 
-function mockExceptionsData(index) {
+function mockDeclinedData(index) {
   return {
     source: `${chance.string()}${index}`,
     subject: chance.string(),
@@ -23,4 +23,22 @@ function mockExceptionsData(index) {
   };
 }
 
-export default mockExceptionsData;
+const newDeclined = (index) => {
+  const tempData = mockDeclinedData(index);
+
+  return {
+    ...tempData
+  };
+};
+
+export default function makeDeclinedData(...lens) {
+  const makeDataLevel = (depth = 0) => {
+    const len = lens[depth];
+    return range(len).map((d, index) => ({
+      ...newDeclined(index + 1),
+      subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
+    }));
+  };
+
+  return makeDataLevel();
+}

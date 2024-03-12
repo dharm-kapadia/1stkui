@@ -1,35 +1,159 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect, useMemo, useState } from 'react';
 
-import { Paper, Stack, TableContainer } from '@mui/material';
+// material-ui
+import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
-import DataGrid from 'react-data-grid';
-import 'react-data-grid/lib/styles.css';
+// third-party
+import {
+  flexRender,
+  getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 
+// project import
 import MainCard from 'components/MainCard';
-import { CSVExport } from 'components/third-party/react-table';
+import ScrollX from 'components/ScrollX';
+import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
 
-const columns = [
-  { key: 'id', name: 'Id', resizable: true },
-  { key: 'time', name: 'Time', resizable: true },
-  { key: 'type', name: 'Type', resizable: true },
-  { key: 'source', name: 'Source', resizable: true },
-  { key: 'subject', name: 'Subject', resizable: true },
-  { key: 'relatedprocess', name: 'Related Process', resizable: true },
-  { key: 'relatedsubprocess', name: 'Related SubProcess', resizable: true },
-  { key: 'data', name: 'Data', resizable: true }
-];
+// ==============================|| REACT TABLE ||============================== //
 
-const tableStyle = { width: '100%', height: '100%', borderRadius: '5px' };
+function ReactTable({ columns, data }) {
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState('');
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnFilters,
+      globalFilter
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter
+  });
+
+  return (
+    <MainCard content={false}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
+        <CSVExport data={data} filename={'events.csv'} />
+      </Stack>
+
+      <ScrollX>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableCell key={header.id} {...header.column.columnDef.meta}>
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableCell key={header.id} {...header.column.columnDef.meta}>
+                      {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} {...cell.column.columnDef.meta}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={table.getAllColumns().length}>
+                    <EmptyTable msg="No Data" />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ScrollX>
+    </MainCard>
+  );
+}
+
+ReactTable.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array
+};
+
+// ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const EventsPage = () => {
   const [data, setData] = useState([]);
-  const [cols, setCols] = useState([]);
+
+  const columns = useMemo(
+    () => [
+      {
+        header: 'Id',
+        accessorKey: 'id',
+        meta: {
+          className: 'cell-left'
+        }
+      },
+      {
+        header: 'Time',
+        accessorKey: 'time'
+      },
+      {
+        header: 'Type',
+        accessorKey: 'type'
+      },
+      {
+        header: 'Source',
+        accessorKey: 'source'
+      },
+      {
+        header: 'Subject',
+        accessorKey: 'subject'
+      },
+      {
+        header: 'Related Process',
+        accessorKey: 'relatedprocess'
+      },
+      {
+        header: 'Related Subprocess',
+        accessorKey: 'relatedsubprocess'
+      },
+      {
+        header: 'Data',
+        accessorKey: 'data'
+      }
+    ],
+    []
+  );
 
   useEffect(() => {
     const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
     const token = localStorage.getItem('token');
-    setCols(columns);
 
     // Get cloudevents using Bearer token
     (async () => {
@@ -43,16 +167,7 @@ const EventsPage = () => {
     })();
   }, []);
 
-  return (
-    <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'empty-table.csv'} />
-      </Stack>
-      <TableContainer component={Paper}>
-        <DataGrid columns={cols} rows={data} style={tableStyle} />
-      </TableContainer>
-    </MainCard>
-  );
+  return <ReactTable columns={columns} data={data} />;
 };
 
 export default EventsPage;

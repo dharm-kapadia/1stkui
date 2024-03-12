@@ -19,7 +19,8 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
-import makeExceptionsData from 'data/exceptions-table';
+
+import makeDeclinedData from 'data/declined-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -46,7 +47,7 @@ function ReactTable({ columns, data }) {
   return (
     <MainCard content={false}>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'declined-exceptions.csv'} />
+        <CSVExport data={data} filename={'declined.csv'} />
       </Stack>
 
       <ScrollX>
@@ -108,7 +109,7 @@ ReactTable.propTypes = {
 // ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const DeclinedPage = () => {
-  const data = useMemo(() => makeExceptionsData(0), []);
+  const data = useMemo(() => makeDeclinedData(0), []);
 
   const columns = useMemo(
     () => [
