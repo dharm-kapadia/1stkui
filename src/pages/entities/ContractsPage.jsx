@@ -21,6 +21,8 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
 
+import { flattenContracts } from 'utils/jsonHelper';
+
 // ==============================|| REACT TABLE ||============================== //
 
 function ReactTable({ columns, data }) {
@@ -45,7 +47,7 @@ function ReactTable({ columns, data }) {
 
   return (
     <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="left" sx={{ padding: 2 }}>
         <CSVExport data={data} filename={'contracts.csv'} />
       </Stack>
 
@@ -105,8 +107,6 @@ ReactTable.propTypes = {
   data: PropTypes.array
 };
 
-// ==============================|| REACT TABLE - EMPTY ||============================== //
-
 const EventsPage = () => {
   const [data, setData] = useState([]);
 
@@ -121,7 +121,7 @@ const EventsPage = () => {
       },
       {
         header: 'Internal Ref Id',
-        accessorKey: 'internalrefid'
+        accessorKey: 'internalRefId'
       },
       {
         header: 'Status',
@@ -136,16 +136,8 @@ const EventsPage = () => {
         accessorKey: 'billingCurrency'
       },
       {
-        header: 'Last Update Date (since)',
-        accessorKey: 'sincelastupdatedate'
-      },
-      {
-        header: 'Last Update Date (before))',
-        accessorKey: 'beforelastupdatedate'
-      },
-      {
         header: 'Venue Ref Id',
-        accessorKey: 'venuerefid'
+        accessorKey: 'venueRefId'
       },
       {
         header: 'CUSIP',
@@ -164,36 +156,28 @@ const EventsPage = () => {
         accessorKey: 'ticker'
       },
       {
-        header: 'Trade Date (since)',
-        accessorKey: 'sincetradedate'
+        header: 'Trade Date',
+        accessorKey: 'tradeDate'
       },
       {
-        header: 'Trade Date (before)',
-        accessorKey: 'beforetradedate'
-      },
-      {
-        header: 'Settlement Date (since)',
-        accessorKey: 'sincesettlementdate'
-      },
-      {
-        header: 'Settlement Date (before)',
-        accessorKey: 'beforesettlementdate'
+        header: 'Settlement Date',
+        accessorKey: 'settlementDate'
       },
       {
         header: 'Collateral Type',
-        accessorKey: 'collatertype'
+        accessorKey: 'collateralType'
       },
       {
-        header: 'Currency',
-        accessorKey: 'currency'
+        header: 'Collateral Currency',
+        accessorKey: 'collateralCurrency'
       },
       {
         header: 'Internal Party Id',
-        accessorKey: 'internalpartyid'
+        accessorKey: 'internalPartyId'
       },
       {
         header: 'Account Id',
-        accessorKey: 'accountid'
+        accessorKey: 'accountId'
       }
     ],
     []
@@ -211,7 +195,10 @@ const EventsPage = () => {
         }
       });
 
-      setData(result.data.items);
+      console.log(result.data);
+
+      let vals = flattenContracts(result.data);
+      setData(vals);
     })();
   }, []);
 

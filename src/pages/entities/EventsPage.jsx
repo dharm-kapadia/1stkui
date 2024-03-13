@@ -45,7 +45,7 @@ function ReactTable({ columns, data }) {
 
   return (
     <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="left" sx={{ padding: 2 }}>
         <CSVExport data={data} filename={'events.csv'} />
       </Stack>
 
