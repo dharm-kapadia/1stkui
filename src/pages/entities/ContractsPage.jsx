@@ -195,10 +195,12 @@ const EventsPage = () => {
         }
       });
 
-      console.log(result.data);
+      if (result.data.totalItems !== 0) {
+        console.log(result.data);
 
-      let vals = flattenContracts(result.data);
-      setData(vals);
+        let vals = flattenContracts(result.data);
+        setData(vals);
+      }
     })();
   }, []);
 
