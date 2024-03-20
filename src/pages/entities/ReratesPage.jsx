@@ -1,5 +1,6 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -19,7 +20,6 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
-import makeReratesData from 'data/rerates-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -45,7 +45,7 @@ function ReactTable({ columns, data }) {
 
   return (
     <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="right" sx={{ padding: 2 }}>
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="left" sx={{ padding: 2 }}>
         <CSVExport data={data} filename={'rerates.csv'} />
       </Stack>
 
@@ -108,51 +108,70 @@ ReactTable.propTypes = {
 // ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const ReratesPage = () => {
-  const data = useMemo(() => makeReratesData(0), []);
+  const [data, setData] = useState([]);
 
   const columns = useMemo(
     () => [
       {
-        header: 'Source',
-        accessorKey: 'source'
-      },
-      {
-        header: 'Subject',
-        accessorKey: 'subject'
-      },
-      {
-        header: 'Id',
-        accessorKey: 'id',
+        header: 'Rerate Id',
+        accessorKey: 'rerateId',
         meta: {
-          className: 'cell-right'
+          className: 'cell-left'
         }
       },
       {
-        header: 'Related Process',
-        accessorKey: 'relatedProcess'
+        header: 'Contract Id',
+        accessorKey: 'contractId'
       },
       {
-        header: 'Related SubProcess',
-        accessorKey: 'relatedSubProcess'
+        header: 'Status',
+        accessorKey: 'status'
       },
       {
-        header: 'Profile Progress',
-        accessorKey: 'progress'
+        header: 'Rate Type',
+        accessorKey: 'rateType'
       },
       {
-        header: 'Related Object Id',
-        accessorKey: 'relatedObjectId',
-        meta: {
-          className: 'cell-right'
-        }
+        header: 'New Rate',
+        accessorKey: 'newRate'
       },
       {
-        header: 'Related Object Type',
-        accessorKey: 'relatedObjectType'
+        header: 'Effective Rate',
+        accessorKey: 'effectiveRate'
+      },
+      {
+        header: 'Effective Date',
+        accessorKey: 'effectiveDate'
+      },
+      {
+        header: 'Cutoff Time',
+        accessorKey: 'cutoffTime'
+      },
+      {
+        header: 'Last Update Datetime',
+        accessorKey: 'lastUpdateDatetime'
       }
     ],
     []
   );
+
+  useEffect(() => {
+    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const token = localStorage.getItem('token');
+
+    // Get cloudevents using Bearer token
+    (async () => {
+      const result = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (result.data.totalItems !== 0) {
+        setData(result.data.items);
+      }
+    })();
+  }, []);
 
   return <ReactTable columns={columns} data={data} />;
 };
