@@ -113,7 +113,7 @@ const BuyinsPage = () => {
   const columns = useMemo(
     () => [
       {
-        header: 'Id',
+        header: 'Buy-In Initiated Id',
         accessorKey: 'buyinInitiatedId',
         meta: {
           className: 'cell-left'
