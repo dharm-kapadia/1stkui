@@ -163,7 +163,9 @@ const EventsPage = () => {
         }
       });
 
-      setData(result.data.items);
+      if (result.data.totalItems !== 0) {
+        setData(result.data.items);
+      }
     })();
   }, []);
 
