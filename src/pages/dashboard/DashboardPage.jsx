@@ -102,13 +102,23 @@ const Dashboard = () => {
             </Divider>{' '}
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Events" count={eventCount.toString()} cardIcon={<EventAvailableOutlinedIcon />} />
+            <DashboardAnalytics title="Events" count={eventCount.toString()} color="#52C41A" cardIcon={<EventAvailableOutlinedIcon />} />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Trade Agreements" count={tradeAgreementCount.toString()} cardIcon={<HandshakeOutlinedIcon />} />
+            <DashboardAnalytics
+              title="Trade Agreements"
+              count={tradeAgreementCount.toString()}
+              color="#52C41A"
+              cardIcon={<HandshakeOutlinedIcon />}
+            />
           </Grid>
           <Grid item xs={4}>
-            <DashboardAnalytics title="Contracts" count={contractsCount.toString()} cardIcon={<DescriptionOutlinedIcon />} />
+            <DashboardAnalytics
+              title="Contracts"
+              count={contractsCount.toString()}
+              color="#52C41A"
+              cardIcon={<DescriptionOutlinedIcon />}
+            />
           </Grid>
         </Grid>
       </Grid>
