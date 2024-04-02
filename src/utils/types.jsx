@@ -230,20 +230,6 @@ export const VenueType = {
 
 // Toolkit API Schemas
 
-export const CloudEvent = {
-  id: '',
-  specVersion: '',
-  type: CloudEventType,
-  source: '',
-  subject: '',
-  time: '',
-  relatedProcess: '',
-  relatedSubProcess: '',
-  dataContentType: '',
-  data: '',
-  processingStatus: ProcessingStatus
-};
-
 export const Collateral = {
   contractPrice: 0.0,
   contractValue: 0.0,
