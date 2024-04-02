@@ -120,35 +120,35 @@ const ReratesPage = () => {
         }
       },
       {
+        header: 'Last Update Datetime',
+        accessorKey: 'lastUpdateDatetime'
+      },
+      {
         header: 'Contract Id',
         accessorKey: 'contractId'
       },
       {
-        header: 'Status',
-        accessorKey: 'status'
+        header: 'Rerate Status',
+        accessorKey: 'rerateStatus'
       },
       {
-        header: 'Rate Type',
-        accessorKey: 'rateType'
+        header: 'Processing Status',
+        accessorKey: 'processingStatus'
       },
       {
-        header: 'New Rate',
-        accessorKey: 'newRate'
+        header: 'Matching Spire Trade Id',
+        accessorKey: 'matchingSpireTradeId'
       },
       {
-        header: 'Effective Rate',
-        accessorKey: 'effectiveRate'
+        header: 'Related Spire Position Id',
+        accessorKey: 'relatedSpirePositionId'
       },
       {
-        header: 'Effective Date',
-        accessorKey: 'effectiveDate'
+        header: 'Create DateTime',
+        accessorKey: 'createDatetime'
       },
       {
-        header: 'Cutoff Time',
-        accessorKey: 'cutoffTime'
-      },
-      {
-        header: 'Last Update Datetime',
+        header: 'Last Update DateTime',
         accessorKey: 'lastUpdateDatetime'
       }
     ],
@@ -156,7 +156,7 @@ const ReratesPage = () => {
   );
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/rerates';
     const token = localStorage.getItem('token');
 
     // Get cloudevents using Bearer token

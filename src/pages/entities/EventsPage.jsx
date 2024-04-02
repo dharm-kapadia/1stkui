@@ -140,12 +140,8 @@ const EventsPage = () => {
         accessorKey: 'relatedprocess'
       },
       {
-        header: 'Related Subprocess',
-        accessorKey: 'relatedsubprocess'
-      },
-      {
         header: 'Data',
-        accessorKey: 'data'
+        accessorKey: 'data.message'
       }
     ],
     []
