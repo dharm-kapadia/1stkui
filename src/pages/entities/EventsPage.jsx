@@ -13,6 +13,7 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
 
@@ -27,20 +28,28 @@ function ReactTable({ columns, data }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 7
+  });
+
   const table = useReactTable({
     data,
     columns,
     state: {
       columnFilters,
-      globalFilter
+      globalFilter,
+      pagination
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination
   });
 
   return (
@@ -95,6 +104,25 @@ function ReactTable({ columns, data }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <div className="h-2" />
+        <div className="flex gap-2">
+          <button className="border rounded p-1 gap-1" onClick={() => table.firstPage()} disabled={!table.getCanPreviousPage()}>
+            {'<<'}
+          </button>
+          <button className="border rounded p-1 gap-1" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+            {'<'}
+          </button>
+          <button className="border rounded p-1 gap-1" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            {'>'}
+          </button>
+          <button className="border rounded p-1 gap-1 right-5" onClick={() => table.lastPage()} disabled={!table.getCanNextPage()}>
+            {'>>'}
+          </button>
+          <div className="flex float-right">
+            Page:
+            {table.getState().pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
+          </div>
+        </div>
       </ScrollX>
     </MainCard>
   );
