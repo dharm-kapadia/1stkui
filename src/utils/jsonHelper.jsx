@@ -31,7 +31,7 @@ export const flattenContracts = (input) => {
     contract['collateralMargin'] = item.trade.collateral.margin;
     contract['roundingRule'] = item.trade.collateral.roundingRule;
     contract['roundingMode'] = item.trade.collateral.roundingMode;
-    contract['venueRefId'] = item.trade.executionVenue.venueRefKey;
+    contract['venueRefId'] = item.trade.venues[0].venueRefKey;
     contract['internalPartyId'] = item.trade.transactingParties[0].party.partyId;
     contract['internalRefId'] = item.trade.transactingParties[0].internalRef.internalRefId;
     contract['accountId'] = item.trade.transactingParties[0].internalRef.accountId;
