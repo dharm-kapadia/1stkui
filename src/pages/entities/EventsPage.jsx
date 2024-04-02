@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 // third-party
 import {
@@ -20,7 +25,7 @@ import {
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
+import { EmptyTable, Filter } from 'components/third-party/react-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -30,7 +35,7 @@ function ReactTable({ columns, data }) {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 7
+    pageSize: 8
   });
 
   const table = useReactTable({
@@ -54,11 +59,7 @@ function ReactTable({ columns, data }) {
 
   return (
     <MainCard content={false}>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="left" sx={{ padding: 2 }}>
-        <CSVExport data={data} filename={'events.csv'} />
-      </Stack>
-
-      <ScrollX>
+      <ScrollX className="pb-2">
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -104,26 +105,45 @@ function ReactTable({ columns, data }) {
             </TableBody>
           </Table>
         </TableContainer>
-        <div className="h-2" />
-        <div className="flex gap-2">
-          <button className="border rounded p-1 gap-1" onClick={() => table.firstPage()} disabled={!table.getCanPreviousPage()}>
-            {'<<'}
-          </button>
-          <button className="border rounded p-1 gap-1" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-            {'<'}
-          </button>
-          <button className="border rounded p-1 gap-1" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            {'>'}
-          </button>
-          <button className="border rounded p-1 gap-1 right-5" onClick={() => table.lastPage()} disabled={!table.getCanNextPage()}>
-            {'>>'}
-          </button>
-          <div className="flex float-right">
-            Page:
-            {table.getState().pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
-          </div>
-        </div>
       </ScrollX>
+      <div className="pt-2">
+        <Button
+          variant="contained"
+          startIcon={<KeyboardArrowLeftIcon />}
+          color="success"
+          size="small"
+          onClick={() => table.firstPage()}
+          disabled={!table.getCanPreviousPage()}
+        />
+        <Button
+          variant="contained"
+          startIcon={<KeyboardDoubleArrowLeftIcon />}
+          color="success"
+          size="small"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        />
+        <Button
+          variant="contained"
+          endIcon={<KeyboardArrowRightIcon />}
+          color="success"
+          size="small"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        />
+        <Button
+          variant="contained"
+          endIcon={<KeyboardDoubleArrowRightIcon />}
+          color="success"
+          size="small"
+          onClick={() => table.lastPage()}
+          disabled={!table.getCanNextPage()}
+        />
+        <div className="flex float-end">
+          Page:
+          {table.getState().pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
+        </div>
+      </div>
     </MainCard>
   );
 }
