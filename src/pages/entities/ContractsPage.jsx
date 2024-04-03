@@ -174,12 +174,24 @@ const EventsPage = () => {
         }
       },
       {
-        header: 'Internal Ref Id',
-        accessorKey: 'internalRefId'
-      },
-      {
         header: 'Status',
         accessorKey: 'contractStatus'
+      },
+      {
+        header: 'Create DateTime',
+        accessorKey: 'createDateTime'
+      },
+      {
+        header: 'Last Update DateTime',
+        accessorKey: 'lastUpdateDateTime'
+      },
+      {
+        header: 'Matching Spire Position Id',
+        accessorKey: 'matchingSpirePositionId'
+      },
+      {
+        header: 'Matching Spire Trade Id',
+        accessorKey: 'matchingSpireTradeId'
       },
       {
         header: 'Processing Status',

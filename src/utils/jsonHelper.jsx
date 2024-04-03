@@ -6,8 +6,16 @@ export const flattenContracts = (input) => {
     var contract = {};
     var item = input.items[i];
 
+    if (item == null) {
+      continue;
+    }
+
     contract['contractId'] = item.contractId;
     contract['contractStatus'] = item.contractStatus;
+    contract['createDateTime'] = item.createDateTime;
+    contract['lastUpdateDateTime'] = item.lastUpdateDateTime;
+    contract['matchingSpirePositionId'] = item.matchingSpirePositionId;
+    contract['matchingSpireTradeId'] = item.matchingSpireTradeId;
     contract['processingStatus'] = item.processingStatus;
     contract['ticker'] = item.trade.instrument.ticker;
     contract['cusip'] = item.trade.instrument.cusip;
