@@ -35,7 +35,7 @@ function ReactTable({ columns, data }) {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 8
+    pageSize: 5
   });
 
   const table = useReactTable({
@@ -210,7 +210,20 @@ const EventsPage = () => {
       });
 
       if (result.data.totalItems !== 0) {
-        setData(result.data.items);
+        if (result.data.totalPages === 1) {
+          // If only one page, just set the data
+          setData(result.data.items);
+        } else {
+          // Make multiple calls to get full dataset
+          for (let i = 2; i <= result.data.totalPages; i++) {
+            const nextPage = await axios.get(url + `?page=${i}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+            setData((prev) => [...prev, ...nextPage.data.items]);
+          }
+        }
       }
     })();
   }, []);
