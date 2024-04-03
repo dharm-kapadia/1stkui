@@ -210,10 +210,9 @@ const EventsPage = () => {
       });
 
       if (result.data.totalItems !== 0) {
-        if (result.data.totalPages === 1) {
-          // If only one page, just set the data
-          setData(result.data.items);
-        } else {
+        setData(result.data.items);
+
+        if (result.data.totalPages !== 1) {
           // Make multiple calls to get full dataset
           for (let i = 2; i <= result.data.totalPages; i++) {
             const nextPage = await axios.get(url + `?page=${i}`, {
@@ -221,7 +220,12 @@ const EventsPage = () => {
                 Authorization: `Bearer ${token}`
               }
             });
-            setData((prev) => [...prev, ...nextPage.data.items]);
+
+            if (nextPage.data.status === 200) {
+              setData((prev) => [...prev, ...nextPage.data.items]);
+            } else {
+              console.log(nextPage);
+            }
           }
         }
       }
