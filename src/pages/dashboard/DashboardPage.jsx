@@ -18,24 +18,25 @@ import Divider from '@mui/material/Divider';
 
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
+import { getRerates } from 'services/rerates';
 import { getCloudEvents } from '../../services/cloudevents';
 import { getContracts } from '../../services/contracts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-  const [errorCount, setErrorCount] = useState('react');
-  const [pendingCount, setPendingCount] = useState('react');
-  const [declinedCount, setDeclinedCount] = useState('react');
-  const [eventCount, setEventCount] = useState('react');
+  const [errorCount, setErrorCount] = useState('0');
+  const [pendingCount, setPendingCount] = useState('0');
+  const [declinedCount, setDeclinedCount] = useState('0');
+  const [eventCount, setEventCount] = useState('0');
 
-  const [tradeAgreementCount, setTradeAgreementCount] = useState('react');
-  const [contractsCount, setContractsCount] = useState('react');
-  const [reratesCount, setReratesCount] = useState('react');
-  const [returnsCount, setReturnsCount] = useState('react');
-  const [recallsCount, setRecallsCount] = useState('react');
-  const [buyinsCount, setBuyinsCount] = useState('react');
-  const [splitsCount, setSplitsCount] = useState('react');
+  const [tradeAgreementCount, setTradeAgreementCount] = useState('0');
+  const [contractsCount, setContractsCount] = useState('0');
+  const [reratesCount, setReratesCount] = useState('0');
+  const [returnsCount, setReturnsCount] = useState('0');
+  const [recallsCount, setRecallsCount] = useState('0');
+  const [buyinsCount, setBuyinsCount] = useState('0');
+  const [splitsCount, setSplitsCount] = useState('0');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -55,6 +56,12 @@ const Dashboard = () => {
       setContractsCount(resp.data.totalItems);
     }
 
+    async function fetchRerates() {
+      // Get the rerates using Bearer token
+      const resp = await getRerates(token);
+      setReratesCount(resp.data.totalItems);
+    }
+
     fetchCloudEvents();
     fetchContracts();
 
@@ -63,7 +70,7 @@ const Dashboard = () => {
     setDeclinedCount(0);
 
     setTradeAgreementCount(0);
-    setReratesCount(0);
+    fetchRerates();
     setReturnsCount(0);
     setRecallsCount(0);
     setBuyinsCount(0);
