@@ -260,7 +260,7 @@ const ReturnsPage = () => {
         }
       }
 
-      // Todo: set data from Splits Toolkit API
+      // Todo: set data from Returns Toolkit API call
       setData([]);
     })();
   }, []);
