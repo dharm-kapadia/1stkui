@@ -37,7 +37,7 @@ function ReactTable({ columns, data }) {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5
+    pageSize: 4
   });
 
   const table = useReactTable({
@@ -253,6 +253,8 @@ const EventsPage = () => {
     const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
     const token = localStorage.getItem('token');
 
+    let respData = [];
+
     // Get cloudevents using Bearer token
     (async () => {
       const result = await axios.get(url, {
@@ -262,9 +264,22 @@ const EventsPage = () => {
       });
 
       if (result.data.totalItems !== 0) {
-        console.log(result.data);
+        respData = result.data.items;
 
-        let vals = flattenContracts(result.data);
+        if (result.data.totalPages > 1) {
+          // Make multiple calls to get full dataset
+          for (let i = 1; i < result.data.totalPages; i++) {
+            const nextPage = await axios.get(url + `?page=${i}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+
+            respData.push(...nextPage.data.items);
+          }
+        }
+
+        let vals = flattenContracts(respData);
         setData(vals);
       }
     })();
