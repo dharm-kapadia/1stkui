@@ -1,5 +1,5 @@
 export const flattenContracts = (input) => {
-  // Iterate through the API call response and create flattened Contract objects //
+  // Iterate through the API call response and create flattened Contract objects
   var contracts = [];
 
   input.forEach((item) => {
@@ -47,4 +47,17 @@ export const flattenContracts = (input) => {
   });
 
   return contracts;
+};
+
+// Iterate through the API call response and search for only UNMATCHED objects
+export const filterForUnmatched = (input) => {
+  var pending = [];
+
+  input.forEach((item) => {
+    if (item.type.includes('UNMATCHED')) {
+      pending.push(item);
+    }
+  });
+
+  return pending;
 };
