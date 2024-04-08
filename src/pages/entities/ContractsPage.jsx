@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -25,7 +25,7 @@ import {
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { CSVExport, EmptyTable, Filter } from 'components/third-party/react-table';
+import { EmptyTable, Filter } from 'components/third-party/react-table';
 
 import { flattenContracts } from 'utils/jsonHelper';
 
@@ -62,11 +62,7 @@ function ReactTable({ columns, data }) {
   return (
     <>
       <MainCard content={false}>
-        <Stack direction="row" spacing={2} alignItems="center" justifyContent="left" sx={{ padding: 2 }}>
-          <CSVExport data={data} filename={'contracts.csv'} />
-        </Stack>
-
-        <ScrollX>
+        <ScrollX className="pb-2 table-responsive">
           <TableContainer component={Paper}>
             <Table>
               <TableHead>

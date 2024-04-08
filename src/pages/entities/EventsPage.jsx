@@ -60,7 +60,7 @@ function ReactTable({ columns, data }) {
   return (
     <>
       <MainCard content={false}>
-        <ScrollX className="pb-2">
+        <ScrollX className="pb-2 table-responsive">
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -201,6 +201,8 @@ const EventsPage = () => {
     const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
     const token = localStorage.getItem('token');
 
+    let respData = [];
+
     // Get cloudevents using Bearer token
     (async () => {
       const result = await axios.get(url, {
@@ -210,7 +212,7 @@ const EventsPage = () => {
       });
 
       if (result.data.totalItems !== 0) {
-        setData(result.data.items);
+        respData = result.data.items;
 
         if (result.data.totalPages > 1) {
           // Make multiple calls to get full dataset
@@ -221,9 +223,11 @@ const EventsPage = () => {
               }
             });
 
-            setData((prev) => [...prev, ...nextPage.data.items]);
+            respData.push(...nextPage.data.items);
           }
         }
+
+        setData(respData);
       }
     })();
   }, []);
