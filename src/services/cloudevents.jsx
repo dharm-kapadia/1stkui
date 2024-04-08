@@ -1,6 +1,30 @@
 import axios from 'axios';
 
 /**
+ * Retrieve total number of cloud events by querying the /cloudevents endpoint
+ * and extracting resp.data.totalItems
+ *
+ */
+const getNumCloudEvents = async (token) => {
+  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+
+  try {
+    let resp = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (resp.status == 200) {
+      return resp.data.totalItems;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
+};
+
+/**
  * Retrieve CloudEvents based on various query parameters.
  * Supports filtering by each field separately or in combination,
  * date range queries, sorting, and pagination.
@@ -93,4 +117,4 @@ const getCloudEventsReport = async (token) => {
   }
 };
 
-export { getCloudEvents, getCloudEventById, getCloudEventsReport };
+export { getNumCloudEvents, getCloudEvents, getCloudEventById, getCloudEventsReport };

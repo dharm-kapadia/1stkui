@@ -18,9 +18,9 @@ import Divider from '@mui/material/Divider';
 
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
-import { getRerates } from 'services/rerates';
-import { getCloudEvents } from '../../services/cloudevents';
-import { getContracts } from '../../services/contracts';
+import { getNumRerates } from 'services/rerates';
+import { getNumCloudEvents } from '../../services/cloudevents';
+import { getNumContracts } from '../../services/contracts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
@@ -42,24 +42,27 @@ const Dashboard = () => {
     const token = localStorage.getItem('token');
 
     async function fetchCloudEvents() {
-      // Get cloudevents using Bearer token
-      const resp = await getCloudEvents(token);
+      // Get number of cloudevents using Bearer token
+      const eventCount = await getNumCloudEvents(token);
 
-      // Parse the response and update the eventCount on the UI
-      setEventCount(resp.data.totalItems);
+      // Parse the response and update the event count on the UI
+      setEventCount(eventCount);
     }
 
     async function fetchContracts() {
-      // Get the contracts using Bearer token
-      const resp = await getContracts(token);
+      // Get number of contracts using Bearer token
+      const contractCount = await getNumContracts(token);
 
-      setContractsCount(resp.data.totalItems);
+      // Parse the response and update the contract count on the UI
+      setContractsCount(contractCount);
     }
 
     async function fetchRerates() {
       // Get the rerates using Bearer token
-      const resp = await getRerates(token);
-      setReratesCount(resp.data.totalItems);
+      const reratesCount = await getNumRerates(token);
+
+      // Parse the response and update the rerates count on the UI
+      setReratesCount(reratesCount);
     }
 
     fetchCloudEvents();

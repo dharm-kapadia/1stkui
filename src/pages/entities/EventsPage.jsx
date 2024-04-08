@@ -214,7 +214,7 @@ const EventsPage = () => {
 
         if (result.data.totalPages !== 1) {
           // Make multiple calls to get full dataset
-          for (let i = 2; i <= result.data.totalPages; i++) {
+          for (let i = 1; i <= result.data.totalPages; i++) {
             const nextPage = await axios.get(url + `?page=${i}`, {
               headers: {
                 Authorization: `Bearer ${token}`

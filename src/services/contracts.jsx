@@ -1,6 +1,30 @@
 import axios from 'axios';
 
 /**
+ * Retrieve total number of contracts by querying the /contracts endpoint
+ * and extracting resp.data.totalItems
+ *
+ */
+const getNumContracts = async (token) => {
+  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
+
+  try {
+    let resp = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (resp.status == 200) {
+      return resp.data.totalItems;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
+};
+
+/**
  * Retrieve 1Source Loan Contract information based on
  * various query parameters. Supports filtering by each
  * field separately or in combination, date range queries,
@@ -80,4 +104,4 @@ const getContractById = async (token, id) => {
   }
 };
 
-export { getContracts, getContractById };
+export { getNumContracts, getContracts, getContractById };
