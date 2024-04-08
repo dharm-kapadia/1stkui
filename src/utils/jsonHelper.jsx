@@ -49,7 +49,7 @@ export const flattenContracts = (input) => {
   return contracts;
 };
 
-// Iterate through the API call response and search for only UNMATCHED objects
+// Iterate through the API call response and search for only UNMATCHED events
 export const filterForUnmatched = (input) => {
   var pending = [];
 
@@ -60,4 +60,30 @@ export const filterForUnmatched = (input) => {
   });
 
   return pending;
+};
+
+// Iterate through the API call response and search for only TECHNICAL events
+export const filterForTechnical = (input) => {
+  var unmatched = [];
+
+  input.forEach((item) => {
+    if (item.type.includes('TECHNICAL')) {
+      unmatched.push(item);
+    }
+  });
+
+  return unmatched;
+};
+
+// Iterate through the API call response and search for only declined events
+export const filterForDeclined = (input) => {
+  var declined = [];
+
+  input.forEach((item) => {
+    if (item.data.message.includes('declined')) {
+      declined.push(item);
+    }
+  });
+
+  return declined;
 };
