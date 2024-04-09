@@ -54,9 +54,9 @@ export const filterForUnmatched = (input) => {
   var pending = [];
 
   input.forEach((item) => {
-    var unmatched = {};
-
     if (item.type.includes('UNMATCHED')) {
+      var unmatched = {};
+
       unmatched['id'] = item.id;
       unmatched['time'] = item.time;
       unmatched['type'] = item.type;
@@ -74,15 +74,25 @@ export const filterForUnmatched = (input) => {
 
 // Iterate through the API call response and search for only TECHNICAL events
 export const filterForTechnical = (input) => {
-  var unmatched = [];
+  var technical = [];
 
   input.forEach((item) => {
     if (item.type.includes('TECHNICAL')) {
-      unmatched.push(item);
+      var obj = {};
+
+      obj['id'] = item.id;
+      obj['time'] = item.time;
+      obj['type'] = item.type;
+      obj['source'] = item.source;
+      obj['subject'] = item.subject;
+      obj['relatedprocess'] = item.relatedprocess;
+      obj['message'] = item.data.message;
+
+      technical.push(obj);
     }
   });
 
-  return unmatched;
+  return technical;
 };
 
 // Iterate through the API call response and search for only declined events
