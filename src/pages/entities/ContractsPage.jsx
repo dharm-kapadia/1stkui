@@ -24,7 +24,6 @@ import {
 
 // project import
 import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
 import { EmptyTable, Filter } from 'components/third-party/react-table';
 
 import { flattenContracts } from 'utils/jsonHelper';
@@ -62,53 +61,51 @@ function ReactTable({ columns, data }) {
   return (
     <>
       <MainCard content={false}>
-        <ScrollX className="pb-2 table-responsive">
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableCell key={header.id} {...header.column.columnDef.meta}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHead>
-              <TableHead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableCell key={header.id} {...header.column.columnDef.meta}>
-                        {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHead>
-              <TableBody>
-                {table.getRowModel().rows.length > 0 ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} {...cell.column.columnDef.meta}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={table.getAllColumns().length}>
-                      <EmptyTable msg="No Data" />
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableCell key={header.id} {...header.column.columnDef.meta}>
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableCell key={header.id} {...header.column.columnDef.meta}>
+                      {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} {...cell.column.columnDef.meta}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </ScrollX>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={table.getAllColumns().length}>
+                    <EmptyTable msg="No Data" />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </MainCard>
       <div className="pt-2">
         <Button
