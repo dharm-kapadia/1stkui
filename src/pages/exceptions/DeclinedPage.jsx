@@ -1,200 +1,93 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
-// third-party
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
-
-import { EmptyTable, Filter } from 'components/third-party/react-table';
 import { filterForDeclined } from 'utils/jsonHelper';
 
-// ==============================|| REACT TABLE ||============================== //
+const columns = [
+  { id: 'id', label: 'Id', minWidth: 150 },
+  { id: 'time', label: 'Time', minWidth: 150 },
+  { id: 'type', label: 'Type', minWidth: 100 },
+  { id: 'source', label: 'Source', minWidth: 100 },
+  { id: 'subject', label: 'Subject', minWidth: 100 },
+  { id: 'relatedprocess', label: 'Related Process', minWidth: 100 },
+  { id: 'message', label: 'Message', minWidth: 150 }
+];
 
-function ReactTable({ columns, data }) {
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState('');
+function ReactTable({ columns, rows }) {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 4
-  });
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      columnFilters,
-      globalFilter,
-      pagination
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination
-  });
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
     <>
-      <MainCard content={false}>
-        <TableContainer component={Paper}>
-          <Table>
+      <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: 625 }}>
+          <Table stickyHeader size="small" aria-label="sticky table">
             <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} {...header.column.columnDef.meta}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableHead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell key={header.id} {...header.column.columnDef.meta}>
-                      {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
             </TableHead>
             <TableBody>
-              {table.getRowModel().rows.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} {...cell.column.columnDef.meta}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number' ? column.format(value) : value}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={table.getAllColumns().length}>
-                    <EmptyTable msg="No Data" />
-                  </TableCell>
-                </TableRow>
-              )}
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </MainCard>
-      <div className="pt-2">
-        <Button
-          variant="contained"
-          startIcon={<KeyboardArrowLeftIcon />}
-          color="success"
-          size="small"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        />
-        <Button
-          variant="contained"
-          startIcon={<KeyboardDoubleArrowLeftIcon />}
-          color="success"
-          size="small"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        />
-        <Button
-          variant="contained"
-          endIcon={<KeyboardArrowRightIcon />}
-          color="success"
-          size="small"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        />
-        <Button
-          variant="contained"
-          endIcon={<KeyboardDoubleArrowRightIcon />}
-          color="success"
-          size="small"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        />
-        <div className="flex float-end">
-          Page:
-          {table.getState().pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
-        </div>
-      </div>
     </>
   );
 }
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array
+  rows: PropTypes.array
 };
 
 // ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const DeclinedPage = () => {
   const [data, setData] = useState([]);
-
-  const columns = useMemo(
-    () => [
-      {
-        header: 'Id',
-        accessorKey: 'id',
-        meta: {
-          className: 'cell-left'
-        }
-      },
-      {
-        header: 'Time',
-        accessorKey: 'time'
-      },
-      {
-        header: 'Type',
-        accessorKey: 'type'
-      },
-      {
-        header: 'Source',
-        accessorKey: 'source'
-      },
-      {
-        header: 'Subject',
-        accessorKey: 'subject'
-      },
-      {
-        header: 'Related Process',
-        accessorKey: 'relatedprocess'
-      },
-      {
-        header: 'Data',
-        accessorKey: 'data.message'
-      }
-    ],
-    []
-  );
 
   useEffect(() => {
     const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
@@ -232,7 +125,7 @@ const DeclinedPage = () => {
     })();
   }, []);
 
-  return <ReactTable columns={columns} data={data} />;
+  return <ReactTable columns={columns} rows={data} />;
 };
 
 export default DeclinedPage;

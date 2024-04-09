@@ -101,7 +101,17 @@ export const filterForDeclined = (input) => {
 
   input.forEach((item) => {
     if (item.data.message.includes('declined')) {
-      declined.push(item);
+      var obj = {};
+
+      obj['id'] = item.id;
+      obj['time'] = item.time;
+      obj['type'] = item.type;
+      obj['source'] = item.source;
+      obj['subject'] = item.subject;
+      obj['relatedprocess'] = item.relatedprocess;
+      obj['message'] = item.data.message;
+
+      declined.push(obj);
     }
   });
 
