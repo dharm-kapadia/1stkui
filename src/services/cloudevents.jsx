@@ -20,7 +20,7 @@ const getNumCloudEvents = async (token) => {
     }
   } catch (error) {
     console.log(error);
-    return '{}';
+    return '0';
   }
 };
 
@@ -58,7 +58,7 @@ const getCloudEvents = async (token) => {
     }
   } catch (error) {
     console.log(error);
-    return '{}';
+    return '0';
   }
 };
 
@@ -84,7 +84,7 @@ const getCloudEventById = async (token, id) => {
     }
   } catch (error) {
     console.log(error);
-    return '{}';
+    return '0';
   }
 };
 
@@ -113,7 +113,7 @@ const getCloudEventsReport = async (token) => {
     }
   } catch (error) {
     console.log(error);
-    return '{}';
+    return '0';
   }
 };
 
