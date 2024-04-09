@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react';
 // material-ui
 import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 
-// third-party
-
 // project import
 import MainCard from 'components/MainCard';
 import { filterForTechnical } from 'utils/jsonHelper';
@@ -85,8 +83,6 @@ ReactTable.propTypes = {
   columns: PropTypes.array,
   rows: PropTypes.array
 };
-
-// ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const ErrorsPage = () => {
   const [data, setData] = useState([]);

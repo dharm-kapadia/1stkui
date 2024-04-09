@@ -117,3 +117,23 @@ export const filterForDeclined = (input) => {
 
   return declined;
 };
+
+export const flattenEvents = (input) => {
+  var events = [];
+
+  input.forEach((item) => {
+    var obj = {};
+    obj['id'] = item.id;
+
+    obj['time'] = item.time;
+    obj['type'] = item.type;
+    obj['source'] = item.source;
+    obj['subject'] = item.subject;
+    obj['relatedprocess'] = item.relatedprocess;
+    obj['message'] = item.data.message;
+
+    events.push(obj);
+  });
+
+  return events;
+};
