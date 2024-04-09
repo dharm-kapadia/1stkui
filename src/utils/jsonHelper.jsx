@@ -54,8 +54,18 @@ export const filterForUnmatched = (input) => {
   var pending = [];
 
   input.forEach((item) => {
+    var unmatched = {};
+
     if (item.type.includes('UNMATCHED')) {
-      pending.push(item);
+      unmatched['id'] = item.id;
+      unmatched['time'] = item.time;
+      unmatched['type'] = item.type;
+      unmatched['source'] = item.source;
+      unmatched['subject'] = item.subject;
+      unmatched['relatedprocess'] = item.relatedprocess;
+      unmatched['message'] = item.data.message;
+
+      pending.push(unmatched);
     }
   });
 
