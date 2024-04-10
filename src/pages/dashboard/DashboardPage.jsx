@@ -18,14 +18,14 @@ import Divider from '@mui/material/Divider';
 
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
+import { getCloudEvents } from 'services/cloudevents';
 import { getNumRerates } from 'services/rerates';
-import { getNumCloudEvents } from '../../services/cloudevents';
 import { getNumContracts } from '../../services/contracts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-  const [errorCount, setErrorCount] = useState('0');
+  const [discrepancyCount, setDiscrepancyCount] = useState('0');
   const [pendingCount, setPendingCount] = useState('0');
   const [declinedCount, setDeclinedCount] = useState('0');
   const [eventCount, setEventCount] = useState('0');
@@ -43,10 +43,24 @@ const Dashboard = () => {
 
     async function fetchCloudEvents() {
       // Get number of cloudevents using Bearer token
-      const eventCount = await getNumCloudEvents(token);
+      const events = await getCloudEvents(token);
 
       // Parse the response and update the event count on the UI
-      setEventCount(eventCount);
+      setEventCount(events.length);
+
+      var dc = 0;
+      var pc = 0;
+
+      events.forEach((event) => {
+        if (event.type.includes('DISCREPANCIES')) {
+          dc++;
+        } else if (event.type.includes('UNMATCHED')) {
+          pc++;
+        }
+      });
+
+      setDiscrepancyCount(dc);
+      setPendingCount(pc);
     }
 
     async function fetchContracts() {
@@ -68,8 +82,6 @@ const Dashboard = () => {
     fetchCloudEvents();
     fetchContracts();
 
-    setErrorCount(0);
-    setPendingCount(0);
     setDeclinedCount(0);
 
     setTradeAgreementCount(0);
@@ -89,18 +101,13 @@ const Dashboard = () => {
         </Divider>{' '}
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics title="Errors/Mismatches" count={errorCount.toString()} color="red" cardIcon={<ErrorOutline />} />
+        <DashboardAnalytics title="Discrepancies" count={discrepancyCount.toString()} color="red" cardIcon={<ErrorOutline />} />
       </Grid>
       <Grid item xs={4}>
         <DashboardAnalytics title="Pending" count={pendingCount.toString()} color="maroon" cardIcon={<PendingActionsIcon />} />
       </Grid>
       <Grid item xs={4}>
-        <DashboardAnalytics
-          title="Declined/Rejected"
-          count={declinedCount.toString()}
-          color="darkorange"
-          cardIcon={<ThumbDownOutlinedIcon />}
-        />
+        <DashboardAnalytics title="Declined" count={declinedCount.toString()} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
       </Grid>
 
       {/* Entities - Row 1 */}

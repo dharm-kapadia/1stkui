@@ -1,60 +1,39 @@
 import axios from 'axios';
 
 /**
- * Retrieve total number of cloud events by querying the /cloudevents endpoint
- * and extracting resp.data.totalItems
- *
- */
-const getNumCloudEvents = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
-
-  try {
-    let resp = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (resp.status == 200) {
-      return resp.data.totalItems;
-    }
-  } catch (error) {
-    console.log(error);
-    return '0';
-  }
-};
-
-/**
  * Retrieve CloudEvents based on various query parameters.
  * Supports filtering by each field separately or in combination,
  * date range queries, sorting, and pagination.
  *
- * @param {string} token Bearer token for API authentication
- * @param {string} id
- * @param {string} specVersion
- * @param {string} type
- * @param {string} source
- * @param {string} subject
- * @param {string} startime
- * @param {string} endtime
- * @param {string} sort   Sort by specified fields (e.g., 'type,-time')
- * @param {string} page   Defaults to 0
- * @param {string} limit  Defaults to 20
- *
  * @return {Array} The array of cloud events
  */
-const getCloudEvents = async (token) => {
+export const getCloudEvents = async (token) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
 
   try {
-    let resp = await axios.get(url, {
+    const result = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
 
-    if (resp.status == 200) {
-      return resp;
+    if (result.status == 200 && result.data.totalItems !== 0) {
+      var respData = result.data.items;
+
+      if (result.data.totalPages > 1) {
+        // Make multiple calls to get full dataset
+        for (let i = 1; i < result.data.totalPages; i++) {
+          const nextPage = await axios.get(url + `?page=${i}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          respData.push(...nextPage.data.items);
+        }
+      }
+
+      return respData;
     }
   } catch (error) {
     console.log(error);
@@ -69,7 +48,7 @@ const getCloudEvents = async (token) => {
  *
  * @return {} The cloud event report
  */
-const getCloudEventById = async (token, id) => {
+export const getCloudEventById = async (token, id) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevent' + '/' + id.toString();
 
   try {
@@ -98,7 +77,7 @@ const getCloudEventById = async (token, id) => {
  *
  * @return {Array} The cloud event report
  */
-const getCloudEventsReport = async (token) => {
+export const getCloudEventsReport = async (token) => {
   const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents/report';
 
   try {
@@ -116,5 +95,3 @@ const getCloudEventsReport = async (token) => {
     return '0';
   }
 };
-
-export { getNumCloudEvents, getCloudEvents, getCloudEventById, getCloudEventsReport };
