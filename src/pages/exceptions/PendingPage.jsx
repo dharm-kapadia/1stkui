@@ -28,8 +28,9 @@ const columns = [
   { id: 'id', label: 'Event Id', minWidth: 150 },
   { id: 'time', label: 'Event Time', minWidth: 150 },
   { id: 'type', label: 'Event Type', minWidth: 100 },
+  { id: 'subject', label: 'Subject', minWidth: 100 },
   { id: 'relatedprocess', label: 'Related Lifecycle Event', minWidth: 100 },
-  { id: 'message', label: 'Discrepancy Details', minWidth: 125 }
+  { id: 'message', label: 'Pending Details', minWidth: 125 }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -83,7 +84,7 @@ function ReactTable({ columns, rows }) {
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  <TableCell key={column.id} align="center" style={{ minWidth: column.minWidth }}>
                     {column.label}
                   </TableCell>
                 ))}

@@ -60,7 +60,6 @@ export const filterForUnmatched = (input) => {
       unmatched['id'] = item.id;
       unmatched['time'] = item.time;
       unmatched['type'] = item.type;
-      unmatched['source'] = item.source;
       unmatched['subject'] = item.subject;
       unmatched['relatedprocess'] = item.relatedprocess;
       unmatched['message'] = item.data.message;
@@ -106,7 +105,6 @@ export const filterForTechnical = (input) => {
       obj['id'] = item.id;
       obj['time'] = item.time;
       obj['type'] = item.type;
-      obj['source'] = item.source;
       obj['subject'] = item.subject;
       obj['relatedprocess'] = item.relatedprocess;
       obj['message'] = item.data.message;
@@ -129,7 +127,6 @@ export const filterForDeclined = (input) => {
       obj['id'] = item.id;
       obj['time'] = item.time;
       obj['type'] = item.type;
-      obj['source'] = item.source;
       obj['subject'] = item.subject;
       obj['relatedprocess'] = item.relatedprocess;
       obj['message'] = item.data.message;
@@ -150,7 +147,6 @@ export const flattenEvents = (input) => {
 
     obj['time'] = item.time;
     obj['type'] = item.type;
-    obj['source'] = item.source;
     obj['subject'] = item.subject;
     obj['relatedprocess'] = item.relatedprocess;
     obj['message'] = item.data.message;

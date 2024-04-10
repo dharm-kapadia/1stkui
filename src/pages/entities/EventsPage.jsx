@@ -4,21 +4,63 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import {
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Tooltip,
+  Typography
+} from '@mui/material';
+
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 // project import
 import MainCard from 'components/MainCard';
 import { flattenEvents } from 'utils/jsonHelper';
 
 const columns = [
-  { id: 'id', label: 'Id', minWidth: 150 },
-  { id: 'time', label: 'Time', minWidth: 150 },
-  { id: 'type', label: 'Type', minWidth: 100 },
-  { id: 'source', label: 'Source', minWidth: 100 },
+  { id: 'id', label: 'Event Id', minWidth: 150 },
+  { id: 'time', label: 'Event Time', minWidth: 150 },
+  { id: 'type', label: 'Event Type', minWidth: 100 },
   { id: 'subject', label: 'Subject', minWidth: 100 },
-  { id: 'relatedprocess', label: 'Related Process', minWidth: 100 },
-  { id: 'message', label: 'Message', minWidth: 150 }
+  { id: 'relatedprocess', label: 'Related Lifecycle Event', minWidth: 100 },
+  { id: 'message', label: 'Event Details', minWidth: 150 }
 ];
+
+function EnhancedTableToolbar(props) {
+  const { numSelected } = props;
+
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity)
+        })
+      }}
+    >
+      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
+        Events
+      </Typography>
+      <Tooltip title="Filter list">
+        <IconButton>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+    </Toolbar>
+  );
+}
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired
+};
 
 function ReactTable({ columns, rows }) {
   const [page, setPage] = React.useState(0);
@@ -36,12 +78,13 @@ function ReactTable({ columns, rows }) {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 625 }}>
+        <TableContainer sx={{ maxHeight: 725 }}>
+          <EnhancedTableToolbar numSelected={0} />
           <Table stickyHeader size="small" aria-label="sticky table">
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  <TableCell key={column.id} align="center" style={{ minWidth: column.minWidth }}>
                     {column.label}
                   </TableCell>
                 ))}

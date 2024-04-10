@@ -31,7 +31,7 @@ const exceptions = {
       type: 'item',
       url: '/events',
       icon: icons.EventAvailableOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'agreements',
@@ -39,7 +39,7 @@ const exceptions = {
       type: 'item',
       url: '/tradeagreements',
       icon: icons.HandshakeOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'contracts',
@@ -47,7 +47,7 @@ const exceptions = {
       type: 'item',
       url: '/contracts',
       icon: icons.DescriptionOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'rerates',
@@ -55,7 +55,7 @@ const exceptions = {
       type: 'item',
       url: '/rerates',
       icon: icons.CurrencyExchangeOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'returns',
@@ -63,7 +63,7 @@ const exceptions = {
       type: 'item',
       url: '/returns',
       icon: icons.KeyboardReturnOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'recalls',
@@ -71,7 +71,7 @@ const exceptions = {
       type: 'item',
       url: '/recalls',
       icon: icons.CampaignOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'buyins',
@@ -79,7 +79,7 @@ const exceptions = {
       type: 'item',
       url: '/buyins',
       icon: icons.ShoppingCartOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'splits',
@@ -87,7 +87,7 @@ const exceptions = {
       type: 'item',
       url: '/splits',
       icon: icons.CallSplitOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     }
   ]
 };
