@@ -8,19 +8,19 @@ import { useEffect, useState } from 'react';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'buyinInitiatedId', headerName: 'Buyin Id', width: 175 },
-  { field: 'buyinDate', headerName: 'Buyin Date', width: 150 },
-  { field: 'contractId', headerName: 'Contract Id', width: 175 },
-  { field: 'status', headerName: 'Status', width: 150 },
-  { field: 'openQuantity', headerName: 'Open Qty', width: 150 },
-  { field: 'quantity', headerName: 'Quantity', width: 150 },
-  { field: 'buyinInitiatedLastUpdateDatetime', headerName: 'Buy-In Initiated Last Update DateTime', width: 175 },
-  { field: 'buyinCompleteId', headerName: 'Buy-In Complete Id', width: 175 },
-  { field: 'value', headerName: 'Value', width: 150 },
-  { field: 'currency', headerName: 'Currency', width: 150 },
-  { field: 'unit', headerName: 'Unit', width: 150 },
-  { field: 'valueDate', headerName: 'Value Date', width: 150 },
-  { field: 'buyinCompletedLastUpdateDatetime', headerName: 'Buy-In Completed Last Update DateTime', width: 175 }
+  { field: 'buyinInitiatedId', headerName: 'Buyin Id', width: 175, headerAlign: 'center' },
+  { field: 'buyinDate', headerName: 'Buyin Date', width: 150, headerAlign: 'center' },
+  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center' },
+  { field: 'status', headerName: 'Status', width: 150, headerAlign: 'center' },
+  { field: 'openQuantity', headerName: 'Open Qty', width: 150, headerAlign: 'center' },
+  { field: 'quantity', headerName: 'Quantity', width: 150, headerAlign: 'center' },
+  { field: 'buyinInitiatedLastUpdateDatetime', headerName: 'Buy-In Initiated Last Update DateTime', width: 175, headerAlign: 'center' },
+  { field: 'buyinCompleteId', headerName: 'Buy-In Complete Id', width: 175, headerAlign: 'center' },
+  { field: 'value', headerName: 'Value', width: 150, headerAlign: 'center' },
+  { field: 'currency', headerName: 'Currency', width: 150, headerAlign: 'center' },
+  { field: 'unit', headerName: 'Unit', width: 150, headerAlign: 'center' },
+  { field: 'valueDate', headerName: 'Value Date', width: 150, headerAlign: 'center' },
+  { field: 'buyinCompletedLastUpdateDatetime', headerName: 'Buy-In Completed Last Update DateTime', width: 175, headerAlign: 'center' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -54,6 +54,14 @@ function ReactTable({ columns, rows }) {
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
           <DataGrid
+            sx={{
+              boxShadow: 1,
+              border: 1,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main'
+              }
+            }}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }

@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'splitId', headerName: 'Split Id', width: 250 },
-  { field: 'status', headerName: 'Split Status', width: 200 },
-  { field: 'splitLots', headerName: 'Split Lots', width: 350 },
-  { field: 'lastUpdateDatetime', headerName: 'Last Update Datetime', width: 150 }
+  { field: 'splitId', headerName: 'Split Id', width: 250, headerAlign: 'center' },
+  { field: 'status', headerName: 'Split Status', width: 200, headerAlign: 'center' },
+  { field: 'splitLots', headerName: 'Split Lots', width: 350, headerAlign: 'center' },
+  { field: 'lastUpdateDatetime', headerName: 'Last Update Datetime', width: 150, headerAlign: 'center' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -45,6 +45,14 @@ function ReactTable({ columns, rows }) {
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
           <DataGrid
+            sx={{
+              boxShadow: 1,
+              border: 1,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main'
+              }
+            }}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }

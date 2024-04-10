@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'rerateId', headerName: 'Rerate Id', width: 175 },
-  { field: 'contractId', headerName: 'Contract Id', width: 175 },
-  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175 },
-  { field: 'processingStatus', headerName: 'Processing Status', width: 175 },
-  { field: 'matchingSpireTradeId', headerName: 'Matching Spire Trade Id', width: 175 },
-  { field: 'relatedSpireTradeId', headerName: 'Related Spire Trade Id', width: 175 },
-  { field: 'createDatetime', headerName: 'Create Datetime', width: 175 },
-  { field: 'lastUpdateDatetime', headerName: 'Last Update Datetime', width: 175 }
+  { field: 'rerateId', headerName: 'Rerate Id', width: 175, headerAlign: 'center' },
+  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center' },
+  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175, headerAlign: 'center' },
+  { field: 'processingStatus', headerName: 'Processing Status', width: 175, headerAlign: 'center' },
+  { field: 'matchingSpireTradeId', headerName: 'Matching Spire Trade Id', width: 175, headerAlign: 'center' },
+  { field: 'relatedSpireTradeId', headerName: 'Related Spire Trade Id', width: 175, headerAlign: 'center' },
+  { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center' },
+  { field: 'lastUpdateDatetime', headerName: 'Last Update Datetime', width: 175, headerAlign: 'center' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -49,6 +49,14 @@ function ReactTable({ columns, rows }) {
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
           <DataGrid
+            sx={{
+              boxShadow: 1,
+              border: 1,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main'
+              }
+            }}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }

@@ -9,12 +9,12 @@ import MainCard from 'components/MainCard';
 import { filterForDeclined } from 'utils/jsonHelper';
 
 const columns = [
-  { field: 'id', headerName: 'Event Id', width: 250 },
-  { field: 'time', headerName: 'Event Time', width: 200 },
-  { field: 'type', headerName: 'Event Type', width: 250 },
-  { field: 'subject', headerName: 'Subject', width: 150 },
-  { field: 'relatedprocess', headerName: 'Related Lifecycle Event', width: 200 },
-  { field: 'message', headerName: 'Discrepancy Details', width: 400 }
+  { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center' },
+  { field: 'time', headerName: 'Event Time', width: 150, headerAlign: 'center' },
+  { field: 'type', headerName: 'Event Type', width: 300, headerAlign: 'center' },
+  { field: 'subject', headerName: 'Subject', width: 150, headerAlign: 'center' },
+  { field: 'relatedprocess', headerName: 'Related Lifecycle Event', width: 200, headerAlign: 'center' },
+  { field: 'message', headerName: 'Discrepancy Details', width: 500, headerAlign: 'center' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -48,6 +48,14 @@ function ReactTable({ columns, rows }) {
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
           <DataGrid
+            sx={{
+              boxShadow: 1,
+              border: 1,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main'
+              }
+            }}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }

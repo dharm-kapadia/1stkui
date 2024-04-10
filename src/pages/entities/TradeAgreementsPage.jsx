@@ -8,23 +8,23 @@ import { useEffect, useState } from 'react';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'contractId', headerName: 'Contract Id', width: 175 },
-  { field: 'processingStatus', headerName: 'Processing Status', width: 125 },
-  { field: 'matchingSpirePositionId', headerName: 'Matching Spire Position Id', width: 175 },
-  { field: 'contractStatus', headerName: 'Contract Status', width: 125 },
-  { field: 'lastUpdatePary', headerName: 'Last Update Party', width: 125 },
-  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 125 },
-  { field: 'cusip', headerName: 'CUSIP', width: 100 },
-  { field: 'isin', headerName: 'ISIN', width: 100 },
-  { field: 'sedol', headerName: 'SEDOL', width: 100 },
-  { field: 'ticker', headerName: 'Ticker', width: 100 },
-  { field: 'tradeDate', headerName: 'Trade Date', width: 125 },
-  { field: 'settlementDate', headerName: 'Settlement Date', width: 125 },
-  { field: 'collateralType', headerName: 'Collateral Type', width: 125 },
-  { field: 'collateralCurrency', headerName: 'Collateral Currency', width: 125 },
-  { field: 'internalPartyId', headerName: 'Internal Party Id', width: 125 },
-  { field: 'accountId', headerName: 'accountId', width: 125 },
-  { field: 'internalRefId', headerName: 'internalRefId', width: 125 }
+  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center' },
+  { field: 'processingStatus', headerName: 'Processing Status', width: 125, headerAlign: 'center' },
+  { field: 'matchingSpirePositionId', headerName: 'Matching Spire Position Id', width: 175, headerAlign: 'center' },
+  { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center' },
+  { field: 'lastUpdatePary', headerName: 'Last Update Party', width: 125, headerAlign: 'center' },
+  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 125, headerAlign: 'center' },
+  { field: 'cusip', headerName: 'CUSIP', width: 100, headerAlign: 'center' },
+  { field: 'isin', headerName: 'ISIN', width: 100, headerAlign: 'center' },
+  { field: 'sedol', headerName: 'SEDOL', width: 100, headerAlign: 'center' },
+  { field: 'ticker', headerName: 'Ticker', width: 100, headerAlign: 'center' },
+  { field: 'tradeDate', headerName: 'Trade Date', width: 125, headerAlign: 'center' },
+  { field: 'settlementDate', headerName: 'Settlement Date', width: 125, headerAlign: 'center' },
+  { field: 'collateralType', headerName: 'Collateral Type', width: 125, headerAlign: 'center' },
+  { field: 'collateralCurrency', headerName: 'Collateral Currency', width: 125, headerAlign: 'center' },
+  { field: 'internalPartyId', headerName: 'Internal Party Id', width: 125, headerAlign: 'center' },
+  { field: 'accountId', headerName: 'accountId', width: 125, headerAlign: 'center' },
+  { field: 'internalRefId', headerName: 'internalRefId', width: 125, headerAlign: 'center' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -58,6 +58,14 @@ function ReactTable({ columns, rows }) {
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
           <DataGrid
+            sx={{
+              boxShadow: 1,
+              border: 1,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main'
+              }
+            }}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }
