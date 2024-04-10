@@ -4,21 +4,62 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import {
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Tooltip,
+  Typography
+} from '@mui/material';
+
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 // project import
 import MainCard from 'components/MainCard';
-import { filterForTechnical } from 'utils/jsonHelper';
+import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
   { id: 'id', label: 'Id', minWidth: 150 },
   { id: 'time', label: 'Time', minWidth: 150 },
   { id: 'type', label: 'Type', minWidth: 100 },
-  { id: 'source', label: 'Source', minWidth: 100 },
-  { id: 'subject', label: 'Subject', minWidth: 100 },
   { id: 'relatedprocess', label: 'Related Process', minWidth: 100 },
-  { id: 'message', label: 'Message', minWidth: 150 }
+  { id: 'message', label: 'Message', minWidth: 125 }
 ];
+
+function EnhancedTableToolbar(props) {
+  const { numSelected } = props;
+
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity)
+        })
+      }}
+    >
+      <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
+        Discrepancies
+      </Typography>
+      <Tooltip title="Filter list">
+        <IconButton>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+    </Toolbar>
+  );
+}
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired
+};
 
 function ReactTable({ columns, rows }) {
   const [page, setPage] = React.useState(0);
@@ -36,7 +77,8 @@ function ReactTable({ columns, rows }) {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 625 }}>
+        <TableContainer sx={{ maxHeight: 725 }}>
+          <EnhancedTableToolbar numSelected={0} />
           <Table stickyHeader size="small" aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -84,7 +126,7 @@ ReactTable.propTypes = {
   rows: PropTypes.array
 };
 
-const ErrorsPage = () => {
+const DiscrepanciesPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -116,7 +158,7 @@ const ErrorsPage = () => {
             respData.push(...nextPage.data.items);
           }
 
-          let vals = filterForTechnical(respData);
+          let vals = filterForDiscrepancies(respData);
           setData(vals);
         }
       }
@@ -126,4 +168,4 @@ const ErrorsPage = () => {
   return <ReactTable columns={columns} rows={data} />;
 };
 
-export default ErrorsPage;
+export default DiscrepanciesPage;

@@ -8,7 +8,7 @@ import MainLayout from 'layout/MainLayout';
 const Dashboard = Loadable(lazy(() => import('pages/dashboard/DashboardPage')));
 
 // render - exceptions
-const ErrorsPage = Loadable(lazy(() => import('pages/exceptions/ErrorsPage')));
+const DiscrepanciesPage = Loadable(lazy(() => import('pages/exceptions/DiscrepanciesPage')));
 const PendingPage = Loadable(lazy(() => import('pages/exceptions/PendingPage')));
 const DeclinedPage = Loadable(lazy(() => import('pages/exceptions/DeclinedPage')));
 
@@ -41,8 +41,8 @@ const MainRoutes = {
       element: <DeclinedPage />
     },
     {
-      path: 'errors',
-      element: <ErrorsPage />
+      path: 'discrepancies',
+      element: <DiscrepanciesPage />
     },
     {
       path: 'pending',

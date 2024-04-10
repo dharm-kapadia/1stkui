@@ -14,12 +14,12 @@ const exceptions = {
   type: 'group',
   children: [
     {
-      id: 'errors',
-      title: 'Errors',
+      id: 'discrepancies',
+      title: 'Discrepancies',
       type: 'item',
-      url: '/errors',
+      url: '/discrepancies',
       icon: icons.ErrorOutline,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'pending',
@@ -27,7 +27,7 @@ const exceptions = {
       type: 'item',
       url: '/pending',
       icon: icons.PendingActionsIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     },
     {
       id: 'declined',
@@ -35,7 +35,7 @@ const exceptions = {
       type: 'item',
       url: '/declined',
       icon: icons.ThumbDownOutlinedIcon,
-      breadcrumbs: true
+      breadcrumbs: false
     }
   ]
 };
