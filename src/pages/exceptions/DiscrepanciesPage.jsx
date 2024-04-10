@@ -25,11 +25,11 @@ import MainCard from 'components/MainCard';
 import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
-  { id: 'id', label: 'Id', minWidth: 150 },
-  { id: 'time', label: 'Time', minWidth: 150 },
-  { id: 'type', label: 'Type', minWidth: 100 },
-  { id: 'relatedprocess', label: 'Related Process', minWidth: 100 },
-  { id: 'message', label: 'Message', minWidth: 125 }
+  { id: 'id', label: 'Event Id', minWidth: 150 },
+  { id: 'time', label: 'Event Time', minWidth: 150 },
+  { id: 'type', label: 'Event Type', minWidth: 100 },
+  { id: 'relatedprocess', label: 'Related Lifecycle Event', minWidth: 100 },
+  { id: 'message', label: 'Discrepancy Details', minWidth: 125 }
 ];
 
 function EnhancedTableToolbar(props) {
