@@ -6,10 +6,10 @@ export const flattenContracts = (input) => {
     var contract = {};
 
     if (item !== null) {
-      contract['contractId'] = item.contractId;
+      contract['id'] = item.contractId;
       contract['contractStatus'] = item.contractStatus;
-      contract['createDateTime'] = item.createDateTime;
-      contract['lastUpdateDateTime'] = item.lastUpdateDateTime;
+      contract['createDateTime'] = item.createDateTime.replace('T', ' ').substring(0, 19);
+      contract['lastUpdateDateTime'] = item.lastUpdateDateTime.replace('T', ' ').substring(0, 19);
       contract['matchingSpirePositionId'] = item.matchingSpirePositionId;
       contract['matchingSpireTradeId'] = item.matchingSpireTradeId;
       contract['processingStatus'] = item.processingStatus;
@@ -56,9 +56,10 @@ export const filterForUnmatched = (input) => {
   input.forEach((item) => {
     if (item.type.includes('UNMATCHED')) {
       var unmatched = {};
+      var dt = item.time;
 
       unmatched['id'] = item.id;
-      unmatched['time'] = item.time;
+      unmatched['time'] = dt.replace('T', ' ').substring(0, 19);
       unmatched['type'] = item.type;
       unmatched['subject'] = item.subject;
       unmatched['relatedprocess'] = item.relatedprocess;
@@ -101,9 +102,10 @@ export const filterForTechnical = (input) => {
   input.forEach((item) => {
     if (item.type.includes('TECHNICAL')) {
       var obj = {};
+      var dt = item.time;
 
       obj['id'] = item.id;
-      obj['time'] = item.time;
+      obj['time'] = dt.replace('T', ' ').substring(0, 19);
       obj['type'] = item.type;
       obj['subject'] = item.subject;
       obj['relatedprocess'] = item.relatedprocess;
@@ -123,9 +125,10 @@ export const filterForDeclined = (input) => {
   input.forEach((item) => {
     if (item.data.message.includes('declined')) {
       var obj = {};
+      var dt = item.time;
 
       obj['id'] = item.id;
-      obj['time'] = item.time;
+      obj['time'] = dt.replace('T', ' ').substring(0, 19);
       obj['type'] = item.type;
       obj['subject'] = item.subject;
       obj['relatedprocess'] = item.relatedprocess;
@@ -143,9 +146,10 @@ export const flattenEvents = (input) => {
 
   input.forEach((item) => {
     var obj = {};
-    obj['id'] = item.id;
+    var dt = item.time;
 
-    obj['time'] = item.time;
+    obj['id'] = item.id;
+    obj['time'] = dt.replace('T', ' ').substring(0, 19);
     obj['type'] = item.type;
     obj['subject'] = item.subject;
     obj['relatedprocess'] = item.relatedprocess;
