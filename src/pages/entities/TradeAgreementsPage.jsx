@@ -1,191 +1,123 @@
+import { Toolbar, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useMemo, useState } from 'react';
-
-// material-ui
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-
-// third-party
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  useReactTable
-} from '@tanstack/react-table';
+import { useEffect, useState } from 'react';
 
 // project import
 import MainCard from 'components/MainCard';
-import { EmptyTable, Filter } from 'components/third-party/react-table';
-import makeAgreementsData from 'data/trade-agreements-table';
+import { filterForDiscrepancies } from 'utils/jsonHelper';
 
-// ==============================|| REACT TABLE ||============================== //
+const columns = [
+  { field: 'contractId', headerName: 'Contract Id', width: 175 },
+  { field: 'processingStatus', headerName: 'Processing Status', width: 125 },
+  { field: 'matchingSpirePositionId', headerName: 'Matching Spire Position Id', width: 175 },
+  { field: 'contractStatus', headerName: 'Contract Status', width: 125 },
+  { field: 'lastUpdatePary', headerName: 'Last Update Party', width: 125 },
+  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 125 },
+  { field: 'cusip', headerName: 'CUSIP', width: 100 },
+  { field: 'isin', headerName: 'ISIN', width: 100 },
+  { field: 'sedol', headerName: 'SEDOL', width: 100 },
+  { field: 'ticker', headerName: 'Ticker', width: 100 },
+  { field: 'tradeDate', headerName: 'Trade Date', width: 125 },
+  { field: 'settlementDate', headerName: 'Settlement Date', width: 125 },
+  { field: 'collateralType', headerName: 'Collateral Type', width: 125 },
+  { field: 'collateralCurrency', headerName: 'Collateral Currency', width: 125 },
+  { field: 'internalPartyId', headerName: 'Internal Party Id', width: 125 },
+  { field: 'accountId', headerName: 'accountId', width: 125 },
+  { field: 'internalRefId', headerName: 'internalRefId', width: 125 }
+];
 
-function ReactTable({ columns, data }) {
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState('');
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      columnFilters,
-      globalFilter
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter
-  });
+function EnhancedTableToolbar(props) {
+  const { numSelected } = props;
 
   return (
-    <MainCard content={false}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableCell key={header.id} {...header.column.columnDef.meta}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableCell key={header.id} {...header.column.columnDef.meta}>
-                    {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} {...cell.column.columnDef.meta}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={table.getAllColumns().length}>
-                  <EmptyTable msg="No Data" />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </MainCard>
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity)
+        })
+      }}
+    >
+      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
+        Trade Agreements
+      </Typography>
+    </Toolbar>
+  );
+}
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired
+};
+
+function ReactTable({ columns, rows }) {
+  return (
+    <>
+      <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
+        <EnhancedTableToolbar numSelected={'0'} />
+        <div style={{ height: 675, width: '100%' }}>
+          <DataGrid
+            initialState={{
+              ...rows.initialState,
+              pagination: { paginationModel: { pageSize: 20 } }
+            }}
+            pageSizeOptions={[20, 50, 100]}
+            rows={rows}
+            columns={columns}
+          />
+        </div>
+      </MainCard>
+    </>
   );
 }
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array
+  rows: PropTypes.array
 };
 
 const TradeAgreementsPage = () => {
-  const data = useMemo(() => makeAgreementsData(0), []);
+  const [data, setData] = useState([]);
 
-  const columns = useMemo(
-    () => [
-      {
-        header: 'Contract ID',
-        accessorKey: 'contractId'
-      },
-      {
-        header: 'Processing Status',
-        accessorKey: 'processingStatus'
-      },
-      {
-        header: 'Matching Spire Position Id',
-        accessorKey: 'matchingSpirePositionId',
-        meta: {
-          className: 'cell-right'
+  useEffect(() => {
+    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const token = localStorage.getItem('token');
+
+    let respData = [];
+
+    // Get cloudevents using Bearer token
+    (async () => {
+      const result = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      },
-      {
-        header: 'Contract Status',
-        accessorKey: 'contractStatus'
-      },
-      {
-        header: 'Last Update Party',
-        accessorKey: 'lastUpdateParty'
-      },
-      {
-        header: 'Last Update Date/Time',
-        accessorKey: 'lastUpdateDateTime'
-      },
-      {
-        header: 'Venue Ref Key',
-        accessorKey: 'venueRefKey',
-        meta: {
-          className: 'cell-right'
+      });
+
+      if (result.data.totalItems !== 0) {
+        respData = result.data.items;
+
+        if (result.data.totalPages > 1) {
+          // Make multiple calls to get full dataset
+          for (let i = 1; i < result.data.totalPages; i++) {
+            const nextPage = await axios.get(url + `?page=${i}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+
+            respData.push(...nextPage.data.items);
+          }
+
+          let vals = filterForDiscrepancies(respData);
+          setData(vals);
         }
-      },
-      {
-        header: 'CUSIP',
-        accessorKey: 'cusip'
-      },
-      {
-        header: 'ISIN',
-        accessorKey: 'isin'
-      },
-      {
-        header: 'SEDOL',
-        accessorKey: 'sedol'
-      },
-      {
-        header: 'Ticker',
-        accessorKey: 'ticker'
-      },
-      {
-        header: 'Trade Date',
-        accessorKey: 'tradeDate'
-      },
-      {
-        header: 'Settlement Date',
-        accessorKey: 'settlementDate'
-      },
-      {
-        header: 'Collateral Type',
-        accessorKey: 'collateralType'
-      },
-      {
-        header: 'Collateral Currency',
-        accessorKey: 'ccurrency'
-      },
-      {
-        header: 'Internal Party Id',
-        accessorKey: 'internalPartyId'
-      },
-      {
-        header: 'Account Id',
-        accessorKey: 'accountId'
-      },
-      {
-        header: 'Interal Ref Id',
-        accessorKey: 'internalRefId'
       }
-    ],
-    []
-  );
+    })();
+  }, []);
 
-  return <ReactTable columns={columns} data={data} />;
+  return <ReactTable columns={columns} rows={data} />;
 };
 
 export default TradeAgreementsPage;

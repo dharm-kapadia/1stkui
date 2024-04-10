@@ -14,7 +14,7 @@ const columns = [
   { field: 'type', headerName: 'Event Type', width: 250 },
   { field: 'subject', headerName: 'Subject', width: 150 },
   { field: 'relatedprocess', headerName: 'Related Lifecycle Event', width: 200 },
-  { field: 'message', headerName: 'Discrepancy Details', width: 400 }
+  { field: 'message', headerName: 'Event Details', width: 400 }
 ];
 
 function EnhancedTableToolbar(props) {
