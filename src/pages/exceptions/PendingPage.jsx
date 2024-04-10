@@ -47,7 +47,15 @@ function ReactTable({ columns, rows }) {
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
         <EnhancedTableToolbar numSelected={'0'} />
         <div style={{ height: 675, width: '100%' }}>
-          <DataGrid rows={rows} columns={columns} />
+          <DataGrid
+            initialState={{
+              ...rows.initialState,
+              pagination: { paginationModel: { pageSize: 20 } }
+            }}
+            pageSizeOptions={[20, 50, 100]}
+            rows={rows}
+            columns={columns}
+          />
         </div>
       </MainCard>
     </>
