@@ -102,6 +102,8 @@ const ReratesPage = () => {
 
           setData(respData);
         }
+      } else {
+        setData([]);
       }
     })();
   }, []);

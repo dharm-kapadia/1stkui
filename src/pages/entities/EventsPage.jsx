@@ -102,6 +102,8 @@ const EventsPage = () => {
 
         let vals = flattenEvents(respData);
         setData(vals);
+      } else {
+        setData([]);
       }
     })();
   }, []);

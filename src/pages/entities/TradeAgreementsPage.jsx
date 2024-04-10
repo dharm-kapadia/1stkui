@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 // project import
 import MainCard from 'components/MainCard';
-import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
   { field: 'contractId', headerName: 'Contract Id', width: 175 },
@@ -109,11 +108,10 @@ const TradeAgreementsPage = () => {
 
             respData.push(...nextPage.data.items);
           }
-
-          let vals = filterForDiscrepancies(respData);
-          setData(vals);
         }
       }
+
+      setData([]);
     })();
   }, []);
 

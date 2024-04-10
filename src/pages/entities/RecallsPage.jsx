@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 // project import
 import MainCard from 'components/MainCard';
-import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
   { field: 'recallId', headerName: 'Recall Id', width: 175 },
@@ -101,11 +100,10 @@ const RecallsPage = () => {
 
             respData.push(...nextPage.data.items);
           }
-
-          let vals = filterForDiscrepancies(respData);
-          setData(vals);
         }
       }
+
+      setData([]);
     })();
   }, []);
 
