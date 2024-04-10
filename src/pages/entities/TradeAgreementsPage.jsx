@@ -4,27 +4,57 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-// project import
+import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center' },
-  { field: 'processingStatus', headerName: 'Processing Status', width: 125, headerAlign: 'center' },
-  { field: 'matchingSpirePositionId', headerName: 'Matching Spire Position Id', width: 175, headerAlign: 'center' },
-  { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center' },
-  { field: 'lastUpdatePary', headerName: 'Last Update Party', width: 125, headerAlign: 'center' },
-  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 125, headerAlign: 'center' },
-  { field: 'cusip', headerName: 'CUSIP', width: 100, headerAlign: 'center' },
-  { field: 'isin', headerName: 'ISIN', width: 100, headerAlign: 'center' },
-  { field: 'sedol', headerName: 'SEDOL', width: 100, headerAlign: 'center' },
-  { field: 'ticker', headerName: 'Ticker', width: 100, headerAlign: 'center' },
-  { field: 'tradeDate', headerName: 'Trade Date', width: 125, headerAlign: 'center' },
-  { field: 'settlementDate', headerName: 'Settlement Date', width: 125, headerAlign: 'center' },
-  { field: 'collateralType', headerName: 'Collateral Type', width: 125, headerAlign: 'center' },
-  { field: 'collateralCurrency', headerName: 'Collateral Currency', width: 125, headerAlign: 'center' },
-  { field: 'internalPartyId', headerName: 'Internal Party Id', width: 125, headerAlign: 'center' },
-  { field: 'accountId', headerName: 'accountId', width: 125, headerAlign: 'center' },
-  { field: 'internalRefId', headerName: 'internalRefId', width: 125, headerAlign: 'center' }
+  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'processingStatus',
+    headerName: 'Processing Status',
+    width: 125,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'matchingSpirePositionId',
+    headerName: 'Matching Spire Position Id',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'lastUpdatePary',
+    headerName: 'Last Update Party',
+    width: 125,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'cusip', headerName: 'CUSIP', width: 100, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'isin', headerName: 'ISIN', width: 100, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'sedol', headerName: 'SEDOL', width: 100, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'ticker', headerName: 'Ticker', width: 100, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'tradeDate', headerName: 'Trade Date', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'settlementDate', headerName: 'Settlement Date', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'collateralType', headerName: 'Collateral Type', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'collateralCurrency',
+    headerName: 'Collateral Currency',
+    width: 125,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'internalPartyId',
+    headerName: 'Internal Party Id',
+    width: 125,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'accountId', headerName: 'accountId', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'internalRefId', headerName: 'internalRefId', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -56,7 +86,18 @@ function ReactTable({ columns, rows }) {
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
         <EnhancedTableToolbar numSelected={'0'} />
-        <div style={{ height: 675, width: '100%' }}>
+        <Box
+          sx={{
+            height: 675,
+            width: '100%',
+            '& .super-app-theme--header': {
+              backgroundColor: '#3498DB',
+              color: '#FFFFFF',
+              fontWeight: 'bold',
+              fontSize: 14
+            }
+          }}
+        >
           <DataGrid
             sx={{
               boxShadow: 1,
@@ -74,7 +115,7 @@ function ReactTable({ columns, rows }) {
             rows={rows}
             columns={columns}
           />
-        </div>
+        </Box>
       </MainCard>
     </>
   );

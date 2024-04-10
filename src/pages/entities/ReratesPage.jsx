@@ -4,18 +4,42 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-// project import
+import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'rerateId', headerName: 'Rerate Id', width: 175, headerAlign: 'center' },
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center' },
-  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175, headerAlign: 'center' },
-  { field: 'processingStatus', headerName: 'Processing Status', width: 175, headerAlign: 'center' },
-  { field: 'matchingSpireTradeId', headerName: 'Matching Spire Trade Id', width: 175, headerAlign: 'center' },
-  { field: 'relatedSpireTradeId', headerName: 'Related Spire Trade Id', width: 175, headerAlign: 'center' },
-  { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center' },
-  { field: 'lastUpdateDatetime', headerName: 'Last Update Datetime', width: 175, headerAlign: 'center' }
+  { field: 'rerateId', headerName: 'Rerate Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'processingStatus',
+    headerName: 'Processing Status',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'matchingSpireTradeId',
+    headerName: 'Matching Spire Trade Id',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'relatedSpireTradeId',
+    headerName: 'Related Spire Trade Id',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'lastUpdateDatetime',
+    headerName: 'Last Update Datetime',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -47,7 +71,18 @@ function ReactTable({ columns, rows }) {
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
         <EnhancedTableToolbar numSelected={'0'} />
-        <div style={{ height: 675, width: '100%' }}>
+        <Box
+          sx={{
+            height: 675,
+            width: '100%',
+            '& .super-app-theme--header': {
+              backgroundColor: '#3498DB',
+              color: '#FFFFFF',
+              fontWeight: 'bold',
+              fontSize: 14
+            }
+          }}
+        >
           <DataGrid
             sx={{
               boxShadow: 1,
@@ -65,7 +100,7 @@ function ReactTable({ columns, rows }) {
             rows={rows}
             columns={columns}
           />
-        </div>
+        </Box>
       </MainCard>
     </>
   );

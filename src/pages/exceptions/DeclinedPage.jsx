@@ -4,17 +4,23 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-// project import
+import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 import { filterForDeclined } from 'utils/jsonHelper';
 
 const columns = [
-  { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center' },
-  { field: 'time', headerName: 'Event Time', width: 150, headerAlign: 'center' },
-  { field: 'type', headerName: 'Event Type', width: 300, headerAlign: 'center' },
-  { field: 'subject', headerName: 'Subject', width: 150, headerAlign: 'center' },
-  { field: 'relatedprocess', headerName: 'Related Lifecycle Event', width: 200, headerAlign: 'center' },
-  { field: 'message', headerName: 'Discrepancy Details', width: 500, headerAlign: 'center' }
+  { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'time', headerName: 'Event Time', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'type', headerName: 'Event Type', width: 300, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'subject', headerName: 'Subject', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'relatedprocess',
+    headerName: 'Related Lifecycle Event',
+    width: 200,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'message', headerName: 'Declined Details', width: 500, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -46,11 +52,23 @@ function ReactTable({ columns, rows }) {
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
         <EnhancedTableToolbar numSelected={'0'} />
-        <div style={{ height: 675, width: '100%' }}>
+        <Box
+          sx={{
+            height: 675,
+            width: '100%',
+            '& .super-app-theme--header': {
+              backgroundColor: '#3498DB',
+              color: '#FFFFFF',
+              fontWeight: 'bold',
+              fontSize: 14
+            }
+          }}
+        >
           <DataGrid
             sx={{
               boxShadow: 1,
               border: 1,
+              fontSize: 13,
               borderColor: 'primary.light',
               '& .MuiDataGrid-cell:hover': {
                 color: 'primary.main'
@@ -64,7 +82,7 @@ function ReactTable({ columns, rows }) {
             rows={rows}
             columns={columns}
           />
-        </div>
+        </Box>
       </MainCard>
     </>
   );
