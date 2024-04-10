@@ -45,7 +45,7 @@ function EnhancedTableToolbar(props) {
         })
       }}
     >
-      <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
+      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
         Discrepancies
       </Typography>
       <Tooltip title="Filter list">
