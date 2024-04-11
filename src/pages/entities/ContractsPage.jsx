@@ -1,4 +1,5 @@
 import { Toolbar, Typography } from '@mui/material';
+import { darken, lighten, styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -96,6 +97,65 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
+const getBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7));
+
+const getHoverBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6));
+
+const getSelectedBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5));
+
+const getSelectedHoverBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.4) : lighten(color, 0.4));
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .super-app-theme--PROPOSED': {
+    backgroundColor: getBackgroundColor(theme.palette.info.main, theme.palette.mode),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(theme.palette.info.main, theme.palette.mode)
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(theme.palette.info.main, theme.palette.mode),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(theme.palette.info.main, theme.palette.mode)
+      }
+    }
+  },
+  '& .super-app-theme--OPEN': {
+    backgroundColor: getBackgroundColor(theme.palette.success.main, theme.palette.mode),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(theme.palette.success.main, theme.palette.mode)
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(theme.palette.success.main, theme.palette.mode),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(theme.palette.success.main, theme.palette.mode)
+      }
+    }
+  },
+  '& .super-app-theme--PENDING': {
+    backgroundColor: getBackgroundColor(theme.palette.warning.main, theme.palette.mode),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(theme.palette.warning.main, theme.palette.mode)
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(theme.palette.warning.main, theme.palette.mode),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(theme.palette.warning.main, theme.palette.mode)
+      }
+    }
+  },
+  '& .super-app-theme--DECLINED': {
+    backgroundColor: getBackgroundColor(theme.palette.error.main, theme.palette.mode),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(theme.palette.error.main, theme.palette.mode)
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(theme.palette.error.main, theme.palette.mode),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(theme.palette.error.main, theme.palette.mode)
+      }
+    }
+  }
+}));
+
 function ReactTable({ columns, rows }) {
   return (
     <>
@@ -113,7 +173,7 @@ function ReactTable({ columns, rows }) {
             }
           }}
         >
-          <DataGrid
+          <StyledDataGrid
             sx={{
               boxShadow: 1,
               border: 1,
@@ -129,6 +189,7 @@ function ReactTable({ columns, rows }) {
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
             columns={columns}
+            getRowClassName={(params) => `super-app-theme--${params.row.contractStatus}`}
           />
         </Box>
       </MainCard>
