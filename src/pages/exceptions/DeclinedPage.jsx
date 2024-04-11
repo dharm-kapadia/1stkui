@@ -51,7 +51,7 @@ function ReactTable({ columns, rows }) {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={'0'} />
+        <EnhancedTableToolbar numSelected={0} />
         <Box
           sx={{
             height: 675,
@@ -74,6 +74,7 @@ function ReactTable({ columns, rows }) {
                 color: 'primary.main'
               }
             }}
+            getRowHeight={() => 'auto'}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }

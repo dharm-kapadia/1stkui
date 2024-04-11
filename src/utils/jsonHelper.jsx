@@ -88,6 +88,16 @@ export const filterForDiscrepancies = (input) => {
       obj['relatedprocess'] = item.relatedprocess;
       obj['message'] = item.data.message;
 
+      if (item.data.fieldsImpacted.length > 0) {
+        var str = '';
+
+        item.data.fieldsImpacted.forEach((fields) => {
+          str += '[' + fields.fieldExceptionType + ', ' + fields.fieldName + ', ' + fields.fieldValue + '], ';
+        });
+
+        obj['fields'] = str;
+      }
+
       technical.push(obj);
     }
   });

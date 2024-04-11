@@ -9,9 +9,9 @@ import MainCard from 'components/MainCard';
 import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
-  { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'id', headerName: 'Event Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'time', headerName: 'Event Time', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'type', headerName: 'Event Type', width: 300, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'type', headerName: 'Event Type', width: 325, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'subject', headerName: 'Subject', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'relatedprocess',
@@ -20,7 +20,8 @@ const columns = [
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
-  { field: 'message', headerName: 'Discrepancy Details', width: 500, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
+  { field: 'message', headerName: 'Discrepancy Details', width: 400, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'fields', headerName: 'Discrepancy fields', width: 400, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
 ];
 
 function EnhancedTableToolbar(props) {
@@ -51,7 +52,7 @@ function ReactTable({ columns, rows }) {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={'0'} />
+        <EnhancedTableToolbar numSelected={0} />
         <Box
           sx={{
             height: 675,
@@ -74,6 +75,7 @@ function ReactTable({ columns, rows }) {
                 color: 'primary.main'
               }
             }}
+            getRowHeight={() => 'auto'}
             initialState={{
               ...rows.initialState,
               pagination: { paginationModel: { pageSize: 20 } }
