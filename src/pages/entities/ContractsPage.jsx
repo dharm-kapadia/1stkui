@@ -42,7 +42,7 @@ const columns = [
   },
   {
     field: 'billingCurrency',
-    headerName: 'billingCurrency',
+    headerName: 'Billing Currency',
     width: 100,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
