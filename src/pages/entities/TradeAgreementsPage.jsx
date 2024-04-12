@@ -1,8 +1,10 @@
-import { Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+
+import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
@@ -70,9 +72,14 @@ function EnhancedTableToolbar(props) {
         })
       }}
     >
-      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
-        Trade Agreements
-      </Typography>
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        <IconButton color="primary" aria-label="Discrepancies" size="medium">
+          <HandshakeOutlinedIcon />
+        </IconButton>
+        <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
+          Trade Agreements
+        </Typography>
+      </Stack>
     </Toolbar>
   );
 }

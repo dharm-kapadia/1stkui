@@ -1,8 +1,10 @@
-import { Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
@@ -54,9 +56,14 @@ function EnhancedTableToolbar(props) {
         })
       }}
     >
-      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
-        Buy Ins
-      </Typography>
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        <IconButton color="primary" aria-label="Discrepancies" size="medium">
+          <ShoppingCartOutlinedIcon />
+        </IconButton>
+        <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
+          Buy Ins
+        </Typography>
+      </Stack>
     </Toolbar>
   );
 }
