@@ -71,7 +71,7 @@ function ReactTable({ columns, rows }) {
 
       console.log(resp);
     } else {
-      alert(`"${params.row.id}" NOT declined`);
+      alert(`"Cancelled declining contract with id: ${params.row.id}"`);
     }
   }
 

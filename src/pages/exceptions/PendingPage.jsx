@@ -63,6 +63,19 @@ EnhancedTableToolbar.propTypes = {
 };
 
 function ReactTable({ columns, rows }) {
+  async function handleRowDoubleClick(params) {
+    if (params.row.type === 'LOAN_CONTRACT_PROPOSAL_UNMATCHED') {
+      if (confirm('Decline contract with id: ' + params.row.id)) {
+        const token = localStorage.getItem('token');
+        const resp = await declineContract(token, params.row.id);
+
+        console.log(resp);
+      } else {
+        alert(`"Cancelled declining contract with id: ${params.row.id}"`);
+      }
+    }
+  }
+
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
@@ -96,6 +109,7 @@ function ReactTable({ columns, rows }) {
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
             columns={columns}
+            onRowDoubleClick={handleRowDoubleClick}
           />
         </Box>
       </MainCard>
