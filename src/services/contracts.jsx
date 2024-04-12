@@ -104,4 +104,23 @@ const getContractById = async (token, id) => {
   }
 };
 
-export { getNumContracts, getContracts, getContractById };
+const declineContract = async (token, id) => {
+  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts/' + id.toString() + '/decline';
+
+  try {
+    let resp = await axios.post(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (resp.status == 200) {
+      return resp;
+    }
+  } catch (error) {
+    console.log(error);
+    return '{}';
+  }
+};
+
+export { declineContract, getNumContracts, getContracts, getContractById };

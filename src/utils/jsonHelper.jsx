@@ -63,6 +63,15 @@ export const filterForUnmatched = (input) => {
       unmatched['type'] = item.type;
       unmatched['subject'] = item.subject;
       unmatched['relatedprocess'] = item.relatedprocess;
+
+      if (item.data.relatedObjects.length > 0) {
+        item.data.relatedObjects.forEach((ro) => {
+          if (ro.relatedObjectType === '1SrceLoanContract') {
+            unmatched['relatedProcessId'] = ro.relatedObjectId;
+          }
+        });
+      }
+
       unmatched['message'] = item.data.message;
 
       pending.push(unmatched);
@@ -86,6 +95,15 @@ export const filterForDiscrepancies = (input) => {
       obj['type'] = item.type;
       obj['subject'] = item.subject;
       obj['relatedprocess'] = item.relatedprocess;
+
+      if (item.data.relatedObjects.length > 0) {
+        item.data.relatedObjects.forEach((ro) => {
+          if (ro.relatedObjectType === '1SrceLoanContract') {
+            obj['relatedProcessId'] = ro.relatedObjectId;
+          }
+        });
+      }
+
       obj['message'] = item.data.message;
 
       if (item.data.fieldsImpacted.length > 0) {
@@ -133,7 +151,7 @@ export const filterForDeclined = (input) => {
   var declined = [];
 
   input.forEach((item) => {
-    if (item.data.message.includes('declined')) {
+    if (item.type.includes('DECLINED')) {
       var obj = {};
       var dt = item.time;
 

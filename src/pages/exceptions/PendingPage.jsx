@@ -20,6 +20,14 @@ const columns = [
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
+  {
+    field: 'relatedProcessId',
+    headerName: 'Related Event Id',
+    width: 275,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+
   { field: 'message', headerName: 'Pending Details', width: 500, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
 ];
 

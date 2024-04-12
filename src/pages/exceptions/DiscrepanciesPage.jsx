@@ -1,11 +1,14 @@
-import { Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import ErrorOutline from '@mui/icons-material/ErrorOutline';
+
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
+import { declineContract } from 'services/contracts';
 import { filterForDiscrepancies } from 'utils/jsonHelper';
 
 const columns = [
@@ -17,6 +20,13 @@ const columns = [
     field: 'relatedprocess',
     headerName: 'Related Lifecycle Event',
     width: 200,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'relatedProcessId',
+    headerName: 'Related Event Id',
+    width: 275,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
@@ -37,9 +47,14 @@ function EnhancedTableToolbar(props) {
         })
       }}
     >
-      <Typography sx={{ flex: '1 1 100%' }} variant="h4" id="tableTitle" component="div">
-        Discrepancies
-      </Typography>
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        <IconButton color="primary" aria-label="Decline" size="medium">
+          <ErrorOutline />
+        </IconButton>
+        <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
+          Discrepancies
+        </Typography>
+      </Stack>
     </Toolbar>
   );
 }
@@ -49,6 +64,17 @@ EnhancedTableToolbar.propTypes = {
 };
 
 function ReactTable({ columns, rows }) {
+  async function handleRowDoubleClick(params) {
+    if (confirm('Decline contract with id: ' + params.row.id)) {
+      const token = localStorage.getItem('token');
+      const resp = await declineContract(token, params.row.id);
+
+      console.log(resp);
+    } else {
+      alert(`"${params.row.id}" NOT declined`);
+    }
+  }
+
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
@@ -83,6 +109,7 @@ function ReactTable({ columns, rows }) {
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
             columns={columns}
+            onRowDoubleClick={handleRowDoubleClick}
           />
         </Box>
       </MainCard>
