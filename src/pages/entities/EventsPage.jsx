@@ -82,7 +82,10 @@ function ReactTable({ columns, rows }) {
             }}
             initialState={{
               ...rows.initialState,
-              pagination: { paginationModel: { pageSize: 20 } }
+              pagination: { paginationModel: { pageSize: 20 } },
+              sorting: {
+                sortModel: [{ field: 'time', sort: 'desc' }]
+              }
             }}
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
