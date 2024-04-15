@@ -16,13 +16,6 @@ const columns = [
   { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'createDateTime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
-    field: 'lastDateTime',
-    headerName: 'Last Update Datetime',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
     field: 'matchingSpirePositionId',
     headerName: 'Matching Spire Position Id',
     width: 175,
@@ -213,7 +206,7 @@ const ContractsPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
+    const url = localStorage.getItem('url') + '/contracts';
     const token = localStorage.getItem('token');
 
     let respData = [];

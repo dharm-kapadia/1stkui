@@ -20,7 +20,8 @@ import axios from 'axios';
  * @return {Array} The array of decline instructions
  */
 const getDeclineInstructions = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/decline-instructions';
+  const url = localStorage.getItem('url') + '/decline-instructions';
+
   const headers = {
     Authorization: `Bearer ${token}`
   };
@@ -42,7 +43,7 @@ const getDeclineInstructions = async (token) => {
  * @param {DeclinedInstruction} instrs
  */
 const postDeclineInstructions = async (token, instrs) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/decline-instructions';
+  const url = localStorage.getItem('url') + '/decline-instructions';
   const declinedInstruction = JSON.stringify(instrs);
 
   await axios

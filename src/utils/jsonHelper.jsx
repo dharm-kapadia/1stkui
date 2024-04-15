@@ -54,7 +54,7 @@ export const filterForUnmatched = (input) => {
   var pending = [];
 
   input.forEach((item) => {
-    if (item.type.includes('UNMATCHED')) {
+    if (item.type.includes('UNMATCHED') || item.type.includes('PENDING')) {
       var unmatched = {};
       var dt = item.time;
 
@@ -173,18 +173,40 @@ export const flattenEvents = (input) => {
   var events = [];
 
   input.forEach((item) => {
-    var obj = {};
-    var dt = item.time;
+    if (!item.type.includes('TECHNICAL')) {
+      var obj = {};
+      var dt = item.time;
 
-    obj['id'] = item.id;
-    obj['time'] = dt.replace('T', ' ').substring(0, 19);
-    obj['type'] = item.type;
-    obj['subject'] = item.subject;
-    obj['relatedprocess'] = item.relatedprocess;
-    obj['message'] = item.data.message;
+      obj['id'] = item.id;
+      obj['time'] = dt.replace('T', ' ').substring(0, 19);
+      obj['type'] = item.type;
+      obj['subject'] = item.subject;
+      obj['relatedprocess'] = item.relatedprocess;
+      obj['message'] = item.data.message;
 
-    events.push(obj);
+      events.push(obj);
+    }
   });
 
   return events;
+};
+
+export const mapRerates = (items) => {
+  var rerates = [];
+
+  items.forEach((item) => {
+    var obj = {};
+
+    obj['id'] = item.rerateId;
+    obj['contractId'] = item.contractId;
+    obj['rerateStatus'] = item.rerateStatus;
+    obj['processingStatus'] = item.processingStatus;
+    obj['createDatetime'] = item.createDatetime.replace('T', ' ').substring(0, 19);
+    obj['lastUpdateDatetime'] = item.lastUpdateDatetime.replace('T', ' ').substring(0, 19);
+    obj['effectiveDate'] = item.effectiveDate.replace('T', ' ').substring(0, 19);
+
+    rerates.push(obj);
+  });
+
+  return rerates;
 };

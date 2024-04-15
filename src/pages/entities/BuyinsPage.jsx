@@ -121,7 +121,7 @@ const BuyinsPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const url = localStorage.getItem('url') + '/cloudevents';
     const token = localStorage.getItem('token');
 
     let respData = [];
@@ -149,9 +149,10 @@ const BuyinsPage = () => {
             respData.push(...nextPage.data.items);
           }
         }
-      }
 
-      setData([]);
+        let vals = filterRerates(respData);
+        setData(vals);
+      }
     })();
   }, []);
 

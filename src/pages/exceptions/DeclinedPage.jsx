@@ -107,7 +107,7 @@ const DeclinedPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+    const url = localStorage.getItem('url') + '/cloudevents';
     const token = localStorage.getItem('token');
 
     let respData = [];
@@ -134,10 +134,10 @@ const DeclinedPage = () => {
 
             respData.push(...nextPage.data.items);
           }
-
-          let vals = filterForDeclined(respData);
-          setData(vals);
         }
+
+        let vals = filterForDeclined(respData);
+        setData(vals);
       }
     })();
   }, []);

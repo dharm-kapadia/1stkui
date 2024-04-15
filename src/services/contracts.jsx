@@ -6,7 +6,7 @@ import axios from 'axios';
  *
  */
 const getNumContracts = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
+  const url = localStorage.getItem('url') + '/contracts';
 
   try {
     let resp = await axios.get(url, {
@@ -58,7 +58,7 @@ const getNumContracts = async (token) => {
  * @return {Array} The array of contracts
  */
 const getContracts = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts';
+  const url = localStorage.getItem('url') + '/contracts';
 
   try {
     let resp = await axios.get(url, {
@@ -86,7 +86,7 @@ const getContracts = async (token) => {
  */
 
 const getContractById = async (token, id) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts/' + id.toString();
+  const url = localStorage.getItem('url') + '/contracts' + '/' + id.toString();
 
   try {
     let resp = await axios.get(url, {
@@ -105,7 +105,7 @@ const getContractById = async (token, id) => {
 };
 
 const declineContract = async (token, id) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/contracts/' + id.toString() + '/decline';
+  const url = localStorage.getItem('url') + '/contracts' + '/' + id.toString() + '/decline';
 
   try {
     let resp = await axios.post(url, {

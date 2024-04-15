@@ -8,28 +8,15 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
+import { mapRerates } from 'utils/jsonHelper';
 
 const columns = [
-  { field: 'rerateId', headerName: 'Rerate Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'id', headerName: 'Rerate Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'contractId', headerName: 'Contract Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'rerateStatus', headerName: 'Rerate Status', width: 200, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'processingStatus',
     headerName: 'Processing Status',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
-    field: 'matchingSpireTradeId',
-    headerName: 'Matching Spire Trade Id',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
-    field: 'relatedSpireTradeId',
-    headerName: 'Related Spire Trade Id',
     width: 175,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
@@ -38,6 +25,13 @@ const columns = [
   {
     field: 'lastUpdateDatetime',
     headerName: 'Last Update Datetime',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'effectiveDate',
+    headerName: 'Effective Date',
     width: 175,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
@@ -122,7 +116,7 @@ const ReratesPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const url = process.env.REACT_APP_TOOLKIT_API_URL + '/rerates';
+    const url = localStorage.getItem('url') + '/rerates';
     const token = localStorage.getItem('token');
 
     let respData = [];
@@ -149,11 +143,10 @@ const ReratesPage = () => {
 
             respData.push(...nextPage.data.items);
           }
-
-          setData(respData);
         }
-      } else {
-        setData([]);
+
+        const items = mapRerates(respData);
+        setData(items);
       }
     })();
   }, []);

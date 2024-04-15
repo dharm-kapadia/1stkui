@@ -8,7 +8,7 @@ import axios from 'axios';
  * @return {Array} The array of cloud events
  */
 export const getCloudEvents = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents';
+  const url = localStorage.getItem('url') + '/cloudevents';
 
   try {
     const result = await axios.get(url, {
@@ -49,7 +49,7 @@ export const getCloudEvents = async (token) => {
  * @return {} The cloud event report
  */
 export const getCloudEventById = async (token, id) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevent' + '/' + id.toString();
+  const url = localStorage.getItem('url') + '/cloudevents' + '/' + id.toString();
 
   try {
     let resp = await axios.get(url, {
@@ -78,7 +78,7 @@ export const getCloudEventById = async (token, id) => {
  * @return {Array} The cloud event report
  */
 export const getCloudEventsReport = async (token) => {
-  const url = process.env.REACT_APP_TOOLKIT_API_URL + '/cloudevents/report';
+  const url = localStorage.getItem('url') + '/cloudevents/report';
 
   try {
     let resp = await axios.get(url, {
