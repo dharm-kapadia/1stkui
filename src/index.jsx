@@ -36,6 +36,12 @@ const eventLogger = (event, error) => {
  */
 const handleUserInfo = (result) => {
   localStorage.setItem('username', result.preferred_username);
+
+  if (result.preferred_username.includes('borrower')) {
+    localStorage.setItem('url', process.env.REACT_APP_TOOLKIT_BORROWER_API_URL);
+  } else {
+    localStorage.setItem('url', process.env.REACT_APP_TOOLKIT_LENDER_API_URL);
+  }
 };
 
 /**
