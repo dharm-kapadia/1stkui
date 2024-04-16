@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Box from '@mui/material/Box';
+import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import CallSplitOutlinedIcon from '@mui/icons-material/CallSplitOutlined';
@@ -41,20 +41,10 @@ const Dashboard = () => {
   const [buyinsCount, setBuyinsCount] = useState('0');
   const [splitsCount, setSplitsCount] = useState('0');
 
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
-    setIsFetching(true);
-
-    if (isFetching) {
-      return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Box>
-      );
-    }
 
     async function fetchCloudEvents() {
       // Get number of cloudevents using Bearer token
@@ -110,85 +100,96 @@ const Dashboard = () => {
   }, [isFetching]);
 
   return (
-    <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-      {/* Exceptions */}
-      <Grid item xs={12} sx={{ mb: -2.25 }}>
-        <Divider>
-          <Chip label="Exceptions" color="error" size="small" />
-        </Divider>{' '}
-      </Grid>
-      <Grid item xs={4}>
-        <DashboardAnalytics title="Discrepancies" count={discrepancyCount.toString()} color="red" cardIcon={<ErrorOutline />} />
-      </Grid>
-      <Grid item xs={4}>
-        <DashboardAnalytics title="Pending" count={pendingCount.toString()} color="maroon" cardIcon={<PendingActionsIcon />} />
-      </Grid>
-      <Grid item xs={4}>
-        <DashboardAnalytics title="Declined" count={declinedCount.toString()} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
-      </Grid>
+    <>
+      {isFetching ? (
+        <div>
+          <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+        {/* Exceptions */}
+        <Grid item xs={12} sx={{ mb: -2.25 }}>
+          <Divider>
+            <Chip label="Exceptions" color="error" size="small" />
+          </Divider>{' '}
+        </Grid>
+        <Grid item xs={4}>
+          <DashboardAnalytics title="Discrepancies" count={discrepancyCount.toString()} color="red" cardIcon={<ErrorOutline />} />
+        </Grid>
+        <Grid item xs={4}>
+          <DashboardAnalytics title="Pending" count={pendingCount.toString()} color="maroon" cardIcon={<PendingActionsIcon />} />
+        </Grid>
+        <Grid item xs={4}>
+          <DashboardAnalytics title="Declined" count={declinedCount.toString()} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
+        </Grid>
 
-      {/* Entities - Row 1 */}
-      <Grid item xs={12}>
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-          <Grid item xs={12} sx={{ mb: -2.25 }}>
-            <Divider>
-              <Chip label="Entities" color="success" size="small" />
-            </Divider>{' '}
+        {/* Entities - Row 1 */}
+        <Grid item xs={12}>
+          <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid item xs={12} sx={{ mb: -2.25 }}>
+              <Divider>
+                <Chip label="Entities" color="success" size="small" />
+              </Divider>{' '}
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Events" count={eventCount.toString()} color="#52C41A" cardIcon={<EventAvailableOutlinedIcon />} />
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics
+                title="Trade Agreements"
+                count={tradeAgreementCount.toString()}
+                color="#52C41A"
+                cardIcon={<HandshakeOutlinedIcon />}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics
+                title="Contracts"
+                count={contractsCount.toString()}
+                color="#52C41A"
+                cardIcon={<DescriptionOutlinedIcon />}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Events" count={eventCount.toString()} color="#52C41A" cardIcon={<EventAvailableOutlinedIcon />} />
+        </Grid>
+
+        {/* Entities - Row 2 */}
+        <Grid item xs={12}>
+          <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid item xs={12} sx={{ mb: -2.25 }}>
+              <Divider>
+                <Chip label="LifeCycle Events" color="primary" size="small" />
+              </Divider>{' '}
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Rerates" count={reratesCount.toString()} cardIcon={<CurrencyExchangeOutlinedIcon />} />
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Returns" count={returnsCount.toString()} cardIcon={<KeyboardReturnOutlinedIcon />} />
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Recalls" count={recallsCount.toString()} cardIcon={<CampaignOutlinedIcon />} />
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics
-              title="Trade Agreements"
-              count={tradeAgreementCount.toString()}
-              color="#52C41A"
-              cardIcon={<HandshakeOutlinedIcon />}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics
-              title="Contracts"
-              count={contractsCount.toString()}
-              color="#52C41A"
-              cardIcon={<DescriptionOutlinedIcon />}
-            />
+        </Grid>
+
+        {/* Entities - Row 3 */}
+        <Grid item xs={12}>
+          <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Buyins" count={buyinsCount.toString()} cardIcon={<ShoppingCartOutlinedIcon />} />
+            </Grid>
+            <Grid item xs={4}>
+              <DashboardAnalytics title="Contract Splits" count={splitsCount.toString()} cardIcon={<CallSplitOutlinedIcon />} />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-
-      {/* Entities - Row 2 */}
-      <Grid item xs={12}>
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-          <Grid item xs={12} sx={{ mb: -2.25 }}>
-            <Divider>
-              <Chip label="LifeCycle Events" color="primary" size="small" />
-            </Divider>{' '}
-          </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Rerates" count={reratesCount.toString()} cardIcon={<CurrencyExchangeOutlinedIcon />} />
-          </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Returns" count={returnsCount.toString()} cardIcon={<KeyboardReturnOutlinedIcon />} />
-          </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Recalls" count={recallsCount.toString()} cardIcon={<CampaignOutlinedIcon />} />
-          </Grid>
-        </Grid>
-      </Grid>
-
-      {/* Entities - Row 3 */}
-      <Grid item xs={12}>
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Buyins" count={buyinsCount.toString()} cardIcon={<ShoppingCartOutlinedIcon />} />
-          </Grid>
-          <Grid item xs={4}>
-            <DashboardAnalytics title="Contract Splits" count={splitsCount.toString()} cardIcon={<CallSplitOutlinedIcon />} />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
