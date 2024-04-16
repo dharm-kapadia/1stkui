@@ -33,7 +33,10 @@ export const getCloudEvents = async (token) => {
         }
       }
 
-      return respData;
+      // Filter out events with _TECHNICAL
+      let filtered = respData.filter((item) => !item.type.includes('TECHNICAL'));
+
+      return filtered;
     }
   } catch (error) {
     console.log(error);
