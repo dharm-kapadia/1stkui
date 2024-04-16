@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import CallSplitOutlinedIcon from '@mui/icons-material/CallSplitOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
@@ -38,8 +41,20 @@ const Dashboard = () => {
   const [buyinsCount, setBuyinsCount] = useState('0');
   const [splitsCount, setSplitsCount] = useState('0');
 
+  const [isFetching, setIsFetching] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
+
+    setIsFetching(true);
+
+    if (isFetching) {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
 
     async function fetchCloudEvents() {
       // Get number of cloudevents using Bearer token
@@ -54,7 +69,7 @@ const Dashboard = () => {
       events.forEach((event) => {
         if (event.type.includes('DISCREPANCIES')) {
           dc++;
-        } else if (event.type.includes('UNMATCHED')) {
+        } else if (event.type.includes('UNMATCHED') || event.type.includes('PENDING')) {
           pc++;
         }
       });
@@ -90,7 +105,9 @@ const Dashboard = () => {
     setRecallsCount(0);
     setBuyinsCount(0);
     setSplitsCount(0);
-  }, []);
+
+    setIsFetching(false);
+  }, [isFetching]);
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
