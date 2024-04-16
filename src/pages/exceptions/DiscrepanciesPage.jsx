@@ -63,7 +63,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
-function ReactTable({ columns, rows }) {
+function ReactTable({ columns, rows, loading }) {
   async function handleRowDoubleClick(params) {
     if (confirm('Decline contract with id: ' + params.row.id)) {
       const token = localStorage.getItem('token');
@@ -104,12 +104,16 @@ function ReactTable({ columns, rows }) {
             getRowHeight={() => 'auto'}
             initialState={{
               ...rows.initialState,
-              pagination: { paginationModel: { pageSize: 20 } }
+              pagination: { paginationModel: { pageSize: 20 } },
+              sorting: {
+                sortModel: [{ field: 'time', sort: 'desc' }]
+              }
             }}
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
             columns={columns}
             onRowDoubleClick={handleRowDoubleClick}
+            loading={loading}
           />
         </Box>
       </MainCard>
@@ -119,11 +123,13 @@ function ReactTable({ columns, rows }) {
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  rows: PropTypes.array
+  rows: PropTypes.array,
+  loading: PropTypes.bool
 };
 
 const DiscrepanciesPage = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const url = localStorage.getItem('url') + '/cloudevents';
@@ -133,6 +139,7 @@ const DiscrepanciesPage = () => {
 
     // Get cloudevents using Bearer token
     (async () => {
+      setLoading(true);
       const result = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -158,10 +165,12 @@ const DiscrepanciesPage = () => {
           setData(vals);
         }
       }
+
+      setLoading(false);
     })();
   }, []);
 
-  return <ReactTable columns={columns} rows={data} />;
+  return <ReactTable columns={columns} rows={data} loading={loading} />;
 };
 
 export default DiscrepanciesPage;

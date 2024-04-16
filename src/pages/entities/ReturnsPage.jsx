@@ -86,7 +86,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
-function ReactTable({ columns, rows }) {
+function ReactTable({ columns, rows, loading }) {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
@@ -114,11 +114,15 @@ function ReactTable({ columns, rows }) {
             }}
             initialState={{
               ...rows.initialState,
-              pagination: { paginationModel: { pageSize: 20 } }
+              pagination: { paginationModel: { pageSize: 20 } },
+              sorting: {
+                sortModel: [{ field: 'returnDate', sort: 'desc' }]
+              }
             }}
             pageSizeOptions={[20, 50, 100]}
             rows={rows}
             columns={columns}
+            loading={loading}
           />
         </Box>
       </MainCard>
@@ -128,11 +132,13 @@ function ReactTable({ columns, rows }) {
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  rows: PropTypes.array
+  rows: PropTypes.array,
+  loading: PropTypes.bool
 };
 
 const ReturnsPage = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const url = localStorage.getItem('url') + '/cloudevents';
@@ -142,6 +148,8 @@ const ReturnsPage = () => {
 
     // Get cloudevents using Bearer token
     (async () => {
+      setLoading(true);
+
       const result = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -163,13 +171,15 @@ const ReturnsPage = () => {
             respData.push(...nextPage.data.items);
           }
         }
+      } else {
+        setData(respData);
       }
 
-      setData([]);
+      setLoading(false);
     })();
   }, []);
 
-  return <ReactTable columns={columns} rows={data} />;
+  return <ReactTable columns={columns} rows={data} loading={loading} />;
 };
 
 export default ReturnsPage;
