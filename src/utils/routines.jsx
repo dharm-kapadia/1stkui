@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -25,4 +27,8 @@ export function stableSort(array, comparator) {
   });
 
   return stabilizedThis.map((el) => el[0]);
+}
+
+export function create_decline_instruction_id() {
+  return uuidv4();
 }
