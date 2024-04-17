@@ -157,11 +157,10 @@ const BuyinsPage = () => {
           }
         }
 
-        let vals = filterRerates(respData);
-        setData(vals);
-
         setLoading(false);
       }
+
+      setData(respData);
     })();
   }, []);
 
