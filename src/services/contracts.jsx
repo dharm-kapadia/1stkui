@@ -131,7 +131,6 @@ const declineContract = async (row) => {
 
     if (resp.status == 200) {
       return resp;
-      n;
     }
   } catch (error) {
     return error;
