@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { create_decline_instruction_id } from 'utils/routines';
 
 /**
  * Retrieve total number of contracts by querying the /contracts endpoint
@@ -104,22 +105,36 @@ const getContractById = async (token, id) => {
   }
 };
 
-const declineContract = async (token, id) => {
-  const url = localStorage.getItem('url') + '/contracts' + '/' + id.toString() + '/decline';
+const declineContract = async (row) => {
+  const token = localStorage.getItem('token');
+  const url = localStorage.getItem('url') + '/decline-instructions';
+  const uuid4 = create_decline_instruction_id();
 
   try {
+    // Create a unique declineInstructionId
+    const creationDateTime = row.time.replace(' ', 'T').substring(0, 19);
+    const userId = localStorage.getItem('username');
+
     let resp = await axios.post(url, {
       headers: {
         Authorization: `Bearer ${token}`
+      },
+      data: {
+        declineInstructionId: uuid4,
+        relatedExceptionEventId: row.id,
+        relatedProposalId: row.relatedProcessId,
+        relatedProposalType: 'CONTRACT',
+        creationDateTime: creationDateTime,
+        userId: userId
       }
     });
 
     if (resp.status == 200) {
       return resp;
+      n;
     }
   } catch (error) {
-    console.log(error);
-    return '{}';
+    return error;
   }
 };
 

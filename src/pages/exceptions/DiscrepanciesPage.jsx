@@ -66,8 +66,7 @@ EnhancedTableToolbar.propTypes = {
 function ReactTable({ columns, rows, loading }) {
   async function handleRowDoubleClick(params) {
     if (confirm('Decline contract with id: ' + params.row.id)) {
-      const token = localStorage.getItem('token');
-      const resp = await declineContract(token, params.row.id);
+      const resp = await declineContract(params.row);
 
       console.log(resp);
     } else {

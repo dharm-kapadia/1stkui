@@ -12,8 +12,7 @@ import { mapRerates } from 'utils/jsonHelper';
 
 const columns = [
   { field: 'id', headerName: 'Rerate Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'contractId', headerName: 'Contract Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'rerateStatus', headerName: 'Rerate Status', width: 200, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'rerateStatus', headerName: 'Rerate Status', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'processingStatus',
     headerName: 'Processing Status',
@@ -21,17 +20,39 @@ const columns = [
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
-  { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
-    field: 'lastUpdateDatetime',
-    headerName: 'Last Update Datetime',
-    width: 175,
+    field: 'originalBaseRate',
+    headerName: 'Original Base Rate',
+    width: 150,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'proposedBaseRate',
+    headerName: 'Proposed Base Rate',
+    width: 150,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
   {
     field: 'effectiveDate',
     headerName: 'Effective Date',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  {
+    field: 'matchingSpireTradeId',
+    headerName: 'Matching Spire Trade Id',
+    width: 175,
+    headerAlign: 'center',
+    headerClassName: 'super-app-theme--header'
+  },
+  { field: 'contractId', headerName: 'Contract Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  {
+    field: 'lastUpdateDatetime',
+    headerName: 'Last Update Datetime',
     width: 175,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
