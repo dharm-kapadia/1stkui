@@ -20,7 +20,7 @@ const icons = {
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
-const exceptions = {
+const entities = {
   id: 'group-entities',
   title: 'Entities',
   type: 'group',
@@ -92,4 +92,4 @@ const exceptions = {
   ]
 };
 
-export default exceptions;
+export default entities;
