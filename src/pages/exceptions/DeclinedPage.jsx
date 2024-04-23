@@ -7,7 +7,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { getDeclined } from 'services/decline';
+import { getDeclined } from 'services/declined';
 
 const columns = [
   { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -66,8 +66,6 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onChange: PropTypes.func
 };
-
-// ==============================|| REACT TABLE - EMPTY ||============================== //
 
 const DeclinedPage = () => {
   const [data, setData] = useState([]);

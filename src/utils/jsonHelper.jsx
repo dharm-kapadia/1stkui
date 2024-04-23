@@ -81,48 +81,6 @@ export const filterForUnmatched = (input) => {
   return pending;
 };
 
-// Iterate through the API call response and search for only for DISCREPANCIES events
-export const filterForDiscrepancies = (input) => {
-  var technical = [];
-
-  input.forEach((item) => {
-    if (item.type.includes('DISCREPANCIES')) {
-      var obj = {};
-      var dt = item.time;
-
-      obj['id'] = item.id;
-      obj['time'] = dt.replace('T', ' ').substring(0, 19);
-      obj['type'] = item.type;
-      obj['subject'] = item.subject;
-      obj['relatedprocess'] = item.relatedprocess;
-
-      if (item.data.relatedObjects.length > 0) {
-        item.data.relatedObjects.forEach((ro) => {
-          if (ro.relatedObjectType === '1SrceLoanContract') {
-            obj['relatedProcessId'] = ro.relatedObjectId;
-          }
-        });
-      }
-
-      obj['message'] = item.data.message;
-
-      if (item.data.fieldsImpacted.length > 0) {
-        var str = '';
-
-        item.data.fieldsImpacted.forEach((fields) => {
-          str += '[' + fields.fieldExceptionType + ', ' + fields.fieldName + ', ' + fields.fieldValue + '], ';
-        });
-
-        obj['fields'] = str;
-      }
-
-      technical.push(obj);
-    }
-  });
-
-  return technical;
-};
-
 // Iterate through the API call response and search for only TECHNICAL events
 export const filterForTechnical = (input) => {
   var technical = [];
@@ -144,29 +102,6 @@ export const filterForTechnical = (input) => {
   });
 
   return technical;
-};
-
-// Iterate through the API call response and search for only declined events
-export const filterForDeclined = (input) => {
-  var declined = [];
-
-  input.forEach((item) => {
-    if (item.type.includes('DECLINED')) {
-      var obj = {};
-      var dt = item.time;
-
-      obj['id'] = item.id;
-      obj['time'] = dt.replace('T', ' ').substring(0, 19);
-      obj['type'] = item.type;
-      obj['subject'] = item.subject;
-      obj['relatedprocess'] = item.relatedprocess;
-      obj['message'] = item.data.message;
-
-      declined.push(obj);
-    }
-  });
-
-  return declined;
 };
 
 export const flattenEvents = (input) => {
