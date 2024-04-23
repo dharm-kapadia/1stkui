@@ -57,7 +57,7 @@ function EnhancedTableToolbar(props) {
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <IconButton color="primary" aria-label="Discrepancies" size="medium">
+        <IconButton color="primary" aria-label="Buyins" size="medium">
           <ShoppingCartOutlinedIcon />
         </IconButton>
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
