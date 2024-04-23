@@ -85,7 +85,7 @@ const SplitsPage = () => {
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={0} />
+        <EnhancedTableToolbar numSelected={0} onChange={() => getSplitsData()} />
         <Box
           sx={{
             height: 675,

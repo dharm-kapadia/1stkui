@@ -1,16 +1,16 @@
-import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
+import { getBuyIns } from 'services/buyins';
 
 const columns = [
-  { field: 'buyinInitiatedId', headerName: 'Buyin Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'id', headerName: 'Buyin Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'buyinDate', headerName: 'Buyin Date', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'status', headerName: 'Status', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -46,6 +46,10 @@ const columns = [
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
 
+  function refreshBuyInsData() {
+    props.onChange();
+  }
+
   return (
     <Toolbar
       sx={{
@@ -57,26 +61,52 @@ function EnhancedTableToolbar(props) {
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <IconButton color="primary" aria-label="Buyins" size="medium">
-          <ShoppingCartOutlinedIcon />
-        </IconButton>
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
           Buy Ins
         </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
+        <Tooltip title="Refresh data">
+          <IconButton
+            sx={{ flex: '1 1' }}
+            color="primary"
+            onClick={() => {
+              refreshBuyInsData();
+            }}
+          >
+            <UpdateIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired
+  numSelected: PropTypes.number.isRequired,
+  onChange: PropTypes.func
 };
 
-function ReactTable({ columns, rows, loading }) {
+const BuyinsPage = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function getBuyInsData() {
+    setLoading(true);
+
+    let buyins = await getBuyIns();
+    setData(buyins);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getBuyInsData();
+  }, []);
+
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={0} />
+        <EnhancedTableToolbar numSelected={0} onChange={() => getBuyInsData()} />
         <Box
           sx={{
             height: 675,
@@ -99,14 +129,14 @@ function ReactTable({ columns, rows, loading }) {
               }
             }}
             initialState={{
-              ...rows.initialState,
+              ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'buyinDate', sort: 'desc' }]
               }
             }}
             pageSizeOptions={[20, 50, 100]}
-            rows={rows}
+            rows={data}
             columns={columns}
             loading={loading}
           />
@@ -114,57 +144,6 @@ function ReactTable({ columns, rows, loading }) {
       </MainCard>
     </>
   );
-}
-
-ReactTable.propTypes = {
-  columns: PropTypes.array,
-  rows: PropTypes.array,
-  loading: PropTypes.bool
-};
-
-const BuyinsPage = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const url = localStorage.getItem('url') + '/cloudevents';
-    const token = localStorage.getItem('token');
-
-    let respData = [];
-
-    // Get cloudevents using Bearer token
-    (async () => {
-      setLoading(true);
-      const result = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (result.data.totalItems !== 0) {
-        respData = result.data.items;
-
-        if (result.data.totalPages > 1) {
-          // Make multiple calls to get full dataset
-          for (let i = 1; i < result.data.totalPages; i++) {
-            const nextPage = await axios.get(url + `?page=${i}`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-
-            respData.push(...nextPage.data.items);
-          }
-        }
-
-        setLoading(false);
-      }
-
-      setData(respData);
-    })();
-  }, []);
-
-  return <ReactTable columns={columns} rows={data} loading={loading} />;
 };
 
 export default BuyinsPage;

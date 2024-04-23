@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Iterate through the API call response and search for only declined events
-const filterForDeclined = (input) => {
+export const filterForDeclined = (input) => {
   var declined = [];
 
   input.forEach((item) => {
@@ -42,7 +42,7 @@ const filterForDeclined = (input) => {
  *
  * @return {Array} The array of decline instructions
  */
-const getDeclineInstructions = async (token) => {
+export const getDeclineInstructions = async (token) => {
   const url = localStorage.getItem('url') + '/decline-instructions';
 
   const headers = {
@@ -65,7 +65,7 @@ const getDeclineInstructions = async (token) => {
  * @param {string} token
  * @param {DeclinedInstruction} instrs
  */
-const postDeclineInstructions = async (token, instrs) => {
+export const postDeclineInstructions = async (token, instrs) => {
   const url = localStorage.getItem('url') + '/decline-instructions';
   const declinedInstruction = JSON.stringify(instrs);
 
@@ -86,7 +86,7 @@ const postDeclineInstructions = async (token, instrs) => {
     });
 };
 
-const getDeclined = async () => {
+export const getDeclined = async () => {
   const token = localStorage.getItem('token');
   const url = localStorage.getItem('url') + '/cloudevents';
 
@@ -117,5 +117,3 @@ const getDeclined = async () => {
     return filterForDeclined(respData);
   }
 };
-
-export { getDeclined, getDeclineInstructions, filterForDeclined, postDeclineInstructions };
