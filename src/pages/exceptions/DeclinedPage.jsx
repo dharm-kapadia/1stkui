@@ -1,9 +1,9 @@
-import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
@@ -42,19 +42,21 @@ function EnhancedTableToolbar(props) {
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <IconButton
-          color="primary"
-          aria-label="Declined"
-          size="medium"
-          onClick={() => {
-            refreshDeclinedData();
-          }}
-        >
-          <ThumbDownOutlinedIcon />
-        </IconButton>
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
           Declined
         </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
+        <Tooltip title="Refresh data">
+          <IconButton
+            sx={{ flex: '1 1 100%' }}
+            color="primary"
+            onClick={() => {
+              refreshDeclinedData();
+            }}
+          >
+            <UpdateIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Toolbar>
   );
