@@ -1,15 +1,14 @@
-import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { darken, lighten, styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { flattenContracts } from 'utils/jsonHelper';
+import { getContracts } from 'services/contracts';
 
 const columns = [
   { field: 'id', headerName: 'Contract Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -71,6 +70,10 @@ const columns = [
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
 
+  function refreshContractsData() {
+    props.onChange();
+  }
+
   return (
     <Toolbar
       sx={{
@@ -82,19 +85,29 @@ function EnhancedTableToolbar(props) {
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <IconButton color="primary" aria-label="Contracts" size="medium">
-          <DescriptionOutlinedIcon />
-        </IconButton>
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
           Contracts
         </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
+        <Tooltip title="Refresh data">
+          <IconButton
+            sx={{ flex: '1 1 100%' }}
+            color="primary"
+            onClick={() => {
+              refreshContractsData();
+            }}
+          >
+            <UpdateIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired
+  numSelected: PropTypes.number.isRequired,
+  onChange: PropTypes.func
 };
 
 const getBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7));
@@ -156,11 +169,32 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   }
 }));
 
-function ReactTable({ columns, rows, loading }) {
+const ContractsPage = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function getContractsData() {
+    setLoading(true);
+
+    let contracts = await getContracts();
+    setData(contracts);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getContractsData();
+  }, []);
+
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={0} />
+        <EnhancedTableToolbar
+          numSelected={0}
+          onChange={() => {
+            getContractsData();
+          }}
+        />
         <Box
           sx={{
             height: 675,
@@ -183,14 +217,14 @@ function ReactTable({ columns, rows, loading }) {
               }
             }}
             initialState={{
-              ...rows.initialState,
+              ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'createDateTime', sort: 'desc' }]
               }
             }}
             pageSizeOptions={[20, 50, 100]}
-            rows={rows}
+            rows={data}
             columns={columns}
             getRowClassName={(params) => `super-app-theme--${params.row.contractStatus}`}
             loading={loading}
@@ -199,58 +233,6 @@ function ReactTable({ columns, rows, loading }) {
       </MainCard>
     </>
   );
-}
-
-ReactTable.propTypes = {
-  columns: PropTypes.array,
-  rows: PropTypes.array,
-  loading: PropTypes.bool
-};
-
-const ContractsPage = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const url = localStorage.getItem('url') + '/contracts';
-    const token = localStorage.getItem('token');
-
-    let respData = [];
-
-    // Get cloudevents using Bearer token
-    (async () => {
-      setLoading(true);
-      const result = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (result.data.totalItems !== 0) {
-        respData = result.data.items;
-
-        if (result.data.totalPages > 1) {
-          // Make multiple calls to get full dataset
-          for (let i = 1; i < result.data.totalPages; i++) {
-            const nextPage = await axios.get(url + `?page=${i}`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-
-            respData.push(...nextPage.data.items);
-          }
-        }
-
-        const items = flattenContracts(respData);
-        setData(items);
-
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  return <ReactTable columns={columns} rows={data} loading={loading} />;
 };
 
 export default ContractsPage;

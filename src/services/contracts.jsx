@@ -1,6 +1,57 @@
 import axios from 'axios';
 import { create_decline_instruction_id } from 'utils/routines';
 
+const flattenContracts = (input) => {
+  // Iterate through the API call response and create flattened Contract objects
+  var contracts = [];
+
+  input.forEach((item) => {
+    var contract = {};
+
+    if (item !== null) {
+      contract['id'] = item.contractId;
+      contract['contractStatus'] = item.contractStatus;
+      contract['createDateTime'] = item.createDateTime.replace('T', ' ').substring(0, 19);
+      contract['lastUpdateDateTime'] = item.lastUpdateDateTime.replace('T', ' ').substring(0, 19);
+      contract['matchingSpirePositionId'] = item.matchingSpirePositionId;
+      contract['matchingSpireTradeId'] = item.matchingSpireTradeId;
+      contract['processingStatus'] = item.processingStatus;
+      contract['ticker'] = item.trade.instrument.ticker;
+      contract['cusip'] = item.trade.instrument.cusip;
+      contract['isin'] = item.trade.instrument.isin;
+      contract['sedol'] = item.trade.instrument.sedol;
+      contract['quick'] = item.trade.instrument.quick;
+      contract['rebateRate'] = item.trade.rate.rebateRate;
+      contract['quantity'] = item.trade.quantity;
+      contract['billingCurrency'] = item.trade.billingCurrency;
+      contract['dividendRatePct'] = item.trade.dividendRatePct;
+      contract['tradeDate'] = item.trade.tradeDate;
+      contract['termType'] = item.trade.termType;
+      contract['termDate'] = item.trade.termDate;
+      contract['settlementType'] = item.trade.settlementType;
+      contract['settlementDate'] = item.trade.settlementDate;
+      contract['contractPrice'] = item.trade.collateral.contractPrice;
+      contract['contractValue'] = item.trade.collateral.contractValue;
+      contract['collateralValue'] = item.trade.collateral.collateralValue;
+      contract['collateralCurrency'] = item.trade.collateral.currency;
+      contract['collateralType'] = item.trade.collateral.type;
+      contract['collateralMargin'] = item.trade.collateral.margin;
+      contract['roundingRule'] = item.trade.collateral.roundingRule;
+      contract['roundingMode'] = item.trade.collateral.roundingMode;
+      contract['venueRefId'] = item.trade.venues[0].venueRefKey;
+      contract['internalPartyId'] = item.trade.transactingParties[0].party.partyId;
+      contract['internalRefId'] = item.trade.transactingParties[0].internalRef.internalRefId;
+      contract['accountId'] = item.trade.transactingParties[0].internalRef.accountId;
+      contract['tradeDate'] = item.trade.tradeDate;
+      contract['settlementDate'] = item.trade.settlementDate;
+
+      contracts.push(contract);
+    }
+  });
+
+  return contracts;
+};
+
 /**
  * Retrieve total number of contracts by querying the /contracts endpoint
  * and extracting resp.data.totalItems
@@ -58,22 +109,35 @@ const getNumContracts = async (token) => {
  *
  * @return {Array} The array of contracts
  */
-const getContracts = async (token) => {
+const getContracts = async () => {
   const url = localStorage.getItem('url') + '/contracts';
+  const token = localStorage.getItem('token');
 
-  try {
-    let resp = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  let respData = [];
 
-    if (resp.status == 200) {
-      return resp;
+  const result = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  } catch (error) {
-    console.log(error);
-    return '{}';
+  });
+
+  if (result.data.totalItems !== 0) {
+    respData = result.data.items;
+
+    if (result.data.totalPages > 1) {
+      // Make multiple calls to get full dataset
+      for (let i = 1; i < result.data.totalPages; i++) {
+        const nextPage = await axios.get(url + `?page=${i}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        respData.push(...nextPage.data.items);
+      }
+    }
+
+    return flattenContracts(respData);
   }
 };
 
@@ -137,4 +201,4 @@ const declineContract = async (row) => {
   }
 };
 
-export { declineContract, getNumContracts, getContracts, getContractById };
+export { declineContract, flattenContracts, getNumContracts, getContracts, getContractById };
