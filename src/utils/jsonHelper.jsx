@@ -72,28 +72,6 @@ export const filterForTechnical = (input) => {
   return technical;
 };
 
-export const flattenEvents = (input) => {
-  var events = [];
-
-  input.forEach((item) => {
-    if (!item.type.includes('TECHNICAL')) {
-      var obj = {};
-      var dt = item.time;
-
-      obj['id'] = item.id;
-      obj['time'] = dt.replace('T', ' ').substring(0, 19);
-      obj['type'] = item.type;
-      obj['subject'] = item.subject;
-      obj['relatedprocess'] = item.relatedprocess;
-      obj['message'] = item.data.message;
-
-      events.push(obj);
-    }
-  });
-
-  return events;
-};
-
 export const mapRerates = (items) => {
   var rerates = [];
 

@@ -1,14 +1,13 @@
-import { IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { flattenEvents } from 'utils/jsonHelper';
+import { getEvents } from 'services/events';
 
 const columns = [
   { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -28,6 +27,10 @@ const columns = [
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
 
+  function refreshEventsData() {
+    props.onChange();
+  }
+
   return (
     <Toolbar
       sx={{
@@ -39,26 +42,57 @@ function EnhancedTableToolbar(props) {
       }}
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
-        <IconButton color="primary" aria-label="Events" size="medium">
-          <EventAvailableOutlinedIcon />
-        </IconButton>
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
           Events
         </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
+        <Tooltip title="Refresh data">
+          <IconButton
+            sx={{ flex: '1 1 100%' }}
+            color="primary"
+            onClick={() => {
+              refreshEventsData();
+            }}
+          >
+            <UpdateIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired
+  numSelected: PropTypes.number.isRequired,
+  onChange: PropTypes.func
 };
 
-function ReactTable({ columns, rows, loading }) {
+const EventsPage = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function getEventsData() {
+    setLoading(true);
+
+    let events = await getEvents();
+    setData(events);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getEventsData();
+  }, []);
+
   return (
     <>
       <MainCard content={false} sx={{ width: '100%', overflow: 'hidden' }}>
-        <EnhancedTableToolbar numSelected={0} />
+        <EnhancedTableToolbar
+          numSelected={0}
+          onChange={() => {
+            getEventsData();
+          }}
+        />
         <Box
           sx={{
             height: 675,
@@ -81,14 +115,14 @@ function ReactTable({ columns, rows, loading }) {
               }
             }}
             initialState={{
-              ...rows.initialState,
+              ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'time', sort: 'desc' }]
               }
             }}
             pageSizeOptions={[20, 50, 100]}
-            rows={rows}
+            rows={data}
             columns={columns}
             loading={loading}
           />
@@ -96,60 +130,6 @@ function ReactTable({ columns, rows, loading }) {
       </MainCard>
     </>
   );
-}
-
-ReactTable.propTypes = {
-  columns: PropTypes.array,
-  rows: PropTypes.array,
-  loading: PropTypes.bool
-};
-
-const EventsPage = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const url = localStorage.getItem('url') + '/cloudevents';
-    const token = localStorage.getItem('token');
-
-    let respData = [];
-
-    // Get cloudevents using Bearer token
-    (async () => {
-      setLoading(true);
-      const result = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (result.data.totalItems !== 0) {
-        respData = result.data.items;
-
-        if (result.data.totalPages > 1) {
-          // Make multiple calls to get full dataset
-          for (let i = 1; i < result.data.totalPages; i++) {
-            const nextPage = await axios.get(url + `?page=${i}`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-
-            respData.push(...nextPage.data.items);
-          }
-        }
-
-        let vals = flattenEvents(respData);
-        setData(vals);
-      } else {
-        setData([]);
-      }
-
-      setLoading(false);
-    })();
-  }, []);
-
-  return <ReactTable columns={columns} rows={data} loading={loading} />;
 };
 
 export default EventsPage;
