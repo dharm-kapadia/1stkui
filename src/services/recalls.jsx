@@ -1,37 +1,31 @@
 import axios from 'axios';
 
-// Iterate through the API call response and search for only return events
-export const filterForReturns = (input) => {
-  var returns = [];
+// Iterate through the API call response and search for only recall events
+export const filterForRecalls = (input) => {
+  var recalls = [];
 
   input.forEach((item) => {
-    if (item.type.includes('RETURN')) {
+    if (item.type.includes('RECALL')) {
       var obj = {};
 
-      obj['id'] = item.returnId;
+      obj['id'] = item.recallId;
       obj['contractId'] = item.contractId;
-      obj['quantity'] = item.quantity;
-      obj['returnDate'] = item.returnDate;
       obj['status'] = item.status;
-      obj['partyId'] = item.partyId;
-      obj['returnType'] = item.returnType;
-      obj['venueName'] = item.venueName;
-      obj['venueRefKey'] = item.venueRefKey;
-      obj['transactionDatetime'] = item.transactionDatetime.replace('T', ' ').substring(0, 19);
-      obj['partyRole'] = item.partyRole;
-      obj['venueRefPartyKey'] = item.venueRefPartyKey;
-      obj['localVenueFieldName'] = item.localVenueFieldName;
-      obj['localVenueFieldValue'] = item.localVenueFieldValue;
+      obj['executionVenue'] = item.executionVenue;
+      obj['openQuantity'] = item.openQuantity;
+      obj['quantity'] = item.quantity;
+      obj['recallDate'] = item.recallDate;
+      obj['recallDueDate'] = item.recallDueDate;
       obj['lastUpdateDatetime'] = item.lastUpdateDatetime.replace('T', ' ').substring(0, 19);
 
-      returns.push(obj);
+      recalls.push(obj);
     }
   });
 
-  return returns;
+  return recalls;
 };
 
-export const getReturns = async () => {
+export const getRecalls = async () => {
   const url = localStorage.getItem('url') + '/cloudevents';
   const token = localStorage.getItem('token');
 
@@ -59,6 +53,6 @@ export const getReturns = async () => {
       }
     }
 
-    return filterForReturns(respData);
+    return filterForRecalls(respData);
   }
 };

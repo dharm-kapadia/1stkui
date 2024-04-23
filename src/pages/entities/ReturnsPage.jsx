@@ -107,8 +107,8 @@ const ReturnsPage = () => {
   async function getReturnsData() {
     setLoading(true);
 
-    let declined = await getReturns();
-    setData(declined);
+    let returns = await getReturns();
+    setData(returns);
 
     setLoading(false);
   }
