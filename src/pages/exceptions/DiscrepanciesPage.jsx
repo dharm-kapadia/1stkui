@@ -57,7 +57,7 @@ function EnhancedTableToolbar(props) {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
         <Tooltip title="Refresh data">
           <IconButton
-            sx={{ flex: '1 1 100%' }}
+            sx={{ flex: '1 1' }}
             color="primary"
             onClick={() => {
               refreshDiscrepanciesData();
