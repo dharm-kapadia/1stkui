@@ -1,6 +1,27 @@
 import axios from 'axios';
 
-import { filterForDeclined } from 'utils/jsonHelper';
+// Iterate through the API call response and search for only declined events
+const filterForDeclined = (input) => {
+  var declined = [];
+
+  input.forEach((item) => {
+    if (item.type.includes('DECLINED')) {
+      var obj = {};
+      var dt = item.time;
+
+      obj['id'] = item.id;
+      obj['time'] = dt.replace('T', ' ').substring(0, 19);
+      obj['type'] = item.type;
+      obj['subject'] = item.subject;
+      obj['relatedprocess'] = item.relatedprocess;
+      obj['message'] = item.data.message;
+
+      declined.push(obj);
+    }
+  });
+
+  return declined;
+};
 
 /**
  * Retrieve Decline instructions information based on
@@ -97,4 +118,4 @@ const getDeclined = async () => {
   }
 };
 
-export { getDeclined, getDeclineInstructions, postDeclineInstructions };
+export { getDeclined, getDeclineInstructions, filterForDeclined, postDeclineInstructions };
