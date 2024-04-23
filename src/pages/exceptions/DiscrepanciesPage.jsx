@@ -93,8 +93,8 @@ const DiscrepanciesPage = () => {
   async function getDiscrepanciesData() {
     setLoading(true);
 
-    let data = await getDiscrepancies();
-    setData(data);
+    let discrepancies = await getDiscrepancies();
+    setData(discrepancies);
 
     setLoading(false);
   }

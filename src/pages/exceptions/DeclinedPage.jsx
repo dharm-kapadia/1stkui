@@ -74,8 +74,8 @@ const DeclinedPage = () => {
   async function getDeclinedData() {
     setLoading(true);
 
-    let data = await getDeclined();
-    setData(data);
+    let declined = await getDeclined();
+    setData(declined);
 
     setLoading(false);
   }

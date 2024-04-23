@@ -49,38 +49,6 @@ export const flattenContracts = (input) => {
   return contracts;
 };
 
-// Iterate through the API call response and search for only UNMATCHED events
-export const filterForUnmatched = (input) => {
-  var pending = [];
-
-  input.forEach((item) => {
-    if (item.type.includes('UNMATCHED') || item.type.includes('PENDING')) {
-      var unmatched = {};
-      var dt = item.time;
-
-      unmatched['id'] = item.id;
-      unmatched['time'] = dt.replace('T', ' ').substring(0, 19);
-      unmatched['type'] = item.type;
-      unmatched['subject'] = item.subject;
-      unmatched['relatedprocess'] = item.relatedprocess;
-
-      if (item.data.relatedObjects.length > 0) {
-        item.data.relatedObjects.forEach((ro) => {
-          if (ro.relatedObjectType === '1SrceLoanContract') {
-            unmatched['relatedProcessId'] = ro.relatedObjectId;
-          }
-        });
-      }
-
-      unmatched['message'] = item.data.message;
-
-      pending.push(unmatched);
-    }
-  });
-
-  return pending;
-};
-
 // Iterate through the API call response and search for only TECHNICAL events
 export const filterForTechnical = (input) => {
   var technical = [];
