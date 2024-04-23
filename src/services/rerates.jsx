@@ -1,5 +1,30 @@
 import axios from 'axios';
 
+export const mapRerates = (items) => {
+  var rerates = [];
+
+  items.forEach((item) => {
+    var obj = {};
+
+    obj['id'] = item.rerateId;
+    obj['contractId'] = item.contractId;
+    obj['rerateStatus'] = item.rerateStatus;
+    obj['processingStatus'] = item.processingStatus;
+    obj['matchingSpireTradeId'] = item.matchingSpireTradeId;
+    obj['originalBaseRate'] = item.rate.rebate.fixed.baseRate;
+    obj['originalEffectiveRate'] = item.rate.rebate.fixed.effectiveRate;
+    obj['proposedBaseRate'] = item.rerate.rebate.fixed.baseRate;
+    obj['proposedEffectiveRate'] = item.rerate.rebate.fixed.effectiveRate;
+    obj['createDatetime'] = item.createDatetime.replace('T', ' ').substring(0, 19);
+    obj['lastUpdateDatetime'] = item.lastUpdateDatetime.replace('T', ' ').substring(0, 19);
+    obj['effectiveDate'] = item.effectiveDate.replace('T', ' ').substring(0, 19);
+
+    rerates.push(obj);
+  });
+
+  return rerates;
+};
+
 /**
  * Retrieve total number of rerates by querying the /rerates endpoint
  * and extracting resp.data.totalItems
@@ -32,22 +57,35 @@ export const getNumRerates = async (token) => {
  *
  * @return {Array} The array of rerates
  */
-export const getRerates = async (token) => {
+export const getRerates = async () => {
   const url = localStorage.getItem('url') + '/rerates';
+  const token = localStorage.getItem('token');
 
-  try {
-    let resp = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  let respData = [];
 
-    if (resp.status == 200) {
-      return resp;
+  const result = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  } catch (error) {
-    console.log(error);
-    return '{}';
+  });
+
+  if (result.data.totalItems !== 0) {
+    respData = result.data.items;
+
+    if (result.data.totalPages > 1) {
+      // Make multiple calls to get full dataset
+      for (let i = 1; i < result.data.totalPages; i++) {
+        const nextPage = await axios.get(url + `?page=${i}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        respData.push(...nextPage.data.items);
+      }
+    }
+
+    return mapRerates(respData);
   }
 };
 
