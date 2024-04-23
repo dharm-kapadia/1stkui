@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { filterForDeclined } from 'utils/jsonHelper';
+
 /**
  * Retrieve Decline instructions information based on
  * various query parameters. Supports filtering by each
@@ -63,4 +65,36 @@ const postDeclineInstructions = async (token, instrs) => {
     });
 };
 
-export { getDeclineInstructions, postDeclineInstructions };
+const getDeclined = async () => {
+  const token = localStorage.getItem('token');
+  const url = localStorage.getItem('url') + '/cloudevents';
+
+  let respData = [];
+
+  const result = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (result.data.totalItems !== 0) {
+    respData = result.data.items;
+
+    if (result.data.totalPages > 1) {
+      // Make multiple calls to get full dataset
+      for (let i = 1; i < result.data.totalPages; i++) {
+        const nextPage = await axios.get(url + `?page=${i}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        respData.push(...nextPage.data.items);
+      }
+    }
+
+    return filterForDeclined(respData);
+  }
+};
+
+export { getDeclined, getDeclineInstructions, postDeclineInstructions };
