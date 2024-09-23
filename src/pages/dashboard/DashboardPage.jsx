@@ -28,18 +28,18 @@ import { getNumContracts } from '../../services/contracts';
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const Dashboard = () => {
-  const [discrepancyCount, setDiscrepancyCount] = useState('0');
-  const [pendingCount, setPendingCount] = useState('0');
-  const [declinedCount, setDeclinedCount] = useState('0');
-  const [eventCount, setEventCount] = useState('0');
+  const [discrepancyCount, setDiscrepancyCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [declinedCount, setDeclinedCount] = useState(0);
+  const [eventCount, setEventCount] = useState(0);
 
-  const [tradeAgreementCount, setTradeAgreementCount] = useState('0');
-  const [contractsCount, setContractsCount] = useState('0');
-  const [reratesCount, setReratesCount] = useState('0');
-  const [returnsCount, setReturnsCount] = useState('0');
-  const [recallsCount, setRecallsCount] = useState('0');
-  const [buyinsCount, setBuyinsCount] = useState('0');
-  const [splitsCount, setSplitsCount] = useState('0');
+  const [tradeAgreementCount, setTradeAgreementCount] = useState(0);
+  const [contractsCount, setContractsCount] = useState(0);
+  const [reratesCount, setReratesCount] = useState(0);
+  const [returnsCount, setReturnsCount] = useState(0);
+  const [recallsCount, setRecallsCount] = useState(0);
+  const [buyinsCount, setBuyinsCount] = useState(0);
+  const [splitsCount, setSplitsCount] = useState(0);
 
   const [isFetching, setIsFetching] = useState(true);
 
