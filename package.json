@@ -1,5 +1,5 @@
 {
-  "name": "1source-toolkit-ui",
+  "name": "1source-connector-ui",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://equilend.com/",
@@ -24,6 +24,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
+    "1source-toolkit-ui": "file:",
     "antd": "^5.14.2",
     "axios": "^1.6.7",
     "chance": "^1.1.11",

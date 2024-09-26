@@ -11,7 +11,7 @@ import { getRecalls } from 'services/recalls';
 
 const columns = [
   { field: 'recallId', headerName: 'Recall Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanId', headerName: 'Loan Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'status', headerName: 'Status', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'executionVenue', headerName: 'Execution Venue', width: 200, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'openQuantity', headerName: 'Open Quantity', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },

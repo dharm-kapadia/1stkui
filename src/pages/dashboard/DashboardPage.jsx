@@ -12,6 +12,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import KeyboardReturnOutlinedIcon from '@mui/icons-material/KeyboardReturnOutlined';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 
@@ -22,8 +23,8 @@ import Divider from '@mui/material/Divider';
 // project import
 import DashboardAnalytics from 'components/cards/statistics/DashboardAnalytics';
 import { getCloudEvents } from 'services/cloudevents';
+import { getNumLoans } from 'services/loans';
 import { getNumRerates } from 'services/rerates';
-import { getNumContracts } from '../../services/contracts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
@@ -31,10 +32,11 @@ const Dashboard = () => {
   const [discrepancyCount, setDiscrepancyCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const [declinedCount, setDeclinedCount] = useState(0);
+  const [nackCount, setNackCount] = useState(0);
   const [eventCount, setEventCount] = useState(0);
 
   const [tradeAgreementCount, setTradeAgreementCount] = useState(0);
-  const [contractsCount, setContractsCount] = useState(0);
+  const [loansCount, setLoansCount] = useState(0);
   const [reratesCount, setReratesCount] = useState(0);
   const [returnsCount, setReturnsCount] = useState(0);
   const [recallsCount, setRecallsCount] = useState(0);
@@ -68,12 +70,12 @@ const Dashboard = () => {
       setPendingCount(pc);
     }
 
-    async function fetchContracts() {
-      // Get number of contracts using Bearer token
-      const contractCount = await getNumContracts(token);
+    async function fetchLoans() {
+      // Get number of loans using Bearer token
+      const loanCount = await getNumLoans(token);
 
-      // Parse the response and update the contract count on the UI
-      setContractsCount(contractCount);
+      // Parse the response and update the loans count on the UI
+      setLoansCount(loanCount);
     }
 
     async function fetchRerates() {
@@ -85,9 +87,10 @@ const Dashboard = () => {
     }
 
     fetchCloudEvents();
-    fetchContracts();
+    fetchLoans();
 
     setDeclinedCount(0);
+    setNackCount(0);
 
     setTradeAgreementCount(0);
     fetchRerates();
@@ -126,6 +129,14 @@ const Dashboard = () => {
         <Grid item xs={4}>
           <DashboardAnalytics title="Declined" count={declinedCount.toString()} color="darkorange" cardIcon={<ThumbDownOutlinedIcon />} />
         </Grid>
+        <Grid item xs={4}>
+          <DashboardAnalytics
+            title="Negative Ack"
+            count={nackCount.toString()}
+            color="red"
+            cardIcon={<RemoveCircleOutlineOutlinedIcon />}
+          />
+        </Grid>
 
         {/* Entities - Row 1 */}
         <Grid item xs={12}>
@@ -147,12 +158,7 @@ const Dashboard = () => {
               />
             </Grid>
             <Grid item xs={4}>
-              <DashboardAnalytics
-                title="Contracts"
-                count={contractsCount.toString()}
-                color="#52C41A"
-                cardIcon={<DescriptionOutlinedIcon />}
-              />
+              <DashboardAnalytics title="Loans" count={loansCount.toString()} color="#52C41A" cardIcon={<DescriptionOutlinedIcon />} />
             </Grid>
           </Grid>
         </Grid>
@@ -184,7 +190,7 @@ const Dashboard = () => {
               <DashboardAnalytics title="Buyins" count={buyinsCount.toString()} cardIcon={<ShoppingCartOutlinedIcon />} />
             </Grid>
             <Grid item xs={4}>
-              <DashboardAnalytics title="Contract Splits" count={splitsCount.toString()} cardIcon={<CallSplitOutlinedIcon />} />
+              <DashboardAnalytics title="Loan Splits" count={splitsCount.toString()} cardIcon={<CallSplitOutlinedIcon />} />
             </Grid>
           </Grid>
         </Grid>

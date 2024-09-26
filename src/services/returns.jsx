@@ -9,7 +9,7 @@ export const filterForReturns = (input) => {
       var obj = {};
 
       obj['id'] = item.returnId;
-      obj['contractId'] = item.contractId;
+      obj['loanId'] = item.loanId;
       obj['quantity'] = item.quantity;
       obj['returnDate'] = item.returnDate;
       obj['status'] = item.status;

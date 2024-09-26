@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 
 const columns = [
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanId', headerName: 'Loan Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'processingStatus',
     headerName: 'Processing Status',
@@ -25,7 +25,7 @@ const columns = [
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
-  { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanStatus', headerName: 'Loan Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'lastUpdatePary',
     headerName: 'Last Update Party',

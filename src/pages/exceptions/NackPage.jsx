@@ -7,60 +7,27 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { getReturns } from 'services/returns';
+import { getNacks } from 'services/nacks';
 
 const columns = [
-  { field: 'id', headerName: 'Return Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'loanId', headerName: 'Loan Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'quantity', headerName: 'Quantity', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'returnDate', headerName: 'Return Date', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'status', headerName: 'Status', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'partyId', headerName: 'Party Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'returnType', headerName: 'Return Type', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'venueName', headerName: 'Venue Name', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'venueRefKey', headerName: 'Venue Ref Key', width: 170, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'id', headerName: 'Event Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'time', headerName: 'Event Time', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'type', headerName: 'Event Type', width: 300, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'subject', headerName: 'Subject', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
-    field: 'transactionDatetime',
-    headerName: 'Transaction Datetime',
-    width: 175,
+    field: 'relatedprocess',
+    headerName: 'Related Lifecycle Event',
+    width: 200,
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
-  { field: 'partyRole', headerName: 'Party Role', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  {
-    field: 'venueRefPartyKey',
-    headerName: 'Venue Ref Party Key',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
-    field: 'localVenueFieldName',
-    headerName: 'Local Venue Field Name',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
-    field: 'localVenueFieldValue',
-    headerName: 'Local Venue Field Value',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  },
-  {
-    field: 'lastUpdateDatetime',
-    headerName: 'Last Update Datetime',
-    width: 175,
-    headerAlign: 'center',
-    headerClassName: 'super-app-theme--header'
-  }
+  { field: 'message', headerName: 'Nacks Details', width: 500, headerAlign: 'center', headerClassName: 'super-app-theme--header' }
 ];
 
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
 
-  function refreshReturnsData() {
+  function refreshNacksData() {
     props.onChange();
   }
 
@@ -76,7 +43,7 @@ function EnhancedTableToolbar(props) {
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
-          Returns
+          Negative Acknowledgements
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
         <Tooltip title="Refresh data">
@@ -84,7 +51,7 @@ function EnhancedTableToolbar(props) {
             sx={{ flex: '1 1' }}
             color="primary"
             onClick={() => {
-              refreshReturnsData();
+              refreshNacksData();
             }}
           >
             <UpdateIcon />
@@ -100,21 +67,21 @@ EnhancedTableToolbar.propTypes = {
   onChange: PropTypes.func
 };
 
-const ReturnsPage = () => {
+const NacksPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  async function getReturnsData() {
+  async function getNacksData() {
     setLoading(true);
 
-    let returns = await getReturns();
-    setData(returns);
+    let nacks = await getNacks();
+    setData(nacks);
 
     setLoading(false);
   }
 
   useEffect(() => {
-    getReturnsData();
+    getNacksData();
   }, []);
 
   return (
@@ -123,7 +90,7 @@ const ReturnsPage = () => {
         <EnhancedTableToolbar
           numSelected={0}
           onChange={() => {
-            getReturnsData();
+            getNacksData();
           }}
         />
         <Box
@@ -142,16 +109,18 @@ const ReturnsPage = () => {
             sx={{
               boxShadow: 1,
               border: 1,
+              fontSize: 13,
               borderColor: 'primary.light',
               '& .MuiDataGrid-cell:hover': {
                 color: 'primary.main'
               }
             }}
+            getRowHeight={() => 'auto'}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
-                sortModel: [{ field: 'returnDate', sort: 'desc' }]
+                sortModel: [{ field: 'time', sort: 'desc' }]
               }
             }}
             pageSizeOptions={[20, 50, 100]}
@@ -165,4 +134,4 @@ const ReturnsPage = () => {
   );
 };
 
-export default ReturnsPage;
+export default NacksPage;

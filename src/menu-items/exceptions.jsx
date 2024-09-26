@@ -1,11 +1,13 @@
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 
 const icons = {
   ThumbDownOutlinedIcon,
   ErrorOutline,
-  PendingActionsIcon
+  PendingActionsIcon,
+  RemoveCircleOutlineOutlinedIcon
 };
 
 const exceptions = {
@@ -35,6 +37,14 @@ const exceptions = {
       type: 'item',
       url: '/declined',
       icon: icons.ThumbDownOutlinedIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'nack',
+      title: 'Negative Ack',
+      type: 'item',
+      url: '/nacks',
+      icon: icons.RemoveCircleOutlineOutlinedIcon,
       breadcrumbs: false
     }
   ]

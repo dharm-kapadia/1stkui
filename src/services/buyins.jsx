@@ -9,7 +9,7 @@ export const filterForBuyins = (input) => {
 
       obj['id'] = item.buyinInitiatedId;
       obj['buyinDate'] = item.buyinDate;
-      obj['contractId'] = item.contractId;
+      obj['loanId'] = item.loanId;
       obj['status'] = item.status;
       obj['openQuantity'] = item.openQuantity;
       obj['quantity'] = item.quantity;

@@ -7,7 +7,7 @@ export const mapRerates = (items) => {
     var obj = {};
 
     obj['id'] = item.rerateId;
-    obj['contractId'] = item.contractId;
+    obj['loanId'] = item.loanId;
     obj['rerateStatus'] = item.rerateStatus;
     obj['processingStatus'] = item.processingStatus;
     obj['matchingSpireTradeId'] = item.matchingSpireTradeId;

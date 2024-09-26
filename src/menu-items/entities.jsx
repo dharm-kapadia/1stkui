@@ -42,10 +42,10 @@ const entities = {
       breadcrumbs: false
     },
     {
-      id: 'contracts',
-      title: 'Contracts',
+      id: 'loans',
+      title: 'Loans',
       type: 'item',
-      url: '/contracts',
+      url: '/loans',
       icon: icons.DescriptionOutlinedIcon,
       breadcrumbs: false
     },
@@ -83,7 +83,7 @@ const entities = {
     },
     {
       id: 'splits',
-      title: 'Contract Splits',
+      title: 'Loan Splits',
       type: 'item',
       url: '/splits',
       icon: icons.CallSplitOutlinedIcon,

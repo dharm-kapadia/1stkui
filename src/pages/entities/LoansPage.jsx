@@ -8,11 +8,11 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { getContracts } from 'services/contracts';
+import { getLoans } from 'services/loans';
 
 const columns = [
-  { field: 'id', headerName: 'Contract Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'contractStatus', headerName: 'Contract Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'id', headerName: 'Loan Id', width: 250, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanStatus', headerName: 'Loan Status', width: 125, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'createDateTime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'matchingSpirePositionId',
@@ -70,7 +70,7 @@ const columns = [
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
 
-  function refreshContractsData() {
+  function refreshLoansData() {
     props.onChange();
   }
 
@@ -86,7 +86,7 @@ function EnhancedTableToolbar(props) {
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
-          Contracts
+          Loans
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
         <Tooltip title="Refresh data">
@@ -94,7 +94,7 @@ function EnhancedTableToolbar(props) {
             sx={{ flex: '1 1' }}
             color="primary"
             onClick={() => {
-              refreshContractsData();
+              refreshLoansData();
             }}
           >
             <UpdateIcon />
@@ -169,21 +169,21 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   }
 }));
 
-const ContractsPage = () => {
+const LoansPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  async function getContractsData() {
+  async function getLoansData() {
     setLoading(true);
 
-    let contracts = await getContracts();
-    setData(contracts);
+    let loans = await getLoans();
+    setData(loans);
 
     setLoading(false);
   }
 
   useEffect(() => {
-    getContractsData();
+    getLoansData();
   }, []);
 
   return (
@@ -192,7 +192,7 @@ const ContractsPage = () => {
         <EnhancedTableToolbar
           numSelected={0}
           onChange={() => {
-            getContractsData();
+            getLoansData();
           }}
         />
         <Box
@@ -217,7 +217,7 @@ const ContractsPage = () => {
               }
             }}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'createDateTime', sort: 'desc' }]
@@ -226,7 +226,7 @@ const ContractsPage = () => {
             pageSizeOptions={[20, 50, 100]}
             rows={data}
             columns={columns}
-            getRowClassName={(params) => `super-app-theme--${params.row.contractStatus}`}
+            getRowClassName={(params) => `super-app-theme--${params.row.loanStatus}`}
             loading={loading}
           />
         </Box>
@@ -235,4 +235,4 @@ const ContractsPage = () => {
   );
 };
 
-export default ContractsPage;
+export default LoansPage;

@@ -12,7 +12,7 @@ import { getBuyIns } from 'services/buyins';
 const columns = [
   { field: 'id', headerName: 'Buyin Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'buyinDate', headerName: 'Buyin Date', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
-  { field: 'contractId', headerName: 'Contract Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanId', headerName: 'Loan Id', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'status', headerName: 'Status', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'openQuantity', headerName: 'Open Qty', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'quantity', headerName: 'Quantity', width: 150, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -62,7 +62,7 @@ function EnhancedTableToolbar(props) {
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
-          Buy Ins
+          Buyins
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
         <Tooltip title="Refresh data">

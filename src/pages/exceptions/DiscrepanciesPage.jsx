@@ -7,8 +7,8 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
-import { declineContract } from 'services/contracts';
 import { getDiscrepancies } from 'services/discrepancies';
+import { declineLoan } from 'services/loans';
 
 const columns = [
   { field: 'id', headerName: 'Event Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
@@ -81,12 +81,12 @@ const DiscrepanciesPage = () => {
   const [loading, setLoading] = useState(false);
 
   async function handleRowDoubleClick(params) {
-    if (confirm('Decline contract with id: ' + params.row.id)) {
-      const resp = await declineContract(params.row);
+    if (confirm('Decline loan with id: ' + params.row.id)) {
+      const resp = await declineLoan(params.row);
 
       console.log(resp);
     } else {
-      alert(`"Cancelled declining contract with id: ${params.row.id}"`);
+      alert(`"Cancelled declining loan with id: ${params.row.id}"`);
     }
   }
 
@@ -136,7 +136,7 @@ const DiscrepanciesPage = () => {
             }}
             getRowHeight={() => 'auto'}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'time', sort: 'desc' }]

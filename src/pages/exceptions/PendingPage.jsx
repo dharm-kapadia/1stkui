@@ -7,6 +7,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
+import { declineLoan } from 'services/loans';
 import { getPending } from 'services/pending';
 
 const columns = [
@@ -81,13 +82,13 @@ const PendingPage = () => {
 
   async function handleRowDoubleClick(params) {
     if (params.row.type === 'LOAN_CONTRACT_PROPOSAL_UNMATCHED') {
-      if (confirm('Decline contract with id: ' + params.row.id)) {
+      if (confirm('Decline loan with id: ' + params.row.id)) {
         const token = localStorage.getItem('token');
-        const resp = await declineContract(token, params.row.id);
+        const resp = await declineLoan(token, params.row.id);
 
         console.log(resp);
       } else {
-        alert(`"Cancelled declining contract with id: ${params.row.id}"`);
+        alert(`"Cancelled declining loan with id: ${params.row.id}"`);
       }
     }
   }
@@ -137,7 +138,7 @@ const PendingPage = () => {
             }}
             getRowHeight={() => 'auto'}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'time', sort: 'desc' }]

@@ -41,7 +41,7 @@ function EnhancedTableToolbar(props) {
     >
       <Stack direction="row" spacing={0.5} alignItems="center">
         <Typography sx={{ flex: '1 1 100%' }} variant="h3" id="tableTitle" component="div">
-          Contract Splits
+          Loan Splits
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}> </Box>
         <Tooltip title="Refresh data">

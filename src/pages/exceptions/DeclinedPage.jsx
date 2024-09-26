@@ -117,7 +117,7 @@ const DeclinedPage = () => {
             }}
             getRowHeight={() => 'auto'}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'time', sort: 'desc' }]

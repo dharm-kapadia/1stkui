@@ -47,7 +47,7 @@ const columns = [
     headerAlign: 'center',
     headerClassName: 'super-app-theme--header'
   },
-  { field: 'contractId', headerName: 'Contract Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
+  { field: 'loanId', headerName: 'Loan Id', width: 275, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   { field: 'createDatetime', headerName: 'Create Datetime', width: 175, headerAlign: 'center', headerClassName: 'super-app-theme--header' },
   {
     field: 'lastUpdateDatetime',
@@ -149,7 +149,7 @@ const ReratesPage = () => {
               }
             }}
             initialState={{
-              ...data.initialState,
+              // ...data.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
               sorting: {
                 sortModel: [{ field: 'createDatetime', sort: 'desc' }]

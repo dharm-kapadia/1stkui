@@ -11,11 +11,12 @@ const Dashboard = Loadable(lazy(() => import('pages/dashboard/DashboardPage')));
 const DiscrepanciesPage = Loadable(lazy(() => import('pages/exceptions/DiscrepanciesPage')));
 const PendingPage = Loadable(lazy(() => import('pages/exceptions/PendingPage')));
 const DeclinedPage = Loadable(lazy(() => import('pages/exceptions/DeclinedPage')));
+const NacksPage = Loadable(lazy(() => import('pages/exceptions/NackPage')));
 
 // render - entities
 const EventsPage = Loadable(lazy(() => import('pages/entities/EventsPage')));
 const TradeAgreementsPage = Loadable(lazy(() => import('pages/entities/TradeAgreementsPage')));
-const ContractsPage = Loadable(lazy(() => import('pages/entities/ContractsPage')));
+const LoansPage = Loadable(lazy(() => import('pages/entities/LoansPage')));
 const ReratesPage = Loadable(lazy(() => import('pages/entities/ReratesPage')));
 const ReturnsPage = Loadable(lazy(() => import('pages/entities/ReturnsPage')));
 const RecallsPage = Loadable(lazy(() => import('pages/entities/RecallsPage')));
@@ -45,6 +46,10 @@ const MainRoutes = {
       element: <DiscrepanciesPage />
     },
     {
+      path: 'nacks',
+      element: <NacksPage />
+    },
+    {
       path: 'pending',
       element: <PendingPage />
     },
@@ -57,8 +62,8 @@ const MainRoutes = {
       element: <TradeAgreementsPage />
     },
     {
-      path: 'contracts',
-      element: <ContractsPage />
+      path: 'loans',
+      element: <LoansPage />
     },
     {
       path: 'rerates',

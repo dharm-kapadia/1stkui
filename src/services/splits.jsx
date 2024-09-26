@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Iterate through the API call response and search for only contract split events
+// Iterate through the API call response and search for only loan split events
 export const filterForSplits = (input) => {
   var splits = [];
 

@@ -9,7 +9,7 @@ export const filterForRecalls = (input) => {
       var obj = {};
 
       obj['id'] = item.recallId;
-      obj['contractId'] = item.contractId;
+      obj['loanId'] = item.loanId;
       obj['status'] = item.status;
       obj['executionVenue'] = item.executionVenue;
       obj['openQuantity'] = item.openQuantity;

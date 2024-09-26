@@ -231,8 +231,8 @@ export const VenueType = {
 // Toolkit API Schemas
 
 export const Collateral = {
-  contractPrice: 0.0,
-  contractValue: 0.0,
+  loanPrice: 0.0,
+  loanValue: 0.0,
   collateralValue: 0.0,
   currency: CurrencyCd,
   tyep: CollateralType,
@@ -242,11 +242,11 @@ export const Collateral = {
   roundingMode: RoundingMode
 };
 
-export const Contract = {
-  contractId: '',
+export const Loan = {
+  loanId: '',
   lastEvent: TradeEvent,
   settlementStatus: SettlementStatus,
-  contractStatus: ContractStatus,
+  loanStatus: LoanStatus,
   lastUpdatePartyId: 0,
   lastUpdateDatetime: '',
   trade: TradeAgreement,
@@ -316,6 +316,16 @@ export const LocalVenueField = {
 
 export const LocalVenueFields = {
   items: [LocalVenueField]
+};
+
+export const NackInstructions = {
+  nackInstructionId: '',
+  relatedCloudEventId: '',
+  relatedReturnId: '',
+  creationDateTime: '',
+  userId: '',
+  nackReasonCode: '',
+  nackReasonText: ''
 };
 
 export const PageReponse = {

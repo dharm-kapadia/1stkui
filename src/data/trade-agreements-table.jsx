@@ -12,10 +12,10 @@ export const range = (len) => {
 
 function MockTradeAgreementData(index) {
   return {
-    contractId: `${chance.natural({ min: 1, max: 999999999 })}${index}`,
+    loanId: `${chance.natural({ min: 1, max: 999999999 })}${index}`,
     processingStatus: chance.string(),
     matchingSpirePositionId: chance.natural({ min: 1, max: 999999999 }),
-    contractStatus: chance.string(),
+    loanStatus: chance.string(),
     lastUpdateParty: chance.string(),
     lastUpdateDateTime: chance.date,
     venueRefKey: chance.string(),
