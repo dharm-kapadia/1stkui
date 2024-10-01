@@ -7,7 +7,7 @@ const keycloak = new Keycloak({
   clientSecret: process.env.REACT_APP_KEYCLOAK_CLIENT_SECRET || '',
   authType: process.env.REACT_APP_KEYCLOAK_AUTH_TYPE || '',
   grantType: process.env.REACT_APP_KEYCLOAK_GRANT_TYPE || ''
-  //  api: process.env.REACT_APP_TOOLKIT_API || ''
+  //  api: process.env.REACT_APP_CONNECTOR_API || ''
 });
 
 export default keycloak;

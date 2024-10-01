@@ -95,7 +95,7 @@ function ReactTable({ columns, rows, loading }) {
         <EnhancedTableToolbar numSelected={0} />
         <Box
           sx={{
-            height: 675,
+            height: 725,
             width: '100%',
             '& .super-app-theme--header': {
               backgroundColor: '#3498DB',

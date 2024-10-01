@@ -12,11 +12,11 @@ import MainCard from 'components/MainCard';
 // ==============================|| STATISTICS ||============================== //
 
 const DashboardAnalytics = ({ title, count, color, cardIcon }) => (
-  <MainCard contentSX={{ p: 2.25 }}>
-    <Stack spacing={0.75} direction="column">
+  <MainCard contentSX={{ p: 1.75 }}>
+    <Stack spacing={0.5} direction="column">
       <Stack spacing={2} direction="row" alignItems="top" justifyContent="center">
         <Icon>{cardIcon}</Icon>
-        <Typography variant="h3" color={color}>
+        <Typography variant="h2" color={color}>
           {title}
         </Typography>
       </Stack>

@@ -10,7 +10,7 @@ export const User = {
   isLoggedIn: false
 };
 
-// ToolKit ENUMS
+// Connector ENUMS
 
 export const Benchmark = {
   EFFR: 'EFFR',
@@ -228,7 +228,7 @@ export const VenueType = {
   OFFPLATFORM: 'OFFPLATFORM'
 };
 
-// Toolkit API Schemas
+// Connector API Schemas
 
 export const Collateral = {
   loanPrice: 0.0,

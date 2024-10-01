@@ -106,8 +106,8 @@ const Profile = () => {
 
   return (
     <>
-      <Modal title="1Source Toolkit UI" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        Logout from 1Source Toolkit UI?
+      <Modal title="1Source Connector UI" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        Logout from 1Source Connector UI?
       </Modal>
       <Box sx={{ flexShrink: 0, ml: 0.75 }}>
         <ButtonBase
