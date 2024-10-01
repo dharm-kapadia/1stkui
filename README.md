@@ -1,6 +1,6 @@
 # 1Source-Connector-UI
 
-This is a reference implementation of a React application which provides a web-based user interface to view the messages and data that passes between the 1Source Ledger and the 1Source-Connector (https://github.com/Equilend/1Source-Connector).
+This is a reference implementation of a React application which provides a web-based user interface to data and messages that pass between the 1Source Ledger and the 1Source-Connector (https://github.com/Equilend/1Source-Connector).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
